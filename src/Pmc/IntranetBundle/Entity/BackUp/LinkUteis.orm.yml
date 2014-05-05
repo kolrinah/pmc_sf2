@@ -1,0 +1,26 @@
+Pmc\IntranetBundle\Entity\LinkUteis:
+    type: entity
+    table: link_uteis
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: true
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        nome:
+            type: string
+            nullable: false
+            length: 100
+            fixed: false
+            comment: 'Nome do link'
+        link:
+            type: string
+            nullable: false
+            length: 200
+            fixed: false
+            comment: 'Link url'
+    lifecycleCallbacks: {  }

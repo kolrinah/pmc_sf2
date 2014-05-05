@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" datatype="plaintext" original="file.ext">
+   <body>
+    <trans-unit id="1">
+      <source>The presented password cannot be empty.</source>
+      <target>El campo contraseña no puede estar vacío.</target>
+    </trans-unit>
+    <trans-unit id="2">
+      <source>Bad credentials</source>
+      <target>Incorreta combinação de usuário / senha</target>
+    </trans-unit>
+    <trans-unit id="3">
+      <source>The presented password is invalid.</source>
+      <target>Incorreta combinação de usuário / senha</target>
+    </trans-unit>
+    <trans-unit id="4">
+      <source>User account is disabled.</source>
+      <target>Conta de usuário desativada.</target>
+    </trans-unit>    
+    <trans-unit id="5">
+      <source>User account is locked.</source>
+      <target>Conta de usuário bloqueada.</target>
+    </trans-unit>    
+    <trans-unit id="6">
+      <source>Your session has timed out, or you have disabled cookies.</source>
+      <target>Sesión Finalizada o cookie desactivada.</target>
+    </trans-unit>
+    <trans-unit id="7">
+      <source>Feb</source>
+      <target>Fev</target>
+    </trans-unit>              
+    <trans-unit id="8">
+      <source>Apr</source>
+      <target>Abr</target>      
+    </trans-unit>    
+    <trans-unit id="9">
+      <source>May</source>
+      <target>Mai</target>      
+    </trans-unit>        
+    <trans-unit id="10">
+      <source>Sep</source>
+      <target>Set</target>      
+    </trans-unit>
+    <trans-unit id="11">
+      <source>Oct</source>
+      <target>Out</target>      
+    </trans-unit>        
+    <trans-unit id="12">
+      <source>Dec</source>
+      <target>Dez</target>      
+    </trans-unit>    
+   </body>
+  </file>
+</xliff>

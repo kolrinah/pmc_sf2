@@ -1,0 +1,54 @@
+home:
+   pattern: /
+   defaults: {_controller: PmcIntranetBundle:Home:home }
+
+login:
+   pattern: /login
+   defaults: { _controller: PmcIntranetBundle:Access:login }
+   
+check_path:
+   pattern: /autenticar
+   
+logout:
+    pattern: /logout 
+
+salida:
+   pattern: /login/salida
+   defaults: { _controller: PmcIntranetBundle:Access:salida }
+   
+activarCuenta:
+   pattern: /login/activar
+   defaults: { _controller: SisproBundle:Access:activarCuenta }
+   
+usuarios:
+   pattern: admin/usuarios
+   defaults: { _controller: SisproBundle:Usuarios:listarUsuarios }
+   
+nuevoUsuario:
+   pattern: admin/usuarios/nuevo
+   defaults: { _controller: SisproBundle:Usuarios:nuevoUsuario }
+   
+buscarUsuario:
+   pattern: admin/usuarios/buscar
+   defaults: { _controller: SisproBundle:Usuarios:buscarUsuario } 
+   
+editarUsuario:
+   pattern: admin/usuarios/editar
+   defaults: { _controller: SisproBundle:Usuarios:editarUsuario } 
+
+reiniciarClave:
+   pattern: admin/usuarios/reiniciar
+   defaults: { _controller: SisproBundle:Usuarios:reiniciarClave }
+
+bitacora:
+   pattern: admin/bitacora
+   defaults: { _controller: SisproBundle:Bitacora:listar }   
+   
+perfilUsuario:
+   pattern: perfil/
+   defaults: { _controller: SisproBundle:Usuarios:perfilUsuario }
+   
+cambiarClave:
+   pattern: perfil/cambiarclave
+   defaults: { _controller: SisproBundle:Usuarios:cambiarClave }
+      

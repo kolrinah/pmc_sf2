@@ -1,0 +1,61 @@
+Pmc\IntranetBundle\Entity\Servico:
+    type: entity
+    table: servico
+    indexes:
+        fk_secretaria_servico_idx:
+            columns:
+                - secretaria_id
+        fk_responsavel_idx:
+            columns:
+                - usuario_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: true
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        nome:
+            type: string
+            nullable: false
+            length: 100
+            fixed: false
+            comment: 'Nome do servico'
+        conteudo:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+            comment: 'Descrição do Serviço'
+        data:
+            type: datetime
+            nullable: false
+            comment: 'Data de criação do serviço'
+        ativo:
+            type: boolean
+            nullable: false
+            comment: 'Indica se o registro está ativo no sistema'
+            default: '1'
+    manyToOne:
+        usuario:
+            targetEntity: Usuario
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                usuario_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        secretaria:
+            targetEntity: Secretaria
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                secretaria_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

@@ -1,0 +1,43 @@
+Pmc\IntranetBundle\Entity\Banner:
+    type: entity
+    table: banner
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: true
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        nome:
+            type: string
+            nullable: false
+            length: 100
+            fixed: false
+            comment: 'Nome do banner'
+        url:
+            type: string
+            nullable: true
+            length: 100
+            fixed: false
+            comment: 'Url do banner'
+        arquivo:
+            type: string
+            nullable: true
+            length: 50
+            fixed: false
+            comment: 'Nome do archivo do imagem'
+        ativo:
+            type: boolean
+            nullable: false
+            comment: ''
+            default: '1'
+        ordem:
+            type: smallint
+            nullable: false
+            unsigned: false
+            comment: 'Ordem de aparição'
+            default: '1'
+    lifecycleCallbacks: {  }

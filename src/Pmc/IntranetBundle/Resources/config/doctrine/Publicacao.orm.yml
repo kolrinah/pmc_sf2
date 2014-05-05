@@ -1,0 +1,95 @@
+Pmc\IntranetBundle\Entity\Publicacao:
+    type: entity
+    table: publicacao
+    repositoryClass: Pmc\IntranetBundle\Entity\PublicacaoRepository
+    indexes:
+        fk_postante_idx:
+            columns:
+                - usuario_id
+        fk_tipo_idx:
+            columns:
+                - tipo_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: true
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        data:
+            type: datetime
+            nullable: false
+            comment: 'Data de publicação'
+            default: CURRENT_TIMESTAMP
+        titulo:
+            type: text
+            nullable: false
+            length: null
+            fixed: false
+            comment: 'Título da publicação o mensagem do usuário.'
+        sumario:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+            comment: 'Resumo da publicação'
+        conteudo:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+            comment: 'Conteúdo da publicação'
+        video:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+            comment: 'Vídeo da publicação'
+        imagem:
+            type: string
+            nullable: true
+            length: 50
+            fixed: false
+            comment: 'Arquivo do imagem da publicação'
+        ativo:
+            type: boolean
+            nullable: false
+            comment: 'Indica se o registro está ativo no sistema.'
+            default: '1'
+        publico:
+            type: boolean
+            nullable: false
+            comment: 'Indica se a publicação é pública.'
+            default: '1'
+        dataEvento:
+            type: date
+            nullable: true
+            comment: 'Data do evento.'
+            column: data_evento
+    oneToMany:
+        comentarios:
+            targetEntity: Comentario
+            mappedBy: publicacao
+    manyToOne:
+        tipo:
+            targetEntity: TipoPublicacao
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                tipo_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        usuario:
+            targetEntity: Usuario
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                usuario_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

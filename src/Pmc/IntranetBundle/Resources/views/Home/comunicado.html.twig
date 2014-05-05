@@ -1,0 +1,79 @@
+<!-- IDENTIFICACION COMUNICADO -->
+<div class="row">
+  <div class="col-sm-12">
+    <h6 class="tit-verde linha-verde">Comunicados</h6>
+  </div>
+</div>
+<!-- BOX COMUNICADO -->
+<div class="row">
+  <div class="col-sm-12">  
+    <div class="container-fluid ">  
+      <div class="row box-comunicados" >
+<!-- IZQ COMUNICADO -->          
+        <div class="col-sm-4 box-comunicados-data">               
+          <div class="row" style="position: relative; z-index: 1" >
+              <div class="tit-branco2 dia-comunicado">{{ p.data|date('d') }}</div>
+              <div class="mes-comunicado">{{ p.data|date('M')|trans|lower }}</div>                 
+          </div>   
+          <div class="row box-comunicados-comentarios" 
+                   style="position: absolute; bottom: 0px; z-index: 3">
+            <a data-toggle="collapse" href="#collapse{{p.id}}">
+               <img src="{{asset('bundles/pmcintranet/img/ico-comentarios2.png')}}" 
+                  width="22" height="24">
+               <span style="margin-left:5px;">Comentários</span></a>
+          </div>          
+        </div>
+<!-- DER COMUNICADO -->          
+        <div class="col-sm-8" style="position: relative; z-index: 1; height: 250px">      
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="row">  
+                <img src="{{ url('home') }}../upload/comunicados/{{ p.imagem }}"
+                     style="width:100%" />              
+              </div> 
+            </div>
+          </div>
+          <div class="row text-comunicados" style="text-align: justify"> 
+              {{ p.titulo|length > 100 ? p.titulo|slice(0, 100) ~ '...' : p.titulo  }}              
+          </div>
+          <div class="row" 
+             style="height:35px; line-height:35px; text-align:right;
+                    position: absolute; bottom: 0px; right: 25px; z-index: 3">
+               <a data-toggle="collapse" style="color:#fff;" href="#collapse{{p.id}}">
+                <img src="{{asset('bundles/pmcintranet/img/ico-leia2.png')}}" 
+                     width="23" height="19">
+                <span style="margin-left:5px;">Leia Mais</span></a> 
+          </div>                
+        </div>          
+      </div>            
+{# ACCORDION #}            
+      <div class="row panel panel-default">          
+        <div id="collapse{{p.id}}" class="col-sm-12 panel-collapse collapse">
+          <div class="panel-body" style="padding: 15px 5px 10px">
+            <p title="Sumário" style="text-align: justify">{{ p.sumario }}</p>  
+            <p title="Conteúdo" style="text-align: justify">{{ p.conteudo }}</p>
+            <hr/>
+{# CARGAR COMENTARIOS #}
+{% include 'PmcIntranetBundle:Templates:comentarios.html.twig' %} 
+
+{# POSTAR COMENTARIO #} 
+{% include 'PmcIntranetBundle:Templates:postarComentario.html.twig' %}            
+
+{# TAG OCULTAR #}        
+            <div class="ocultar">
+              <a class="accordion-toggle collapsed" data-toggle="collapse" 
+                 href="#collapseID">Ocultar Comunicado</a>            
+            </div>            
+          </div>
+        </div>
+      </div>            
+{# END ACCORDION #}  
+            
+{# PANEL OPCIONAL #}    
+{% include 'PmcIntranetBundle:Templates:controlPublicacao.html.twig' %} 
+            
+    </div>        
+  </div> 
+</div>  
+<!--CONTEÚDO END-->               
+<!--BOX COMUNICADO END-->

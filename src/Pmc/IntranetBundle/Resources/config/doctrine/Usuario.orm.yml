@@ -1,0 +1,163 @@
+Pmc\IntranetBundle\Entity\Usuario:
+    type: entity    
+    table: usuario
+    repositoryClass: Pmc\IntranetBundle\Entity\UsuarioRepository
+    indexes:
+        fk_usuario_secretaria_idx:
+            columns:
+                - secretaria_id
+    uniqueConstraints:
+        id_UNIQUE:
+            columns:
+                - id
+        email_UNIQUE:
+            columns:
+                - email
+        user_UNIQUE:
+            columns:
+                - user
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: true
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        nome:
+            type: string
+            nullable: false
+            length: 100
+            fixed: false
+            comment: 'Nome do usuário.'
+        cargo:
+            type: string
+            nullable: true
+            length: 50
+            fixed: false
+            comment: 'Posição do usuário.'
+        telefone:
+            type: string
+            nullable: true
+            length: 45
+            fixed: false
+            comment: 'Telefone do usuário.'
+        foto:
+            type: string
+            nullable: true
+            length: 200
+            fixed: false
+            comment: 'Arquivo da foto do usuário.'
+        email:
+            type: string
+            nullable: false
+            length: 150
+            fixed: false
+            comment: 'E-Mail do usuário.'
+        user:
+            type: string
+            nullable: false
+            length: 50
+            fixed: false
+            comment: 'Login do usuário.'
+        senha:
+            type: string
+            nullable: false
+            length: 200
+            fixed: false
+            comment: 'Senha do usuário.'
+            default: 5950c3628ec1e0973e66625d90240ec661b7fb3b
+        salt:
+            type: string
+            nullable: false
+            length: 200
+            fixed: false
+            comment: 'Sal de senha.'
+            default: 636faccb4a9d532e63a3c7b00b4fb164
+        tentativas:
+            type: smallint
+            nullable: false
+            unsigned: false
+            comment: 'Número de tentativas de senha errada.'
+            default: '0'
+        tempoEspera:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: 'Tempo de espera para acessar o sistema.'
+            default: '0'
+            column: tempo_espera
+        ultimoAcesso:
+            type: datetime
+            nullable: true
+            comment: 'Data e hora da última entrada de usuário para o sistema.'
+            column: ultimo_acesso
+        matricula:
+            type: string
+            nullable: true
+            length: 25
+            fixed: false
+            comment: 'CAMPO DE USO RESERVADO'
+        rg:
+            type: string
+            nullable: true
+            length: 25
+            fixed: false
+            comment: 'CAMPO DE USO RESERVADO'
+        cpf:
+            type: string
+            nullable: true
+            length: 25
+            fixed: false
+            comment: 'CAMPO DE USO RESERVADO'
+        ativo:
+            type: boolean
+            nullable: false
+            comment: 'Indica se o registro está ativo no sistema.'
+            default: '1'
+    manyToOne:
+        secretaria:
+            targetEntity: Secretaria
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                secretaria_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    manyToMany:
+        seguidor:
+            targetEntity: Usuario
+            cascade: {  }
+            mappedBy: null
+            inversedBy: usuario
+            joinTable:
+                name: seguidor
+                joinColumns:
+                    -
+                        name: usuario_id
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: seguidor_id
+                        referencedColumnName: id
+            orderBy: null      
+        role:
+            targetEntity: Role
+            cascade: {  }
+            mappedBy: null
+            inversedBy: usuario
+            joinTable:
+                name: usuario_role
+                joinColumns:
+                    -
+                        name: usuario_id
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: role_id
+                        referencedColumnName: id
+            orderBy: null       
+    lifecycleCallbacks: {  }

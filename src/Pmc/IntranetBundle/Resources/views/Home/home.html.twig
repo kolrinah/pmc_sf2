@@ -1,0 +1,14 @@
+{% extends 'PmcIntranetBundle:Templates:layout.html.twig' %}
+{% block title %} 
+{{ parent() }} | Home
+{% endblock %}
+
+{% block content %}
+
+{% include 'PmcIntranetBundle:Templates:content.html.twig' %}
+
+{% endblock %}
+
+{% block javascripts %}   
+    <script type="text/javascript" src="{{ asset('bundles/pmcintranet/js/home.js') }}"></script> 
+{% endblock %}  

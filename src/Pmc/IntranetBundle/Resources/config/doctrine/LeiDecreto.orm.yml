@@ -1,0 +1,42 @@
+Pmc\IntranetBundle\Entity\LeiDecreto:
+    type: entity
+    table: lei_decreto
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: true
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        ano:
+            type: smallint
+            nullable: false
+            unsigned: false
+            comment: 'Ano da lei ou decreto'
+        nome:
+            type: string
+            nullable: false
+            length: 100
+            fixed: false
+            comment: 'Nome da lei ou decreto'
+        conteudo:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+            comment: 'Descrição do lei ou decreto'
+        lei:
+            type: boolean
+            nullable: false
+            comment: 'Se lei = 0 é um decreto'
+            default: '1'
+        arquivo:
+            type: string
+            nullable: false
+            length: 50
+            fixed: false
+            comment: 'Nome do arquivo anexo'
+    lifecycleCallbacks: {  }

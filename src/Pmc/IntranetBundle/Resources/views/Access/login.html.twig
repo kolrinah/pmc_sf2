@@ -1,0 +1,73 @@
+{% extends 'PmcIntranetBundle:Templates:base.html.twig' %}
+{% block title %} 
+{{ parent() }}
+| Acesso
+{% endblock %}
+{% block body %}
+<form class="form-signin"  style="margin-top: 140px;"    
+      action="{{ path('check_path') }}" method="post" {{ form_enctype(formulario) }} >
+ <p>   
+   <img src="{{ asset('bundles/pmcintranet/img/logo.png') }}" width="250" height="71" />          
+ </p>
+ <hr/>
+ <p {% if form_errors(formulario._username) %}
+         class="campoInvalido" title="{{ form_errors(formulario._username)|striptags }}"
+    {% endif %}>                 
+                 {{ form_widget(formulario._username) }} </p> 
+         
+ <p {% if form_errors(formulario._password) %}
+              class="campoInvalido" title="{{ form_errors(formulario._password)|striptags }}"
+    {% endif %}>               
+                {{ form_widget(formulario._password) }} </p> 
+ 
+{#
+ <p {% if form_errors(formulario.captcha) %}
+                   class="campoInvalido" title="{{ form_errors(formulario.captcha)|striptags }}"
+    {% endif %}>            
+                {{ form_widget(formulario.captcha) }} </p> 
+#}                
+
+{{ form_rest(formulario) }}  
+
+ <p>
+   <a href="#myModal" role="button" data-toggle="modal">Esqueci minha senha</a>
+ </p>
+        
+ <div style="text-align: right"> 
+    <button type="submit" class="btn btn-primary"> Entrar</button>         
+ </div>
+
+   {% if error %}
+ <div class="alert alert-danger" style="margin-top:20px; text-align: center">
+     {{ error.message|trans }}
+ </div>
+    {% endif %}      
+</form>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 class="modal-title" id="myModalLabel"> <strong>Esqueci minha senha</strong></h3>
+      </div>
+      <div class="modal-body">
+       <label>Digite seu e-mail de cadastro:</label>
+            <input type="email" class="form-control" maxlength="50"
+                   style="width:50%" placeholder="E-mail" title="E-mail">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+        <button type="button" class="btn btn-primary">Enviar</button>
+      </div>
+    </div>
+  </div>
+</div>        
+{% endblock %}
+
+{% block javascripts %}   
+<script type="text/javascript">
+
+</script>
+{% endblock %}  

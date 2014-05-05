@@ -1,0 +1,275 @@
+<!--COLUNA CENTRO-->
+<div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-12 filtro-principal">
+          <div class="row">
+            <div class="col-lg-4">
+              <h5 class="tit-azul">Mensagens</h5>
+            </div>
+            <div class="col-lg-5 col-lg-offset-3">
+            <div style="text-align:right"> 
+              <a class="accordion-toggle collapsed" data-toggle="collapse" 
+                 data-parent="#accordion2" href="#collapseNovo"></a></div>            
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12">
+              <textarea class="col-lg-12" placeholder="Escreva sua Mensagem" rows="3">
+              </textarea>
+              <img class="space-left marcador-mensagens" 
+                   src="{{ asset('bundles/pmcintranet/img/ico-marcador-mensagem.png') }}" 
+                   width="22" height="14" />
+              <div class="row">
+              	<div class="col-lg-12">
+                <ul class="nav nav-pills">
+  <li class="active">
+    <a href="#"><img src="{{ asset('bundles/pmcintranet/img/btn-texto-msg.png') }}" 
+                     width="28" height="32" /></a>
+  </li>
+  <li><a href="#myModal2" role="button" data-toggle="modal">
+          <img src="{{ asset('bundles/pmcintranet/img/btn-imagem-msg.png') }}" 
+               width="45" height="32" /></a></li>
+  <li><a href="#myModal3" role="button" data-toggle="modal">
+          <img src="{{ asset('bundles/pmcintranet/img/btn-video-msg.png"') }}" 
+               width="30" height="32" /></a></li>
+</ul> 
+                </div>
+              </div>
+             
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--BOX NOTÍCIAS-->
+      <div class="row">
+        <div class="col-lg-12">
+          <h6 class="tit-vermelho linha-vermelha">Notícias</h6>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="accordion" id="accordion2">
+            <div class="accordion-group box-noticias">
+              <div class="accordion-heading">
+                <div class="row">
+                  <div class="span6">
+                    <div style="padding:20px;"><span class="tit-noticias">
+                      <p>Programa de Saúde na Escola é implantado em Carapicuíba</p>
+                      </span> <span class="resumo-noticias">
+                      <p>Na última quarta feira, 06 de novembro, foi realizada a capacitação para diretoras, coordenadoras pedagógicas e professores de educação física.</p>
+                      </span> </div>
+                  </div>
+                  <div class="span6">
+                    <div style="padding:20px;"> <a href="#" class="thumbnail inner-border"><img src="images/img-noticia1.jpg"></a> </div>
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="span4">
+                    <div class="ico-comentarios"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne"><img src="images/ico-comentarios.png" width="22" height="24"><span style="margin-left:5px;">Comentários</span></a></div>
+                  </div>
+                  <div class="span4 offset4">
+                    <div class="ico-leia"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne"><img src="images/ico-leia.png" width="23" height="19"><span style="margin-left:5px;">Leia Mais</span></a></div>
+                  </div>
+                </div>
+              </div>
+              <div id="collapseOne" class="accordion-body collapse" style="height: 0px;">
+                <div class="accordion-inner">
+                  <p>Na última quarta feira, 06 de novembro, foi realizada a capacitação para diretoras, coordenadoras pedagógicas e professores de educação física para atuar no Programa de Saúde na Escola, programa do Ministério da Saúde.</p>
+                  <p>O evento contou com participação de 40 profissionais de 15 escolas que integram o Programa. A área de enfermagem da saúde explicou a importância de realizar a avaliação antropométrica (medição de peso e estatura) das crianças para detectar as que estão acima ou abaixo do peso, com vistas a combater a desnutrição e a obesidade infantil.</p>
+                  <p>A nutricionista da Secretaria da Saúde apresentou dicas de alimentação saudável desde o nascimento até adolescência chamando a atenção no envolvimento dos pais para promover a hábitos de alimentação a saudável. Também foram apresentados os principais problemas oculares na infância e ensinou os professores na realização do exame de acuidade visual (teste de Snellen) para identificar crianças que devem passar em consulta oftalmológica.</p>
+                  <p>O Programa Saúde na Escola foi criado para manter a integração e articulação permanente da educação e da saúde, contribuindo na formação integral dos estudantes por meio de ações de promoção, prevenção e atenção a saúde, proporcionando melhor qualidade de vida.</p>
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <hr>
+                      <textarea rows="3" class="col-lg-12" placeholder="Postar Comentário"></textarea>
+                      <hr>
+                      <div>
+                        <p>Comentários (1)</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-12" style="border:1px solid #ccc;">
+                      <div class="row">
+                        <div class="span2" style="padding:5px;"> <img class="img-polaroid" src="images/secretaria-educacao.jpg" width="40" height="33"> </div>
+                        <div class="span10">
+                          <span class="name-comentarios">Aparecida Graça Carlos</span>
+                           
+                        
+                          <span class="resumo-noticias" style="margin-top:5px; color:#000;">Ótima notícia!</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="ocultar"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">Ocultar Notícia</a></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--BOX NOTÍCIAS END--> 
+      
+      <!--BOX EVENTOS-->
+      <div class="row">
+        <div class="col-lg-12">
+          <h6 class="tit-azul linha-azul">Eventos</h6>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12 box-eventos">
+          <div class="row">
+            <div class="span8">
+              <div><img class="col-lg-12" 
+                        src="{{ asset('bundles/pmcintranet/img/img-evento2.jpg') }}"></div>
+              <div class="box-eventos-comentarios col-lg-12" style="margin-left:0px;"> <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo"><img src="images/ico-comentarios2.png" width="22" height="24"><span style="margin-left:5px;">Comentários</span> </a></div>
+            </div>
+            <div class="span4" style="margin-left:0px;">
+              <div class="row" style="background-color:#06C; height:65px; padding-left: 8%;">
+                <div class="col-lg-12">
+                  <div class="tit-branco2 inicio-eventos">Início</div>
+                  <div class="tit-branco2 data-eventos">08 nov</div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="text-eventos"> Cerimônia de Encerramento do 5º Ciclo do Brasil Alfabetizado </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="span8 offset4" style="height:35px; line-height:35px;"> <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo"><img src="images/ico-leia2.png" width="23" height="19"><span style="margin-left:5px;">Leia Mais</span></a> </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+              <div class="col-lg-12">
+                <div class="accordion" id="accordion2">
+                  <div class="accordion-group">
+                    <div id="collapseTwo" class="accordion-body collapse" style="height: 0px;">
+                      <div class="accordion-inner conteudo-eventos" style="background-color:#fff;"> <p>Na próxima sexta-feira, 8 de novembro, às 20h, a Prefeitura de Carapicuíba, por meio da Secretaria da Educação, realiza a Cerimônia de Encerramento do 5º Ciclo do Programa Brasil Alfabetizado. A Cerimônia acontece no Teatro do FUCA (Rua José Fernandes Teixeira Zuza, 510 – vila Cretti).</p>
+ 
+<p>Neste ano, o Programa Brasil Alfabetizado formou 30 salas, atingindo 462 pessoas. Destas, 250 chegaram ao final e receberão o certificado de conclusão do curso, podendo ingressar no EJA (Educação de Jovens e Adultos).</p>
+<div class="row">
+                    <div class="col-lg-12">
+                      <hr>
+                      <textarea rows="3" class="col-lg-12" placeholder="Postar Comentário"></textarea>
+                      <hr>
+                      <div>
+                        <p>Comentários (1)</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-12" style="border:1px solid #ccc;">
+                      <div class="row">
+                        <div class="span2" style="padding:5px;"> <img class="img-polaroid" src="images/secretaria-educacao.jpg" width="40" height="33"> </div>
+                        <div class="span10">
+                          <span class="name-comentarios">Aparecida Graça Carlos
+                          </span>
+                           
+                       
+                          <span class="resumo-noticias space-top" style="color:#000;">Ótimo evento!</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                 <div class="row">
+                 	<div class="col-lg-12">
+                    	<div class="ocultar"><a class="accordion-toggle collapsed" data-toggle="collapse" style="color:#000;" data-parent="#accordion2" href="#collapseTwo">Ocultar Evento</a></div>
+                    </div>
+                 </div>
+</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <!--BOX EVENTOS END--> 
+      <!--BOX COMUNICADOS-->
+      <div class="row">
+        <div class="col-lg-12">
+          <h6 class="tit-verde linha-verde">Comunicados</h6>
+        </div>
+      </div>
+      <div class="row">
+	<div class="col-lg-12 box-comunicados">
+        	<div class="row">
+            	<div class="span4 box-comunicados-data">
+                	<div style="padding-top:50px; height:165px;">
+                		<div class="tit-branco2 dia-comunicado">
+                		19
+           		</div>
+                <div class="mes-comunicado">nov</div>
+                	</div>
+                    <div class="box-comunicados-comentarios col-lg-12" style="margin-left:0px;"> <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion3" href="#collapseThree"><img src="images/ico-comentarios2.png" width="22" height="24"><span style="margin-left:5px;">Comentários</span> </a></div>
+                </div>
+                <div class="span8" style="margin-left: 0px; width:68.2%;">
+                	<div>
+                    <img src="images/img-comunicado1.jpg"/></div>
+                    <div class="text-comunicados">
+                    GCM é homenageada em São Paulo
+                    </div>
+                    <div class="span4 offset7" style="height:35px; line-height:35px; text-align:right;"> <a class="accordion-toggle collapsed" data-toggle="collapse" style="color:#fff;" data-parent="#accordion3" href="#collapseThree"><img src="images/ico-leia2.png" width="23" height="19"><span style="margin-left:5px;">Leia Mais</span></a> </div>
+                </div>  
+            </div>
+        </div>
+        <!--CONTEÚDO-->
+                <div class="row">
+                	<div class="col-lg-12">
+                    	<div class="accordion" id="accordion2">
+                
+                
+                <div class="accordion-group">
+                  
+                  <div id="collapseThree" class="accordion-body collapse">
+                    <div class="accordion-inner">
+                      <p>A Guarda Civil Municipal de Carapicuíba foi homenageada na sessão solene de comemoração ao Dia Nacional do Guarda Civil Municipal nesta sexta, 11, na Assembléia Legislativa do Estado de São Paulo. A solenidade contou com a presença de mais de 400 pessoas e representantes de 70 cidades dos estados de São Paulo e Rio de Janeiro. </p>
+ 
+<p>A Guarda Civil de Carapicuíba foi representada por Anali Correia dos Santos e Fabiano Morgado de Oliveira e receberam da Associação Brasileira dos Guardas Municipais (Abraguardas) a insígnia Estrela de Luz e diploma de Honra ao Mérito pelos trabalhos desempenhados junto à comunidade. </p>
+<div class="row">
+                    <div class="col-lg-12">
+                      <hr>
+                      <textarea rows="3" class="col-lg-12" placeholder="Postar Comentário"></textarea>
+                      <hr>
+                      <div>
+                        <p>Comentários (1)</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-12" style="border:1px solid #ccc;">
+                      <div class="row">
+                        <div class="span2" style="padding:5px;"> <img class="img-polaroid" src="images/secretaria-educacao.jpg" width="40" height="33"> </div>
+                        <div class="span10">
+                          <span class="name-comentarios">Aparecida Graça Carlos
+                          </span>
+                           
+                       
+                          <span class="resumo-noticias space-top" style="color:#000;">Ótimo evento!</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                 	<div class="col-lg-12">
+                    	<div class="ocultar"><a class="accordion-toggle collapsed" data-toggle="collapse" style="color:#000;" data-parent="#accordion2" href="#collapseThree">Ocultar Comunicado</a></div>
+                    </div>
+                 </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+                    </div>
+                </div>
+                <!--CONTEÚDO END-->
+      </div>
+      <!--BOX COMUNICADOS END-->
+</div>
+<!--COLUNA CENTRO END--> 

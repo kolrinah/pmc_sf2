@@ -1,0 +1,67 @@
+<header class="top">
+<div class="container"> 
+  <div class="row"> 
+    <div class="col-sm-4" style="padding: 10px 15px">
+      <span style="padding-right:5px">
+        <a href="#" >
+          <img src="{{ asset('bundles/pmcintranet/img/ico-user.png') }}"/>  
+        </a>  
+      </span>
+      <span class="top-user">      
+        <a href="#" >
+          {{ app.user.nome }}
+        </a> &nbsp;|&nbsp;
+        <a href="{{ path('logout')}}" >
+          SAIR
+        </a>              
+      </span>      
+    </div>      
+    <div class="col-sm-5" style="padding: 10px 5px; text-align: center">
+      <div class="input-group">
+        <span class="input-group-addon btn btn-danger dropdown-toggle" 
+              data-toggle="dropdown" style="color:white">
+          <img src="{{ asset('bundles/pmcintranet/img/ico-seg-busca.png') }}"/>  
+        </span>
+        <ul class="dropdown-menu" role="menu" style="text-align:left">
+          <li role="presentation" class="dropdown-header">
+              <strong>FILTRAR POR:</strong></li>  
+          <li><a href="#">
+               <span class="ico-menu">
+                <img src="{{ asset('bundles/pmcintranet/img/ico-rede.png') }}"/>  
+               </span> Minha Rede
+              </a>
+          </li>
+          <li><a href="#">
+               <span class="ico-menu">
+                <img src="{{ asset('bundles/pmcintranet/img/ico-secretarias.png') }}"/>  
+               </span> Secretarias
+              </a>
+          </li>
+          <li><a href="#">
+               <span class="ico-menu">
+                <img src="{{ asset('bundles/pmcintranet/img/ico-servicos.png') }}"/>  
+               </span> Serviços
+              </a>
+          </li>          
+        </ul>              
+        <input type="text" class="form-control" placeholder="Busca">
+        <span class="input-group-addon btn btn-danger" style="color:white">
+          <img src="{{ asset('bundles/pmcintranet/img/ico-busca.png') }}"/>  
+        </span>        
+      </div>      
+    </div>            
+    <div class="col-sm-3" style="padding: 10px 5px; text-align: center">
+      <span style="padding-right:5px">
+        <a href="#" style="color:white">
+          <img src="{{ asset('bundles/pmcintranet/img/ico-avisos.png') }}"/>  
+        </a>  
+      </span>
+      <span class="top-user">      
+        <a href="#" >
+        Meus avisos (5)          
+        </a>              
+      </span>      
+    </div>          
+  </div> 
+</div>
+</header>

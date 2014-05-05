@@ -1,0 +1,21 @@
+<div class="container-fluid"> 
+  <div class="row">  
+    <div class="col-sm-12" style="text-align: center">
+{% if data.banners|length == 0 %}        
+      <div class="banner">
+         <img src="{{ asset('bundles/pmcintranet/img/bannerDisponivel.png')}}" 
+              style="max-width:183px; max-height:91%">
+      </div>       
+{% else %}
+   {% for banner in data.banners %}       
+      <div class="banner" title="{{ banner.nome }}">
+        <a href="{{ banner.url }}" target="_blank">
+          <img src="{{ url('home') }}../upload/banners/{{ banner.arquivo }}" 
+               style="max-width:183px; max-height:91%">
+        </a>
+      </div>               
+   {% endfor %}     
+{% endif %}
+    </div>
+  </div>
+</div>

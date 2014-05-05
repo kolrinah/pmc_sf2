@@ -1,0 +1,50 @@
+Pmc\IntranetBundle\Entity\Comentario:
+    type: entity
+    table: comentario
+    indexes:
+        fk_publicacao_idx:
+            columns:
+                - publicacao_id
+        fk_comentarista_idx:
+            columns:
+                - usuario_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: true
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        data:
+            type: datetime
+            nullable: false
+            comment: ''
+        comentario:
+            type: text
+            nullable: false
+            length: null
+            fixed: false
+            comment: ''
+    manyToOne:
+        publicacao:
+            targetEntity: Publicacao
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                publicacao_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        usuario:
+            targetEntity: Usuario
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                usuario_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

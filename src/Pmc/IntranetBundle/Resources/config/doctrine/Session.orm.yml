@@ -1,0 +1,29 @@
+Pmc\IntranetBundle\Entity\Session:
+    type: entity
+    table: session
+    id:
+        sessionId:
+            type: string
+            nullable: false
+            length: 255
+            fixed: false
+            comment: ''
+            id: true
+            column: session_id
+            generator:
+                strategy: IDENTITY
+    fields:
+        sessionValue:
+            type: text
+            nullable: false
+            length: null
+            fixed: false
+            comment: ''
+            column: session_value
+        sessionTime:
+            type: integer
+            nullable: false
+            unsigned: true
+            comment: ''
+            column: session_time
+    lifecycleCallbacks: {  }

@@ -1,0 +1,57 @@
+Pmc\IntranetBundle\Entity\ServicoUsuario:
+    type: entity
+    table: servico_usuario
+    indexes:
+        fk_servico_idx:
+            columns:
+                - servico_id
+        fk_requerente_idx:
+            columns:
+                - usuario_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: true
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        titulo:
+            type: string
+            nullable: false
+            length: 100
+            fixed: false
+            comment: 'Título ou Assunto'
+        conteudo:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+            comment: 'Descrição da solicitação.'
+        aberto:
+            type: boolean
+            nullable: false
+            comment: 'Status da solicitação.'
+            default: '1'
+    manyToOne:
+        usuario:
+            targetEntity: Usuario
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                usuario_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        servico:
+            targetEntity: Servico
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                servico_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

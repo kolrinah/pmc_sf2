@@ -1,0 +1,20 @@
+Pmc\IntranetBundle\Entity\TipoPublicacao:
+    type: entity
+    table: tipo_publicacao
+    id:
+        id:
+            type: smallint
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        tipo:
+            type: string
+            nullable: false
+            length: 45
+            fixed: false
+            comment: 'Tipo de publicação.'
+    lifecycleCallbacks: {  }

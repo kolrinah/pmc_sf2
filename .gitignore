@@ -1,0 +1,7 @@
+/nbproject/
+/app/cache/
+/app/logs/
+/public_html/upload/
+/app/config/parameters.yml
+/public_html/bundles/
+/vendor/

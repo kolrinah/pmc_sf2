@@ -1,0 +1,63 @@
+Pmc\IntranetBundle\Entity\Log:
+    type: entity
+    table: log
+    indexes:
+        fk_user_idx:
+            columns:
+                - usuario_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: true
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        date:
+            type: datetime
+            nullable: false
+            comment: ''
+        ip:
+            type: string
+            nullable: false
+            length: 25
+            fixed: false
+            comment: ''
+        userAgent:
+            type: string
+            nullable: false
+            length: 100
+            fixed: false
+            comment: ''
+            column: user_agent
+        module:
+            type: string
+            nullable: false
+            length: 45
+            fixed: false
+            comment: ''
+        action:
+            type: string
+            nullable: false
+            length: 45
+            fixed: false
+            comment: ''
+        description:
+            type: text
+            nullable: false
+            length: null
+            fixed: false
+            comment: ''
+    manyToOne:
+        usuario:
+            targetEntity: Usuario
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                usuario_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

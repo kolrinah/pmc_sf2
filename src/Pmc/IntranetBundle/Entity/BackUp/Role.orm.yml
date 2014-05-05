@@ -1,0 +1,38 @@
+Pmc\IntranetBundle\Entity\Role:
+    type: entity
+    table: role
+    uniqueConstraints:
+        role_UNIQUE:
+            columns:
+                - role
+    id:
+        id:
+            type: smallint
+            nullable: false
+            unsigned: true
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        role:
+            type: string
+            nullable: false
+            length: 20
+            fixed: false
+            comment: 'Papéi de usuário.'
+        tag:
+            type: string
+            nullable: false
+            length: 45
+            fixed: false
+            comment: 'Descrição do papéi.'
+    manyToMany:
+        usuario:
+            targetEntity: Usuario
+            cascade: {  }
+            mappedBy: role
+            inversedBy: null
+            joinTable: null
+            orderBy: null
+    lifecycleCallbacks: {  }

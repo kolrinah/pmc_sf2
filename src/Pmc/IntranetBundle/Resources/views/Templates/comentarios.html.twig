@@ -1,0 +1,27 @@
+{% if p.comentarios|length > 0 %}
+<div style="margin-bottom: 15px">
+   Comentários ({{p.comentarios|length}})
+</div>
+{% for cmt in p.comentarios %}
+<div class="panel panel-default" 
+     title="Postado em {{ cmt.data|date('d-M-Y h:na') }}">
+  <div class="panel-body" style="padding: 5px 10px 5px 5px">
+    <div class="media">
+       {% set foto = asset('bundles/pmcintranet/img/ico-user.png') %} 
+       {% if cmt.usuario.foto|length > 0 %}            
+       {% set foto = url('home') ~ '../upload/retratos/' ~ cmt.usuario.foto %}
+       {% endif %}     
+        <div class="pull-left" style="width:50px; vertical-align: central">
+            <img class="media-object img-responsive img-thumbnail" 
+                 src="{{ foto }}">
+        </div>
+        <div class="media-body" style="text-align:justify;">
+         <span class="media-heading name-comentarios">{{ cmt.usuario.nome }}</span>
+         <span style="font-size: 0.9em"> {{ cmt.comentario }}
+         </span>
+        </div>
+    </div>
+  </div>
+</div> 
+{% endfor %}
+{% endif %}

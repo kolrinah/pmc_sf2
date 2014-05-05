@@ -1,0 +1,4 @@
+pmc_intranet:
+    resource: "@PmcIntranetBundle/Resources/config/routing.yml"
+    prefix:   /
+

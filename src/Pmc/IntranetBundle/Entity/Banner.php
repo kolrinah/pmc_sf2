@@ -38,9 +38,9 @@ class Banner
     /**
      * @var string
      *
-     * @ORM\Column(name="arquivo", type="string", length=50, nullable=true)
+     * @ORM\Column(name="imagem", type="string", length=50, nullable=true)
      */
-    private $arquivo;
+    private $imagem;
 
     /**
      * @var boolean
@@ -56,7 +56,14 @@ class Banner
      */
     private $ordem;
 
-
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->ativo = true;
+        $this->ordem = 0;
+    }
 
     /**
      * Get id
@@ -115,26 +122,25 @@ class Banner
     }
 
     /**
-     * Set arquivo
+     * Set imagem
      *
-     * @param string $arquivo
+     * @param string $imagem
      * @return Banner
      */
-    public function setArquivo($arquivo)
+    public function setImagem($imagem)
     {
-        $this->arquivo = $arquivo;
-
+        $this->imagem = $imagem;
         return $this;
     }
 
     /**
-     * Get arquivo
+     * Get imagem
      *
      * @return string 
      */
-    public function getArquivo()
+    public function getImagem()
     {
-        return $this->arquivo;
+        return $this->imagem;
     }
 
     /**
@@ -182,4 +188,52 @@ class Banner
     {
         return $this->ordem;
     }
+    
+    /* * * * * * * * * * * * * * * * * * * * * * * 
+     * METODOS CREADOS MANUALMENTE
+     */
+
+    // Método para subir la foto
+    public function uploadImagem($directorioDestino)
+    {
+        if (null === $this->imagem) return;
+                
+        $nombreArchivoFoto = uniqid().'.'.
+                             $this->imagem->getClientOriginalExtension();
+        $this->_crearDirectorio($directorioDestino);
+        $this->imagem->move($directorioDestino, $nombreArchivoFoto);
+        $this->setImagem($nombreArchivoFoto);
+    }
+    
+    // METODO PARA REMOVER LA FOTO FISICAMENTE
+    public function removerImagem($directorioImagen)
+    {  
+       $imagen =  $directorioImagen.$this->imagem;
+       if (file_exists($imagen)) @unlink($imagen);         
+       return true;
+    }
+    
+    // METODO PARA CREAR DIRECTORIO
+    private function _crearDirectorio($ruta)
+    {
+       if (!file_exists($ruta)) @mkdir($ruta, 0777, true);
+       $this->_crearArchivoIndex($ruta);
+    }
+
+    //METODO PARA CREAR ARCHIVOS INDEX EN CARPETA
+    private function _crearArchivoIndex($carpeta)
+    {
+       $archivo = $carpeta.'index.html';
+       $contenido = "<html><head><title>403 Proibida</title></head>".
+                    "<body>Ação Proibida.</body></html>";
+
+       // CREAMOS EL ARCHIVO SI NO EXISTE
+       if (!file_exists($archivo))
+       {
+          if (!$handle = @fopen($archivo, 'c')) die("No pudo abrir/crear el archivo");
+          if (@fwrite($handle, $contenido) === FALSE) die("No pudo escribir en archivo index");            
+          @fclose($handle);
+       }
+       return true;
+    }    
 }

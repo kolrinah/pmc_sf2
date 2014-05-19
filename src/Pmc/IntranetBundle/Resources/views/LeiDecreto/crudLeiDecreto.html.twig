@@ -1,0 +1,103 @@
+{% extends 'PmcIntranetBundle:Templates:layout.html.twig' %}
+{% block title %} 
+{{ parent() }} | {{ data.titulo }}
+{% endblock %}
+
+{% block centralHeader %}
+<form id="formLeiDecreto" action="" method="post" {{ form_enctype(formulario) }} >
+<div class="row-fluid">
+  <div class="col-lg-12 panel panel-default" style="margin-top:20px;">    
+    <div class="panel-body"> 
+      <h4 class="tit-azul">  {{ data.accion|upper }} LEI OU DECRETO </h4>
+      <hr/> 
+      <div class="row">
+           <div class="col-lg-6 form-group" >            
+            {{ form_label(formulario.lei) }}
+            {{ form_widget(formulario.lei) }}       
+           </div>
+           <div class="col-lg-6" >
+              <div class="form-group has-feedback"> 
+            {{ form_label(formulario.ano) }}
+            {{ form_widget(formulario.ano) }} 
+            {% if form_errors(formulario.ano) %}       
+               <span class="form-control-feedback" style="margin-right:10px">
+                <img src="{{asset(path_img ~'advertencia.png')}}"
+                     title="{{ form_errors(formulario.ano)|striptags }}" />
+               </span>
+            {% endif %}     
+              </div>
+           </div>                
+      </div>        
+      <div class="form-group has-feedback">
+            {{ form_label(formulario.nome) }}
+            {{ form_widget(formulario.nome) }}
+            {% if form_errors(formulario.nome) %}       
+               <span class="form-control-feedback">
+                <img src="{{asset(path_img ~'advertencia.png')}}"
+                     title="{{ form_errors(formulario.nome)|striptags }}" />
+               </span>
+            {% endif %}  
+      </div>
+      <div class="form-group has-feedback">              
+            {{ form_label(formulario.conteudo) }}
+            {{ form_widget(formulario.conteudo) }}
+            {% if form_errors(formulario.conteudo) %}       
+               <span class="form-control-feedback">
+                <img src="{{asset(path_img ~'advertencia.png')}}"
+                     title="{{ form_errors(formulario.conteudo)|striptags }}" />
+               </span>
+            {% endif %}                
+      </div>
+      <div class="form-group has-feedback" title="{{ form_errors(formulario.arquivo)|striptags }}" >                  
+            {{ form_label(formulario.arquivo) }} 
+            {{ form_widget(formulario.arquivo) }} 
+            {% if form_errors(formulario.arquivo) %}       
+               <span class="form-control-feedback">
+                <img src="{{asset(path_img ~'advertencia.png')}}"
+                     title="{{ form_errors(formulario.arquivo)|striptags }}" />
+               </span>
+            {% endif %} 
+      </div>      
+      <hr/>
+      <div class="form-group">
+         {% for mensaje in app.session.flashbag.get('error') %}
+            <div class="alert alert-danger alert-dismissable">
+               <button type="button" class="close" data-dismiss="alert" 
+                       aria-hidden="true">&times;</button>
+            <img src="{{asset(path_img ~'error24.png')}}" /> &nbsp;{{ mensaje }}</div>
+         {% endfor %}
+      </div>
+      <div  style="text-align: right">
+            <a href="{{path('adminLeiDecreto')}}">
+               <button type="button" class="btn btn-default">Voltar</button></a>&nbsp; &nbsp; 
+            <button type="submit" class="btn btn-primary"
+                    onclick="$(this).attr('disabled','disabled');
+                             $('#formLeiDecreto').submit();">Salvar</button>
+      </div>      
+    </div>
+  </div>
+</div>  
+{{ form_rest(formulario) }}        
+</form>  
+
+{% endblock %}
+
+{# Ventanas emergentes #}
+{% block modalWindow %}
+    {% include 'PmcIntranetBundle:Templates:ventanaModal.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}       
+    {# Script para sombrear la pestaña activa del menú #}
+    <script type="text/javascript">
+     $(document).ready(function() {
+         $('nav li').removeClass('active');
+            var elementos = $('nav li a');                        
+            elementos.each(function() { 
+                if (trim($(this).html()).toLowerCase().indexOf('{{ data.titulo|lower }}') >= 0 )
+                      $(this).parent().addClass('active');
+                     });
+  
+     });                
+  </script>
+{% endblock %}  

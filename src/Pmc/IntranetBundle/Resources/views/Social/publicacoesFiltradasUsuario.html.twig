@@ -1,0 +1,68 @@
+{% extends 'PmcIntranetBundle:Templates:layout.html.twig' %}
+{% block title %} 
+{{ parent() }} | {{ data.tipo.tipo|capitalize~'s' }}
+{% endblock %}
+
+{% if data.tipo.id == 2 %}
+      {% set botonNuevo = 'Nova Notícia' %}
+{% elseif data.tipo.id != 1 %}
+      {% set botonNuevo = 'Novo ' ~ data.tipo.tipo|capitalize %}    
+{% else %}
+      {% set botonNuevo = null %}    
+{% endif %}
+
+{% block centralHeader %}
+{# Filtro de Secretarias #}  
+<input type="hidden" id="uri" value="{{ data.uri }}"/>
+{% include 'PmcIntranetBundle:Social:filtrosPublicacoes.html.twig' %} 
+    {% if data.tipo.id == 1 %}
+        {% include 'PmcIntranetBundle:Home:postarMensagem.html.twig' %} 
+    {% endif %}
+{% endblock %}
+
+{% block publications %}
+
+{% for mensaje in app.session.flashbag.get('info') %}
+      <div class="alert alert-success alert-dismissable" style="margin-top: 25px">
+        <button type="button" class="close" data-dismiss="alert" 
+                aria-hidden="true">&times;</button>
+        <img src="{{asset(path_img ~'1_old.png')}}" /> &nbsp;{{ mensaje }}</div>
+{% endfor %} 
+
+{% include 'PmcIntranetBundle:Templates:publications.html.twig' %}
+{% endblock %}
+
+{% block mais %}
+  <div class="row">
+    <div class="col-lg-12" style="margin-top: 20px">        
+        <img id="gifCargarMais" style="display: none "
+             src="{{ asset(path_img ~'loading.gif') }}"/>        
+        <div id="more" onclick="mostrarMais();">MAIS</div>
+    </div>
+  </div>
+{% endblock %}
+
+{# Ventanas emergentes #}
+{% block modalWindow %}
+    {% include 'PmcIntranetBundle:Templates:ventanaModal.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}   
+    <script type="text/javascript" src="{{ asset('bundles/pmcintranet/js/home.js') }}"></script>
+    {# Script para sombrear la pestaña activa del menú #}
+    <script type="text/javascript">
+     $(document).ready(function() {
+         $('nav li').removeClass('active');
+         
+         if (typeof $('#tipoPublicacion') !== "undefined")
+         {
+            var elementos = $('nav li a');                        
+            elementos.each(function() { 
+                if (trim($(this).html()).toLowerCase()
+                        .indexOf('{{ data.tipo.tipo|lower|slice(0, -3) }}') >= 0 )
+                      $(this).parent().addClass('active');
+                     });                 
+         }         
+     });                
+  </script>
+{% endblock %}  

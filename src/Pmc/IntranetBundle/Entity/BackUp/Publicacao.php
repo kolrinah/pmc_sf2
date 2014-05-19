@@ -15,7 +15,7 @@ class Publicacao
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -26,7 +26,7 @@ class Publicacao
      *
      * @ORM\Column(name="data", type="datetime", nullable=false)
      */
-    private $data;
+    private $data = 'CURRENT_TIMESTAMP';
 
     /**
      * @var string
@@ -38,9 +38,9 @@ class Publicacao
     /**
      * @var string
      *
-     * @ORM\Column(name="sumario", type="text", nullable=true)
+     * @ORM\Column(name="resumo", type="text", nullable=true)
      */
-    private $sumario;
+    private $resumo;
 
     /**
      * @var string
@@ -68,14 +68,14 @@ class Publicacao
      *
      * @ORM\Column(name="ativo", type="boolean", nullable=false)
      */
-    private $ativo;
+    private $ativo = '1';
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="publico", type="boolean", nullable=false)
      */
-    private $publico;
+    private $publico = '1';
 
     /**
      * @var \DateTime
@@ -85,9 +85,9 @@ class Publicacao
     private $dataEvento;
 
     /**
-     * @var \Pmc\IntranetBundle\Entity\TipoPublicacao
+     * @var \TipoPublicacao
      *
-     * @ORM\ManyToOne(targetEntity="Pmc\IntranetBundle\Entity\TipoPublicacao")
+     * @ORM\ManyToOne(targetEntity="TipoPublicacao")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="tipo_id", referencedColumnName="id")
      * })
@@ -95,9 +95,9 @@ class Publicacao
     private $tipo;
 
     /**
-     * @var \Pmc\IntranetBundle\Entity\Usuario
+     * @var \Usuario
      *
-     * @ORM\ManyToOne(targetEntity="Pmc\IntranetBundle\Entity\Usuario")
+     * @ORM\ManyToOne(targetEntity="Usuario")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="usuario_id", referencedColumnName="id")
      * })
@@ -105,6 +105,20 @@ class Publicacao
     private $usuario;
 
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $comentarios;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->comentarios = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->data = new \DateTime('now');
+        $this->dataEvento = new \DateTime('now');
+    }
 
     /**
      * Get id
@@ -163,26 +177,25 @@ class Publicacao
     }
 
     /**
-     * Set sumario
+     * Set resumo
      *
-     * @param string $sumario
+     * @param string $resumo
      * @return Publicacao
      */
-    public function setSumario($sumario)
+    public function setResumo($resumo)
     {
-        $this->sumario = $sumario;
-
+        $this->resumo = $resumo;                
         return $this;
     }
 
     /**
-     * Get sumario
+     * Get resumo
      *
      * @return string 
      */
-    public function getSumario()
+    public function getResumo()
     {
-        return $this->sumario;
+        return $this->resumo;
     }
 
     /**
@@ -324,6 +337,39 @@ class Publicacao
     }
 
     /**
+     * Add comentarios
+     *
+     * @param \Pmc\IntranetBundle\Entity\Comentario $comentarios
+     * @return Publicacao
+     */
+    public function addComentario(\Pmc\IntranetBundle\Entity\Comentario $comentarios)
+    {
+        $this->comentarios[] = $comentarios;
+
+        return $this;
+    }
+
+    /**
+     * Remove comentarios
+     *
+     * @param \Pmc\IntranetBundle\Entity\Comentario $comentarios
+     */
+    public function removeComentario(\Pmc\IntranetBundle\Entity\Comentario $comentarios)
+    {
+        $this->comentarios->removeElement($comentarios);
+    }
+
+    /**
+     * Get comentarios
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getComentarios()
+    {
+        return $this->comentarios;
+    }
+
+    /**
      * Set tipo
      *
      * @param \Pmc\IntranetBundle\Entity\TipoPublicacao $tipo
@@ -368,4 +414,52 @@ class Publicacao
     {
         return $this->usuario;
     }
+    
+    /* * * * * * * * * * * * * * * * * * * * * * * 
+     * METODOS CREADOS MANUALMENTE
+     */
+
+    // Método para subir la foto
+    public function uploadImagem($directorioDestino)
+    {
+        if (null === $this->imagem) return;
+                
+        $nombreArchivoFoto = uniqid().'.'.
+                             $this->imagem->getClientOriginalExtension();
+        $this->_crearDirectorio($directorioDestino);
+        $this->imagem->move($directorioDestino, $nombreArchivoFoto);
+        $this->setImagem($nombreArchivoFoto);
+    }
+    
+    // METODO PARA REMOVER LA FOTO FISICAMENTE
+    public function removerImagem($directorioImagen)
+    {  
+       $imagen =  $directorioImagen.$this->imagem;
+       if (file_exists($imagen)) @unlink($imagen);         
+       return true;
+    }
+    
+    // METODO PARA CREAR DIRECTORIO
+    private function _crearDirectorio($ruta)
+    {
+       if (!file_exists($ruta)) @mkdir($ruta, 0777, true);
+       $this->_crearArchivoIndex($ruta);
+    }
+
+    //METODO PARA CREAR ARCHIVOS INDEX EN CARPETA
+    private function _crearArchivoIndex($carpeta)
+    {
+       $archivo = $carpeta.'index.html';
+       $contenido = "<html><head><title>403 Proibida</title></head>".
+                    "<body>Ação Proibida.</body></html>";
+
+       // CREAMOS EL ARCHIVO SI NO EXISTE
+       if (!file_exists($archivo))
+       {
+          if (!$handle = @fopen($archivo, 'c')) die("No pudo abrir/crear el archivo");
+          if (@fwrite($handle, $contenido) === FALSE) die("No pudo escribir en archivo index");            
+          @fclose($handle);
+       }
+       return true;
+    }    
 }

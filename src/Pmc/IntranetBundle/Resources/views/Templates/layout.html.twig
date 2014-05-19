@@ -10,15 +10,29 @@
 <div style="padding-bottom: 100px">
   <div class="container" >
    <div class="row">
-    <div class="col-sm-4"> 
+    <div class="col-lg-4"> 
      {% include 'PmcIntranetBundle:Templates:menu.html.twig' %}
     </div>    
-    <div class="col-sm-5"> 
-      {% block content %}
-            AQUI VA CONTENIDO
-      {% endblock %}
+    <div class="col-lg-5"> 
+<!--COLUNA CENTRO-->
+     <div class="container-fix">
+        {% block centralHeader %}
+           {# AQUI VAN LOS FILTROS DE BUSQUEDA  #}
+        {% endblock %}
+             
+       <div id="publications" class="container-fluid">
+        {% block publications %}
+           {# AQUI VAN LAS PUBLICACIONES RESULTADO DE LAS BUSQUEDAS #}
+        {% endblock %}
+       </div>    
+            
+        {% block mais %}
+           {# AQUI VA EL BOTÓN DE MAIS #}
+        {% endblock %}            
+     </div>  
+<!-- FINAL COLUNA CENTRO -->
     </div>           
-    <div class="col-sm-3"> 
+    <div id="banners" class="col-lg-3"> 
       {% include 'PmcIntranetBundle:Templates:banners.html.twig' %}
     </div>           
    </div>
@@ -27,9 +41,3 @@
 {% include 'PmcIntranetBundle:Templates:footer.html.twig' %}
 </div>
 {% endblock %}
-
-{% block javascripts %}   
-<script type="text/javascript">
-
-</script>
-{% endblock %}  

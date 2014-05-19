@@ -4,13 +4,15 @@
   <meta charset="UTF-8">
   <meta http-equiv="Content-Language" content="pt" />
    <title>{% block title %}Prefeitura Municipal de Carapicuiba{% endblock %}</title>      
-   <link rel="icon" type="image/x-icon" href="{{ asset('bundles/pmcintranet/img/favicon.png') }}">
-   <link rel="shortcut icon" type="image/x-icon" href="{{ asset('bundles/pmcintranet/img/favicon.png') }}">  
+   <link rel="icon" type="image/x-icon" href="{{ asset(path_img ~'favicon.png') }}">
+   <link rel="shortcut icon" type="image/x-icon" href="{{ asset(path_img ~'favicon.png') }}">  
    <meta name="viewport" content="width=device-width, initial-scale=1">
 {# Sección de Assetics #}
    {% stylesheets  output='css/pmc.css' 
                   '@PmcIntranetBundle/Resources/public/css/bootstrap.css'  
                   '@PmcIntranetBundle/Resources/public/css/bootstrap-theme.css' 
+                  '@PmcIntranetBundle/Resources/public/css/jquery.dataTables.css'
+                  '@PmcIntranetBundle/Resources/public/css/jquery-ui.css'
                   '@PmcIntranetBundle/Resources/public/css/styles.css'
    %}              
    <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
@@ -20,40 +22,80 @@
  <body id="voltarTopo">     
   {% block body %}
   {% endblock %}          
-   
-{# Ventana emergente #}
-  <div id="modalWindow"></div>  
+  
+{# Establecemos las bases url para comunicarnos con javascript #}
+   <input type="hidden" id="baseImg" value="{{ asset('bundles/pmcintranet/img/') }}"/>                 
+   <input type="hidden" id="baseURL" value="{{ url('home') }}"/>         
+         
+{# Ventanas emergentes #}
+  {% block modalWindow %}
+  {% endblock %} 
+  
+{# Boton voltar topo #}  
   <input type="button" class="voltarTopo" value="Voltar ao topo"
-         onclick="$j('html,body').animate({scrollTop: $j('#voltarTopo').offset().top}, 1000);" />
+         onclick="$('html,body').animate({scrollTop: $('#voltarTopo').offset().top}, 1000);" />
   
 {# Sección Javascript #}
    {% javascripts output='js/pmc.js'
                   '@PmcIntranetBundle/Resources/public/js/jquery.js'
-                  '@PmcIntranetBundle/Resources/public/js/bootstrap.js'      
-                  '@PmcIntranetBundle/Resources/public/js/common.js'                  
+                  '@PmcIntranetBundle/Resources/public/js/jquery-ui.js'
+                  '@PmcIntranetBundle/Resources/public/js/bootstrap.js'
+                  '@PmcIntranetBundle/Resources/public/js/jquery.dataTables.js'      
+                  '@PmcIntranetBundle/Resources/public/js/common.js'
     %}
    <script type="text/javascript" src="{{ asset_url }}"></script>
    {% endjavascripts %}
 
    {% block javascripts %}   
    {% endblock %}  
+   
+  <!-- SCRIPT PARA REGRESAR AL PRINCIPIO DEL BODY -->
   <script type="text/javascript">
-            // Use jQuery com a variavel $j(...)
-            var $j = jQuery.noConflict();
-            $j(document).ready(function() {
-                $j(".voltarTopo").hide();
-                $j(function () {
-                    $j(window).scroll(function () {
-                    if ($j(this).scrollTop() > 300) {
-                        $j('.voltarTopo').fadeIn();
-                    } else {
-                        $j('.voltarTopo').fadeOut();
-                    }
-                });
-                $j('.voltarTopo').click(function() {
-                    $j('body,html').animate({scrollTop:0},600);
-                }); 
-            });});
+    $(document).ready(function() {
+        $(".voltarTopo").hide();
+        $(function () {
+            $(window).scroll(function () {
+            if ($(this).scrollTop() > 300) {
+                $('.voltarTopo').fadeIn();
+            } else {
+                $('.voltarTopo').fadeOut();
+            }
+        });
+        $('.voltarTopo').click(function() {
+            $('body,html').animate({scrollTop:0},600);
+        }); 
+    });});  
+    
+    /*
+     * AJAX para mostrar 5 publicaciones más
+     */
+    function mostrarMais()
+    {
+        $('#form_puntero').val(parseInt($('#form_puntero').val()) + 5);
+        $.ajax({
+             type: 'POST',
+             url:  $('#uri').val(),
+             data: $("#formFiltros").serialize(),
+             beforeSend:function(){ $('#gifCargarMais').show(); },        
+             dataType:'html'})
+          
+         .done(function(data) {                
+                $('#publications').append(data);
+                if (data.length < 100) // SI LLEGÓ AL FINAL DE REGISTROS DESHABILITA BOTON MAIS
+                {   $('#more').removeAttr('onclick');
+                    $('#more').html('Fim'); }
+           })         
+           
+         .always(function() { $('#gifCargarMais').hide(); })
+          
+         .fail(function(jqXHR, textStatus, errorThrown) {            
+                $('#ventanaModal .modal-title').html(traductor(textStatus));
+                $('#ventanaModal p').html(traductor(errorThrown));
+                $('#ventanaModal img').attr('src', $('#baseImg').val()+'error.png' );
+                $('#ventanaModal').modal('show');         
+            });
+         return true;
+    }
   </script>
  </body>
 </html>

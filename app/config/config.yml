@@ -11,9 +11,9 @@ framework:
         strict_requirements: ~
     form:            ~
     csrf_protection: ~
-    validation:      { enable_annotations: true }
+  #  validation:      { enable_annotations: true }
     templating:
-        engines: ['twig']
+        engines: ["twig"]
         #assets_version: SomeVersionScheme
     default_locale:  "%locale%"
     trusted_hosts:   ~
@@ -31,11 +31,17 @@ parameters:
     http_method_override: true
 
 services:
-    #utilidades:
-    #    class: Pmc\IntranetBundle\Librerias\Util
+    twig.extension.text:
+        class: Twig_Extensions_Extension_Text
+        tags:
+            - { name: twig.extension }  
+            
+    imageLib:
+        class: Pmc\IntranetBundle\Library\ImageLib
         
-    #imageLib:
-    #    class: Pmc\IntranetBundle\Librerias\ImageLib
+    serviciosComunes:
+        class: Pmc\IntranetBundle\Library\ServiciosComunes
+        arguments: ["@service_container"]
         
     pdo:
         class: PDO
@@ -49,11 +55,18 @@ services:
     session.handler.pdo:
         class:     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
         arguments: ["@pdo", "%pdo.db_options%"]
-        
+       
 # Twig Configuration
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    cache: false
+    globals:         
+        path_img: "bundles/pmcintranet/img/"
+        path_imagens: "upload/imagens/"
+        path_banners: "upload/banners/"
+        path_pdf: "upload/pdf/"
+        path_retratos: "upload/retratos/"
 
 # Assetic Configuration
 assetic:

@@ -30,7 +30,7 @@ Pmc\IntranetBundle\Entity\Publicacao:
             length: null
             fixed: false
             comment: 'Título da publicação o mensagem do usuário.'
-        sumario:
+        resumo:
             type: text
             nullable: true
             length: null

@@ -1,16 +1,23 @@
-{% extends 'SisproBundle:Plantillas:base.html.twig' %}
+{% extends 'PmcIntranetBundle:Templates:base.html.twig' %}
 {% block title %}
-Prohibido
+Proibido
 {% endblock %}
 
 {% block body %}
 <div class="container"> 
- <h1>Ha Ocurrido un Error</h1>
- <h2>Ha Solicitado un Recurso Prohibido.</h2>
- <div>
- Comuníquese con el personal de Tecnologías de la Información para solventar esta falla.
- Lamentamos mucho las molestias causadas.
- </div>    
-
+    <div class="row">
+        <div class="col-lg-12" style="margin-top: 50px">
+            <img src="{{ asset(path_img ~'logo-carapicuiba.png') }}"/>   
+            <h1>Acção Proibida.</h1>
+            <br/>
+            
+            <h3>Você está tentando acessar um recurso para o qual não tem permissão.</h3>
+            <br/>
+            <h4>
+            Entre em contato com o pessoal da assistência técnica para resolver a falha.
+            </h4> 
+         
+        </div>
+    </div>  
 </div>
 {% endblock %}

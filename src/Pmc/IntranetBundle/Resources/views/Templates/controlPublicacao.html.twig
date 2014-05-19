@@ -1,7 +1,21 @@
-<div class="row panel panel-default" style="margin-top: -22px; z-index: 5">
-  <div class="col-sm-12 panel-heading" style="text-align:right">
-      {{ p.id }}
-    <button type="button" class="btn btn-danger btn-sm">Excluir</button>&nbsp;  
-    <button type="button" class="btn btn-primary btn-sm">Editar</button>
+{# El Panel de control de publicación solo está disponible según ciertas condiciones         #}
+{# 1. Si tipoPublicación  = 1 (mensaje) => Solo será editada por el autor de la publicación  #}
+{# 2. Si tipoPublicación != 1 => La podrá editar: ROLE_PRENSA o también                      #}
+{#                             ROLE_ADJUNTO o ROLE_SECRETARIO que pertenezca a la secretaria #}
+
+{% if ( (p.usuario == app.user) or
+        ( (p.tipo.id != 1) and (p.usuario.secretaria == app.user.secretaria) and
+          ( is_granted('ROLE_ADJUNTO') or is_granted('ROLE_SECRETARIO') ) ) or
+        ( (p.tipo.id != 1) and is_granted('ROLE_PRENSA') ) ) %}
+
+<div class="row panel panel-default" style="z-index: 5; margin-top: -1px">
+  <div class="col-lg-12 panel-heading" style="text-align:right">
+    <button type="button" class="btn btn-danger btn-sm"
+            onclick="excluirPublicacao({{ p.id }}, 1)">Excluir</button>&nbsp;  
+    <a href="{{path('editarPublicacao', { 'tipo': p.tipo.tipo|lower, 'id': p.id } ) }}">
+       <button type="button" class="btn btn-primary btn-sm">Editar</button>
+    </a> 
   </div>
 </div>    
+
+{% endif %}

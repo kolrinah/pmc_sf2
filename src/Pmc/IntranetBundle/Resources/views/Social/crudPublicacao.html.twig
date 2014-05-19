@@ -1,0 +1,152 @@
+{% extends 'PmcIntranetBundle:Templates:layout.html.twig' %}
+{% block title %} 
+{{ parent() }} | {{ data.accion|capitalize }} {{ data.tipo.tipo|capitalize }}
+{% endblock %}
+
+{% block publications %}
+<form id="formPublicacao" action="" method="post" {{ form_enctype(formulario) }} >
+<div class="row">
+  <div class="col-lg-12 panel panel-default" style="margin-top:20px;">    
+    <div class="panel-body"> 
+        <h4 class="tit-azul">  {{ data.accion|upper }} {{ data.tipo.tipo|upper }} </h4>
+      <hr/>      
+        <div class="form-group has-feedback">              
+            {{ form_label(formulario.titulo) }}
+            {{ form_widget(formulario.titulo) }}
+            {% if form_errors(formulario.titulo) %}       
+               <span class="form-control-feedback">
+                <img src="{{asset(path_img ~'advertencia.png')}}"
+                     title="{{ form_errors(formulario.titulo)|striptags }}" />
+               </span>
+            {% endif %}                
+        </div>
+        <div class="form-group has-feedback">              
+            {{ form_label(formulario.resumo) }}
+            {{ form_widget(formulario.resumo) }}
+            {% if form_errors(formulario.resumo) %}       
+               <span class="form-control-feedback">
+                <img src="{{asset(path_img ~'advertencia.png')}}"
+                     title="{{ form_errors(formulario.resumo)|striptags }}" />
+               </span>
+            {% endif %}                
+        </div>
+        <div class="form-group has-feedback">              
+            {{ form_label(formulario.conteudo) }}
+            {{ form_widget(formulario.conteudo) }}
+            {% if form_errors(formulario.conteudo) %}       
+               <span class="form-control-feedback">
+                <img src="{{asset(path_img ~'advertencia.png')}}"
+                     title="{{ form_errors(formulario.conteudo)|striptags }}" />
+               </span>
+            {% endif %}                
+        </div>
+        <div class="form-group has-feedback">              
+            {{ form_label(formulario.video) }}
+            {{ form_widget(formulario.video) }}
+            {% if form_errors(formulario.video) %}       
+               <span class="form-control-feedback">
+                <img src="{{asset(path_img ~'advertencia.png')}}"
+                     title="{{ form_errors(formulario.video)|striptags }}" />
+               </span>
+            {% endif %}                
+        </div>      
+        <div class="form-group has-feedback">                  
+            {{ form_label(formulario.imagem) }}             
+{% if ( (formulario.vars.value.imagem|length > 0) and
+         not (formulario.vars.value.imagem|trim|lower|slice(-3) == 'tmp') and
+         not (form_errors(formulario.imagem))) %}
+            <img class="thumbnail" src="{{ asset(path_imagens ~ formulario.vars.value.imagem) }}"
+                 style="max-width: 100%"/>                
+{% else %}
+            <img class="thumbnail" src="{{ asset(path_img ~ 'no_image.jpg') }}"
+                 title="{{ form_errors(formulario.imagem)|striptags }}" style="max-width: 100%"/> 
+{% endif %}            
+            {{ form_widget(formulario.imagem) }}  
+            {% if form_errors(formulario.imagem) %}       
+               <span class="form-control-feedback">
+                <img src="{{asset(path_img ~'advertencia.png')}}"
+                     title="{{ form_errors(formulario.imagem)|striptags }}" />
+               </span>
+            {% endif %} 
+        </div>
+        <div class="form-group">
+            A imagem deve ser JPEG, JPG, PNG ou GIF<br/>
+            A imagem deve ter um tamanho Maximo de 3 MB<br/>
+            A imagem deve ter um tamanho mínimo de 600 px de largura<br/>            
+        </div>
+
+{% set mostrar = (data.tipo.id == 4)? '': 'oculto'  %}
+        <div class="form-group has-feedback {{ mostrar }}">              
+            {{ form_label(formulario.dataEvento) }}
+            {{ form_widget(formulario.dataEvento) }}              
+            {% if form_errors(formulario.dataEvento) %}       
+               <span class="form-control-feedback">
+                <img src="{{asset(path_img ~'advertencia.png')}}"
+                     title="{{ form_errors(formulario.dataEvento)|striptags }}" />
+               </span>
+            {% endif %}                
+        </div>
+   
+{% set mostrar = (is_granted('ROLE_ADMIN') or is_granted('ROLE_PRENSA'))? '':'oculto' %}      
+        <div class="form-group {{ mostrar }}">                          
+            {{ form_widget(formulario.publico) }}
+            {{ form_label(formulario.publico) }}    
+            {{ form_errors(formulario.publico)|striptags }}               
+        </div>            
+
+{% set mostrar = ( (is_granted('ROLE_PRENSA') or is_granted('ROLE_SECRETARIO') or 
+                    is_granted('ROLE_ADMIN') or
+                    is_granted('ROLE_ADJUNTO') ) and (data.accion|lower == 'editar') )? 
+   '':'oculto' %}        
+        <div class="form-group {{ mostrar }}">                          
+            {{ form_widget(formulario.ativo) }}
+            {{ form_label(formulario.ativo) }}    
+            {{ form_errors(formulario.ativo)|striptags }}               
+        </div>         
+ 
+        <hr/>
+        <div class="form-group">
+         {% for mensaje in app.session.flashbag.get('error') %}
+            <div class="alert alert-danger alert-dismissable">
+               <button type="button" class="close" data-dismiss="alert" 
+                       aria-hidden="true">&times;</button>
+            <img src="{{asset(path_img ~'error24.png')}}" /> &nbsp;{{ mensaje }}</div>
+         {% endfor %}
+        </div>
+        <div  style="text-align: right">
+            <a href="{{ path('filtrar', { 'tipo': data.tipo.tipo|lower } ) }}">
+               <button type="button" class="btn btn-default">Voltar</button></a>&nbsp; &nbsp; 
+            <button type="submit" class="btn btn-primary "
+                    onclick="$(this).attr('disabled','disabled');
+                             $('#formPublicacao').submit();">Salvar</button>
+        </div>      
+    </div>
+  </div>
+</div>  
+<div style="display: none;">
+{{ form_rest(formulario) }}        
+</div>     
+</form>  
+
+{% endblock %}
+
+{# Ventanas emergentes #}
+{% block modalWindow %}
+    {% include 'PmcIntranetBundle:Templates:ventanaModal.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}   
+    <script type="text/javascript" src="{{ asset('bundles/pmcintranet/js/home.js') }}"></script>
+    {# Script para sombrear la pestaña activa del menú #}
+    <script type="text/javascript">
+     $(document).ready(function() {
+         $('nav li').removeClass('active');
+            var elementos = $('nav li a');                        
+            elementos.each(function() { 
+                if (trim($(this).html()).toLowerCase().indexOf('{{ data.tipo.tipo|lower }}') >= 0 )
+                      $(this).parent().addClass('active');
+                     });
+
+     });                
+  </script>
+{% endblock %}  

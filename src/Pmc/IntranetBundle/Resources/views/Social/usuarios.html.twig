@@ -1,0 +1,36 @@
+{# Usuarios a quienes sigo #}    
+{% for u in data.usuarios %}    
+   <div class="row" >
+     <div class="col-sm-12 panel panel-default" style="margin-top: 20px; padding: 0px">   
+         <div class="row">
+             <div class="col-sm-3" >
+          {% set foto = asset(path_img ~'ico-user.png') %} 
+          {% if u.foto|length > 0 %}            
+                {% set foto = asset(path_retratos ~ u.foto) %}
+          {% endif %} 
+               <img class="img-thumbnail" style="width:100%"
+                    src="{{ foto }}">      
+             </div>
+             <div class="col-sm-6" style="padding: 5px;" >
+                <div> {{ u.nome|capitalize }} </div>
+                <div class="tit-verde" style="font-weight:normal; font-size: 0.9em">
+                    {{ u.secretaria|capitalize }} </div>
+                <div> Cargo: {{ u.cargo }}</div>
+             </div>                 
+             <div id="usuario_{{ u.id }}" class="col-sm-3"
+                  style="text-align: right; padding-top: 30px">
+                 <img style="display: none" src="{{asset(path_img ~'preload.gif')}}"/>     
+                 <button id="seguir_{{ u.id }}"
+                         type="button" class="btn btn-primary btn-sm" title="Adicionar à Minha Rede"
+                         style="margin-right: 10px; display: none"
+                         onclick="seguir({{ u.id }}, 1);"> Seguir</button>
+                      
+                 <button id="excluir_{{ u.id }}" 
+                         type="button" class="btn btn-danger btn-sm" title="Excluir da Minha Rede"
+                         style="margin-right: 10px; display: inline-block"
+                         onclick="seguir({{ u.id }}, 0);"> Excluir</button>     
+             </div>                      
+         </div>
+     </div>
+   </div>     
+{% endfor %}      

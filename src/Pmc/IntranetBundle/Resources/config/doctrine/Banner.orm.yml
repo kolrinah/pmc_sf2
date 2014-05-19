@@ -23,7 +23,7 @@ Pmc\IntranetBundle\Entity\Banner:
             length: 100
             fixed: false
             comment: 'Url do banner'
-        arquivo:
+        imagem:
             type: string
             nullable: true
             length: 50

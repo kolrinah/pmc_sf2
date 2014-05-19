@@ -1,6 +1,10 @@
-<textarea class="form-control" title="Escreva sua Comentário"
-          placeholder="Postar Comentário"
-          style="resize: vertical"></textarea>
-<div style="text-align: right; margin-top: 10px">
-  <button type="button" class="btn btn-primary btn-sm">Comentar</button>
-</div>
+<div id="postar_{{ p.id }}">  
+  <textarea class="form-control" title="Escreva sua Comentário"
+            maxlength="250" placeholder="Postar Comentário"
+            style="resize: vertical"></textarea>
+  <div style="text-align: right; margin-top: 10px">
+    <img style="display: none" src="{{asset(path_img ~'preload.gif')}}"/>
+    <button type="button" class="btn btn-primary btn-sm"
+            onclick="postarComentario( {{ p.id }} );">Comentar</button>  
+  </div>
+</div>       

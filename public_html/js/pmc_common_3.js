@@ -1,16 +1,3 @@
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- *  SISTEMA DE SEGUIMIENTO DE PROYECTOS DEL MPPCTI Y ENTES ADSCRITOS *
- *  DESARROLLADO POR: ING.REIZA GARCÍA                               *
- *                    ING.HÉCTOR MARTÍNEZ                            *
- *  PARA:  OFICINA ESTRATÉGICA DE SEGUIMIENTO Y EVALUACION DE        *
- *         POLÍTICAS PÚBLICAS (OESEPP)                               *
- *   DEL:  MINISTERIO DEL PODER POPULAR PARA CIENCIA, TECNOLOGÍA     *
- *         E INNOVACIÓN (MPPCTI)                                     * 
- *  FECHA: JULIO DE 2013                                             *
- *  FRAMEWORK PHP UTILIZADO: SYMFONY Version 2.3.1                   *
- *                           http://www.symfony.com                  *
- *  TELEFONOS PARA SOPORTE: 0416-9052533 / 0212-5153033              *
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 $(document).ready(function()
 {  
 
@@ -113,62 +100,6 @@ function centrarModal(id)
    return true;
 }
 
-function cajaDialogo(tipo, mensaje, botones)
-{
-  var caja;
-  var mensaje= mensaje || "Atención";
-  var tipo = tipo || "Mensaje";
-  var titulo;
-  var imagen;
-  var botones=botones || {Cerrar: function(){$( this ).dialog( "close" );}};
-  switch(tipo)
-  {
-    case "Guardar":
-         titulo="Guardar";
-         imagen=$('#baseImg').val()+"img/guardar.png";
-         break;
-    case "Alerta":
-         titulo="Atención";
-         imagen=$('#baseImg').val()+"img/alerta.png";
-         break;
-    case "Borrado":
-         titulo="Operación Exitosa";
-         imagen=$('#baseImg').val()+"img/borrado64.png";
-         break;
-    case "Exito":
-         titulo="Operación Exitosa";
-         imagen=$('#baseImg').val()+"img/exito.png";
-         break;     
-    case "Pregunta":
-         titulo="Pregunta";
-         imagen=$('#baseImg').val()+"img/pregunta.png";
-         break;
-    case "Error":
-         titulo="Error";
-         imagen=$('#baseImg').val()+"img/error.png";
-         break;
-    default:
-         titulo=tipo;
-         imagen=$('#baseImg').val()+"img/warning.png";
-  }    
-  caja='<div title="'+titulo+'" id="caja">';
-  caja+='<table width=100%"><tr>';
-  caja+='<td style="vertical-align: middle; width: 80px; text-align: center; padding:15px 5px 0 0">';
-  caja+='<img src="'+imagen+'" /></td>';
-  caja+='<td style="vertical-align: middle; padding:15px 0 0 10px; font-size:1.2em">';
-  caja+=mensaje+'</td></tr></table></div>';             
-  caja=$(caja);
-  caja.dialog({
-        modal: true,
-        zIndex:1000,
-        draggable:true,
-        resizable: false,
-        minHeight:200,
-        width:400,
-        buttons:botones});
-  return true;  
-}
-
 // Traductor de mensajes de sistema
 function traductor(texto)
 {
@@ -176,22 +107,22 @@ function traductor(texto)
   switch(texto)  
   {
     case "error":
-         return "Error";
+         return "Erro";
          break;
     case "timeout":
-         return "Tiempo de Espera Agotado";
+         return "Tempo de Espera Esgotado";
          break;
     case "abort":
-         return "Operación Abortada";
+         return "Operação Abortada";
          break;
     case "parsererror":
-         return "Error de Sintaxis";
+         return "Erro de Sintaxes";
          break;
     case "not found":
-        return "Ruta no encontrada";
+        return "Caminho não achado";
         break;
     case "internal server error":
-        return "Error Interno del Servidor";
+        return "Erro Interno do Servidor";
         break;
     default:
         return texto;

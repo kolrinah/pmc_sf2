@@ -81,7 +81,7 @@ a{
 /*LOGIN END*/
 
 /*COLUNA-LEFT*/
-#sombra {
+nav {
 background-color: #E2E2E2;
 box-shadow: 0px -1px 35px rgba(0,0,0,0.5);
 -webkit-box-shadow: 0px -1px 35px rgba(0,0,0,0.5);
@@ -139,10 +139,23 @@ background-color: #ddd;
 /*border: 1px solid #ddd;*/
 border-bottom-color: transparent;
 }
+
 .utilidade-ativo a{
 color: #000;
 text-decoration:none;
 }
+
+.utilidade.active a,
+.utilidade li.active a,
+.social li.active a,
+.adm li.active a{
+color: #000;    
+background-color: #ddd!important;
+border: #ddd solid 1px!important;
+border-radius: 5px!important;
+}
+
+
 /*MENU Utilidade END*/
 
 /*MENU SOCIAL*/
@@ -363,7 +376,7 @@ text-decoration:none;
 	font-weight:bold;
 }
 .resumo-noticias{
-	font-size:13px;
+	font-size:14px;
 	color:#666;
 }
 .ico-comentarios{
@@ -392,8 +405,8 @@ text-decoration:none;
 	text-decoration:underline;
 }
 .box-eventos{
-	/*background-color:#003399;*/
-	background-image:url('../bundles/pmcintranet/img/bg-eventos.png'); background-repeat:repeat-x;
+	background-color:#003399;
+	/*background-image:url('../bundles/pmcintranet/img/bg-eventos.png'); background-repeat:repeat-x;*/
 	color:#fff;
 	/*margin-bottom:30px;*/
 }
@@ -415,7 +428,8 @@ text-decoration:none;
 }
 .data-eventos{
 	font-size: 32px;
-	margin-top: 5px;
+	/*margin-top: 5px;*/
+        padding: 0px auto;
 }
 .inicio-eventos{
 	font-size:11px;
@@ -431,15 +445,15 @@ text-decoration:none;
 	color:#333;
 }
 .box-comunicados{
-	background-color:#006236;
-	color:#fff;
-	/*margin-bottom:30px;*/
-	height:250px;
-}
-.box-comunicados-data{
 	background-color:#00A459;
 	color:#fff;
-	height:250px;
+	/*margin-bottom:30px;*/
+	/*height:250px;*/
+}
+.box-comunicados-data{
+	/*background-color:#006236;*/
+	color:#fff;
+	/*height:250px;*/
 }
 .dia-comunicado{
 	font-size:100px; 
@@ -448,13 +462,13 @@ text-decoration:none;
         text-align:center
 }
 .mes-comunicado{
-	font-size:55px; text-align:center;margin-top: -50px;
+	font-size:55px; text-align:center;margin-top: -45px;
 }
 .box-comunicados-comentarios{
 	/*background-color:#001646;*/
 	height:35px;
 	line-height:35px;
-	padding-left:10px;
+	/*padding-left:10px;*/
 }
 .box-comunicados-comentarios a{
 	color:#fff;
@@ -464,14 +478,26 @@ text-decoration:none;
 	color:#fff;
 	text-decoration:underline;
 }
+
+
 .text-comunicados{
-	padding:5px 10px;
+	/*padding:5px 10px;*/
 	color:#fff;
-	height:30px;
-	/*white-space: nowrap;
+        background-color: #006236;
+	/*height:30px;
+	white-space: nowrap;
         overflow: hidden;
-        text-overflow: ellipsis; */       
+        text-overflow: ellipsis;*/
 }
+
+.modal-footer{
+        padding: 10px 20px 10px;
+        background-color:#F5F5F5;            
+        background-clip: padding-box;
+        border-radius: 0px 0px 6px 6px;
+        outline: none;        
+}
+
 .box-funcionarios{
 	background-color:#fff;
 	-webkit-border-radius: 4px;
@@ -554,10 +580,9 @@ border-radius: 4px;
 }
 .box-mensagens{
 	background-color:#fff;
-	margin-bottom:30px;
 	-webkit-border-radius: 4px;
--moz-border-radius: 4px;
-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
 }
 .mensagens-data{
 	font-size:11px;
@@ -643,4 +668,74 @@ div.banner:first-child{
     right: 30px;
     text-transform: uppercase;
     width: 46px !important;
+    z-index: 2000;
+}
+
+input[type=checkbox][id*="data_secretaria"],
+input[type=radio][id*="activo"]{
+    display: none;
+}
+
+input[type=checkbox][id*="data_secretaria"] + label,
+input[type=radio][id*="activo"] + label{    
+    color: darkgray;
+    display: block;   
+    font-weight: normal;    
+}
+
+input[type=checkbox][id*="data_secretaria"] + label:hover,
+input[type=radio][id*="activo"] + label:hover{
+    color: black;
+    cursor: pointer;
+}
+
+input[type=checkbox][id*="data_secretaria"]:checked + label,
+input[type=radio][id*="activo"]:checked + label{    
+    font-weight: bolder;
+    color:  #006CD9;
+    
+}
+
+input[type=checkbox][id*="data_secretaria"] + label:before,
+input[type=radio][id*="activo"] + label:before{
+    content: "\00a0"; 
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    margin-right: 5px;
+    z-index: 5;    
+}
+
+input[type=checkbox][id*="data_secretaria"]:checked + label:before,
+input[type=radio][id*="activo"]:checked + label:before{
+    content: "\00a0"; 
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    margin-right: 5px;
+    z-index: 5;
+    background-image: url('../bundles/pmcintranet/img/1.png') no-repeat; 
+    background: url(../bundles/pmcintranet/img/1.png) no-repeat;
+}
+
+#ordenables > div{
+    float: left;
+}
+.inactivo{
+    color:  #999;
+    text-decoration: line-through; 
+    opacity: 0.5;
+}
+
+h6.inactivo:before{
+    content: "\00a0"; 
+    width: 16px;
+    height: 16px;
+    display: inline-block;    
+    vertical-align: middle;
+    margin-right: 10px;
+    margin-bottom: 3px;
+    z-index: 5;
+    opacity: 1!important;
+    background-image:url('../bundles/pmcintranet/img/cancel16.png'); 
 }

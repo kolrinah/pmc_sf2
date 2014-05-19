@@ -1,0 +1,101 @@
+<!-- BOX MENSAGEM -->
+<div class="row">
+  <div class="col-lg-12">
+   <div class="filtro-principal" id="postarMensagem">
+    <form action="{{ path('home') }}" method="post" {{ form_enctype(formPostarMensagem) }} >   
+       
+    <h5 class="tit-azul">{{ form_label(formPostarMensagem.titulo) }}
+{% if form_errors(formPostarMensagem.titulo) or form_errors(formPostarMensagem.imagem) 
+                                     or form_errors(formPostarMensagem.video)  %}         
+        <span style="color: red; font-size: 0.9em">
+             não enviada. Verifique erros.
+        </span>
+{% endif %}                        
+    </h5> 
+    {% for mensaje in app.session.flashbag.get('error') %}
+         <div class="alert alert-danger alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" 
+                    aria-hidden="true">&times;</button>
+            <img src="{{asset(path_img ~'error24.png')}}" /> &nbsp;{{ mensaje }}</div>
+    {% endfor %}        
+{# PANELES OCULTOS #}
+    <div class="tab-content">        
+      <div class="tab-pane fade in active" id="mensagemPanel">               
+        <div class="has-feedback">            
+            {{ form_widget(formPostarMensagem.titulo) }}
+            <img class="space-left marcador-mensagens"
+                    src="{{ asset(path_img ~'ico-marcador-mensagem.png') }}" 
+                    width="22" height="14" />      
+            {% if form_errors(formPostarMensagem.titulo) %}       
+               <span class="form-control-feedback">
+                <img src="{{asset(path_img ~'advertencia.png')}}"
+                     title="{{ form_errors(formPostarMensagem.titulo)|striptags }}" />
+               </span>
+            {% endif %}                
+        </div>       
+      </div>
+      <div class="tab-pane fade" id="imagemPanel"> 
+        <div class="has-feedback">                          
+            {{ form_widget(formPostarMensagem.imagem) }}     
+            {% if form_errors(formPostarMensagem.imagem) %}       
+               <span class="form-control-feedback">
+                <img src="{{asset(path_img ~'advertencia.png')}}"
+                     title="{{ form_errors(formPostarMensagem.imagem)|striptags }}" />
+               </span>
+            {% endif %}                
+        </div>
+        <p title="{{ form_errors(formPostarMensagem.imagem)|striptags }}">
+           A imagem deve ser JPEG, JPG, PNG ou GIF <br/>
+           A imagem deve ter um tamanho Maximo de 2 MB <br/>
+           A imagem deve ter um tamanho mínimo de 600 px de largura
+        </p>
+      </div>
+      <div class="tab-pane fade" id="videoPanel">
+        <div class="has-feedback">            
+            {{ form_widget(formPostarMensagem.video) }}
+            <img class="space-left marcador-mensagens" style="margin-left: 155px"
+                    src="{{ asset(path_img ~'ico-marcador-mensagem.png') }}" 
+                    width="22" height="14" />      
+            {% if form_errors(formPostarMensagem.video) %}       
+               <span class="form-control-feedback">
+                <img src="{{asset(path_img ~'advertencia.png')}}"
+                     title="{{ form_errors(formPostarMensagem.video)|striptags }}" />
+               </span>
+            {% endif %}                
+        </div>       
+      </div>        
+    </div>
+    <table width="100%">
+     <tr>
+      <td>
+        <ul class="nav nav-pills">
+         <li class="utilidade active">
+          <a href="#mensagemPanel" data-toggle="tab">
+             <img src="{{ asset(path_img ~'btn-texto-msg.png') }}" 
+             width="28" height="32" /></a></li>
+{% if (is_granted('ROLE_ADMIN') or 
+       is_granted('ROLE_PRENSA') or is_granted('ROLE_ENLACE')) %}
+         <li class="utilidade" >
+          <a href="#imagemPanel" data-toggle="tab">
+             <img src="{{ asset(path_img ~'btn-imagem-msg.png') }}" 
+             width="45" height="32" /></a></li>
+         <li class="utilidade">
+          <a href="#videoPanel" data-toggle="tab">
+             <img src="{{ asset(path_img ~'btn-video-msg.png') }}" 
+             width="30" height="32" /></a></li>
+{% endif %}             
+        </ul>            
+      </td>  
+      <td style="text-align: right; vertical-align: middle">
+          <button type="button" class="btn btn-primary btn-sm"
+                  onclick="$('#postarMensagem form').submit();">Enviar</button>
+      </td>  
+     </tr>
+    </table>
+        
+     {{ form_rest(formPostarMensagem) }}    
+    </form>    
+   </div>  
+  </div>
+</div>  
+<!-- BOX MENSAGEM END -->

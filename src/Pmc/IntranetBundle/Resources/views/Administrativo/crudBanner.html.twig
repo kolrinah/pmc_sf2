@@ -1,0 +1,100 @@
+{% extends 'PmcIntranetBundle:Templates:layout.html.twig' %}
+{% block title %} 
+{{ parent() }} | {{ data.titulo }}
+{% endblock %}
+
+{% block centralHeader %}
+<form id="formBanner" action="" method="post" {{ form_enctype(formulario) }} >
+<div class="row-fluid">
+  <div class="col-lg-12 panel panel-default" style="margin-top:20px;">    
+    <div class="panel-body"> 
+        <h4 class="tit-azul">  {{ data.accion|upper }} BANNER </h4>
+      <hr/>      
+        <div class="form-group has-feedback">              
+            {{ form_label(formulario.nome) }}
+            {{ form_widget(formulario.nome) }}
+            {% if form_errors(formulario.nome) %}       
+               <span class="form-control-feedback">
+                <img src="{{asset(path_img ~'advertencia.png')}}"
+                     title="{{ form_errors(formulario.nome)|striptags }}" />
+               </span>
+            {% endif %}                
+        </div>
+        <div class="form-group has-feedback">              
+            {{ form_label(formulario.url) }}
+            {{ form_widget(formulario.url) }}
+            {% if form_errors(formulario.url) %}       
+               <span class="form-control-feedback">
+                <img src="{{asset(path_img ~'advertencia.png')}}"
+                     title="{{ form_errors(formulario.url)|striptags }}" />
+               </span>
+            {% endif %}                
+        </div>
+        <div class="form-group has-feedback">                  
+            {{ form_label(formulario.imagem) }}             
+{% if ( (formulario.vars.value.imagem|length > 0) and
+         not (formulario.vars.value.imagem|trim|lower|slice(-3) == 'tmp') and
+         not (form_errors(formulario.imagem)) ) %}
+            <img class="thumbnail" src="{{ asset(path_banners ~ formulario.vars.value.imagem) }}"
+                 style="max-width: 100%"/>                
+{% else %}
+            <img class="thumbnail" src="{{ asset(path_img ~ 'no_banner.png') }}"
+                 title="{{ form_errors(formulario.imagem)|striptags }}" style="max-width: 100%"/> 
+{% endif %}            
+            {{ form_widget(formulario.imagem) }}  
+            {% if form_errors(formulario.imagem) %}       
+               <span class="form-control-feedback">
+                <img src="{{asset(path_img ~'advertencia.png')}}"
+                     title="{{ form_errors(formulario.imagem)|striptags }}" />
+               </span>
+            {% endif %} 
+        </div>
+        <div class="form-group">
+            A imagem deve ser JPEG, JPG, PNG ou GIF<br>                                            
+            As dimensões mínimas da imagem devem ser 
+            <strong>183px x 91px</strong>
+        </div>
+        <hr/>
+        <div class="form-group">
+         {% for mensaje in app.session.flashbag.get('error') %}
+            <div class="alert alert-danger alert-dismissable">
+               <button type="button" class="close" data-dismiss="alert" 
+                       aria-hidden="true">&times;</button>
+            <img src="{{asset(path_img ~'error24.png')}}" /> &nbsp;{{ mensaje }}</div>
+         {% endfor %}
+        </div>
+        <div  style="text-align: right">
+            <a href="{{path('adminBanners')}}">
+               <button type="button" class="btn btn-default">Voltar</button></a>&nbsp; &nbsp; 
+            <button type="submit" class="btn btn-primary"
+                    onclick="$(this).attr('disabled','disabled');
+                             $('#formBanner').submit();">Salvar</button>
+        </div>      
+    </div>
+  </div>
+</div>  
+{{ form_rest(formulario) }}        
+</form>  
+
+{% endblock %}
+
+{# Ventanas emergentes #}
+{% block modalWindow %}
+    {% include 'PmcIntranetBundle:Templates:ventanaModal.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}   
+    <script type="text/javascript" src="{{ asset('bundles/pmcintranet/js/banners.js') }}"></script>
+    {# Script para sombrear la pestaña activa del menú #}
+    <script type="text/javascript">
+     $(document).ready(function() {
+         $('nav li').removeClass('active');
+            var elementos = $('nav li a');                        
+            elementos.each(function() { 
+                if (trim($(this).html()).toLowerCase().indexOf('{{ data.titulo|lower }}') >= 0 )
+                      $(this).parent().addClass('active');
+                     });
+  
+     });                
+  </script>
+{% endblock %}  

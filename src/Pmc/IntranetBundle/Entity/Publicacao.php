@@ -38,9 +38,9 @@ class Publicacao
     /**
      * @var string
      *
-     * @ORM\Column(name="sumario", type="text", nullable=true)
+     * @ORM\Column(name="resumo", type="text", nullable=true)
      */
-    private $sumario;
+    private $resumo;
 
     /**
      * @var string
@@ -68,14 +68,14 @@ class Publicacao
      *
      * @ORM\Column(name="ativo", type="boolean", nullable=false)
      */
-    private $ativo = '1';
+    private $ativo;
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="publico", type="boolean", nullable=false)
      */
-    private $publico = '1';
+    private $publico;
 
     /**
      * @var \DateTime
@@ -116,6 +116,10 @@ class Publicacao
     public function __construct()
     {
         $this->comentarios = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->data = new \DateTime('now');
+        $this->dataEvento = new \DateTime('now');
+        $this->ativo = true;
+        $this->publico = false;
     }
 
     /**
@@ -175,26 +179,25 @@ class Publicacao
     }
 
     /**
-     * Set sumario
+     * Set resumo
      *
-     * @param string $sumario
+     * @param string $resumo
      * @return Publicacao
      */
-    public function setSumario($sumario)
+    public function setResumo($resumo)
     {
-        $this->sumario = $sumario;
-
+        $this->resumo = $resumo;                
         return $this;
     }
 
     /**
-     * Get sumario
+     * Get resumo
      *
      * @return string 
      */
-    public function getSumario()
+    public function getResumo()
     {
-        return $this->sumario;
+        return $this->resumo;
     }
 
     /**
@@ -413,4 +416,52 @@ class Publicacao
     {
         return $this->usuario;
     }
+    
+    /* * * * * * * * * * * * * * * * * * * * * * * 
+     * METODOS CREADOS MANUALMENTE
+     */
+
+    // Método para subir la foto
+    public function uploadImagem($directorioDestino)
+    {
+        if (null === $this->imagem) return;
+                
+        $nombreArchivoFoto = uniqid().'.'.
+                             $this->imagem->getClientOriginalExtension();
+        $this->_crearDirectorio($directorioDestino);
+        $this->imagem->move($directorioDestino, $nombreArchivoFoto);
+        $this->setImagem($nombreArchivoFoto);
+    }
+    
+    // METODO PARA REMOVER LA FOTO FISICAMENTE
+    public function removerImagem($directorioImagen)
+    {  
+       $imagen =  $directorioImagen.$this->imagem;
+       if (file_exists($imagen)) @unlink($imagen);         
+       return true;
+    }
+    
+    // METODO PARA CREAR DIRECTORIO
+    private function _crearDirectorio($ruta)
+    {
+       if (!file_exists($ruta)) @mkdir($ruta, 0777, true);
+       $this->_crearArchivoIndex($ruta);
+    }
+
+    //METODO PARA CREAR ARCHIVOS INDEX EN CARPETA
+    private function _crearArchivoIndex($carpeta)
+    {
+       $archivo = $carpeta.'index.html';
+       $contenido = "<html><head><title>403 Proibida</title></head>".
+                    "<body>Ação Proibida.</body></html>";
+
+       // CREAMOS EL ARCHIVO SI NO EXISTE
+       if (!file_exists($archivo))
+       {
+          if (!$handle = @fopen($archivo, 'c')) die("No pudo abrir/crear el archivo");
+          if (@fwrite($handle, $contenido) === FALSE) die("No pudo escribir en archivo index");            
+          @fclose($handle);
+       }
+       return true;
+    }    
 }

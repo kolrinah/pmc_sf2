@@ -3,12 +3,56 @@
 {{ parent() }} | Home
 {% endblock %}
 
-{% block content %}
+{% block centralHeader %}
+<input type="hidden" id="uri" value="{{ data.uri }}"/>
 
-{% include 'PmcIntranetBundle:Templates:content.html.twig' %}
+{# FORMULARIO PARA CARGAR MAIS #}
+<form id="formFiltros" action="" method="post" >
+    <input type="hidden" id="form_puntero" name="form[puntero]" value="0"/>
+</form>    
 
+{# Posteador de Mensaje #}    
+{% include 'PmcIntranetBundle:Home:postarMensagem.html.twig' %} 
+{% endblock %}
+
+{% block publications %}
+
+{% for mensaje in app.session.flashbag.get('info') %}
+      <div class="alert alert-success alert-dismissable" style="margin-top: 25px">
+        <button type="button" class="close" data-dismiss="alert" 
+                aria-hidden="true">&times;</button>
+        <img src="{{asset(path_img ~'1_old.png')}}" /> &nbsp;{{ mensaje }}</div>
+{% endfor %} 
+
+{% include 'PmcIntranetBundle:Templates:publications.html.twig' %}
+{% endblock %}
+
+{# Ventanas emergentes #}
+{% block modalWindow %}
+    {% include 'PmcIntranetBundle:Templates:ventanaModal.html.twig' %}
+{% endblock %}
+
+{% block mais %}
+  <div class="row">
+    <div class="col-lg-12" style="margin-top: 20px">        
+        <img id="gifCargarMais" style="display: none "
+             src="{{ asset(path_img ~'loading.gif') }}"/>        
+        <div id="more" onclick="mostrarMais();">MAIS</div>
+    </div>
+  </div>
 {% endblock %}
 
 {% block javascripts %}   
-    <script type="text/javascript" src="{{ asset('bundles/pmcintranet/js/home.js') }}"></script> 
+    <script type="text/javascript" src="{{ asset('bundles/pmcintranet/js/home.js') }}"></script>
+    {# Script para sombrear la pestaña activa del menú #}
+    <script type="text/javascript">
+     $(document).ready(function() {
+         $('nav li').removeClass('active');
+         var elementos = $('nav li a');                        
+         elementos.each(function() { 
+                if (trim($(this).html()).toLowerCase().indexOf('início') >= 0 )
+                      $(this).parent().addClass('active');
+                     });
+     });                
+  </script>
 {% endblock %}  

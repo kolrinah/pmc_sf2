@@ -1,0 +1,34 @@
+<div class="modal fade" id="ventanaModal" tabindex="-1" 
+     role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="margin-top: 150px; width: 400px ">
+    <div class="modal-content">
+      <div class="modal-header" style="padding-bottom: 10px">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Título</h4>
+      </div>
+      <div class="modal-body" style="padding: 15px 20px 5px 20px">
+        <div class="row">
+            <div class="col-lg-4" style="text-align: center; vertical-align: middle; 
+                                         padding-top: 10px">
+               <img src="{{ asset(path_img ~'error.png') }}" />
+            </div>
+            <div class="col-lg-8" style="text-align: justify; font-size: 1.2em;
+                                         vertical-align: central;
+                                         font-weight: 600 ; padding: 15px">    
+                <p> Mensaje </p>
+            </div>    
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="botonFechar" 
+                type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Fechar</button>              
+        <div id="botoneraExcluir" style="display: none;">
+          <button type="button" class="btn btn-danger btn-sm" id="botonSim"
+                  onclick="">Sim</button>
+           &nbsp;&nbsp;
+          <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Não</button>        
+        </div>
+      </div>            
+    </div>
+  </div>
+</div>

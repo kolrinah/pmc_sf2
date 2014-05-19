@@ -332,4 +332,12 @@ class Secretaria
     {
         return $this->ativo;
     }
+    
+    /**
+     * @inheritDoc
+     */      
+    public function __toString()
+    {
+       return $this->getNome();
+    }        
 }

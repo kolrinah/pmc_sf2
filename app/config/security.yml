@@ -6,7 +6,7 @@ security:
         security: false
         
     secured_area:
-        pattern: ^/*
+        pattern: ^/
         anonymous: ~
         form_login:
              login_path: /login
@@ -27,6 +27,8 @@ security:
   access_control: 
     - { path: ^/login*, roles: IS_AUTHENTICATED_ANONYMOUSLY }  
     - { path: ^/*, roles: ROLE_USER }
+#    - { path: ^/admin*, roles: [ROLE_PRENSA, ROLE_ADMIN] }
+#    - { path: ^/admin/banners*, roles: [ROLE_PRENSA, ROLE_ADMIN] }
 #    - { path: ^/perfil, roles: ROLE_USER }
 #    - { path: ^/admin/usuarios, roles: [ROLE_ADMIN, ROLE_ENLACE] }
 #    - { path: ^/admin, roles: ROLE_ADMIN }    

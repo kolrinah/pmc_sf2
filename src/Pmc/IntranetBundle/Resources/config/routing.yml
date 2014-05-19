@@ -1,6 +1,6 @@
 home:
    pattern: /
-   defaults: {_controller: PmcIntranetBundle:Home:home }
+   defaults: { _controller: PmcIntranetBundle:Home:home }
 
 login:
    pattern: /login
@@ -15,6 +15,98 @@ logout:
 salida:
    pattern: /login/salida
    defaults: { _controller: PmcIntranetBundle:Access:salida }
+   
+postarComentario:
+   pattern: /ajax/postarComentario
+   defaults: { _controller: PmcIntranetBundle:Home:postarComentario }
+   
+excluirComentario:
+   pattern: /ajax/excluirComentario
+   defaults: { _controller: PmcIntranetBundle:Home:excluirComentario } 
+   
+excluirPublicacao:
+   pattern: /ajax/excluirPublicacao
+   defaults: { _controller: PmcIntranetBundle:Home:excluirPublicacao }      
+   
+refrescarComentarios:
+   pattern: /ajax/refrescarComentarios
+   defaults: { _controller: PmcIntranetBundle:Home:refrescarComentarios }   
+
+filtrar:
+   pattern: /filtrar/{tipo}
+   defaults: { _controller: PmcIntranetBundle:Social:filtrar }   
+   
+minhaRede:
+   pattern: /minhaRede
+   defaults: { _controller: PmcIntranetBundle:Social:minhaRede }
+   
+seguir:
+   pattern: /ajax/seguir
+   defaults: { _controller: PmcIntranetBundle:Social:seguir }   
+   
+adminBanners:
+   pattern: /admin/banners
+   defaults: { _controller: PmcIntranetBundle:Administrativo:adminBanners }   
+   
+activarBanner:
+   pattern: /ajax/activarBanner
+   defaults: { _controller: PmcIntranetBundle:Administrativo:activarBanner } 
+   
+actualizaOrden:
+   pattern: /ajax/actualizaOrden
+   defaults: { _controller: PmcIntranetBundle:Administrativo:actualizaOrden }   
+   
+excluirBanner:
+   pattern: /ajax/excluirBanner
+   defaults: { _controller: PmcIntranetBundle:Administrativo:excluirBanner }    
+
+editarBanner:
+   pattern: /admin/banners/editar/{id}
+   defaults: { _controller: PmcIntranetBundle:Administrativo:editarBanner, id: null } 
+   
+novoBanner:
+   pattern: /admin/banners/novo
+   defaults: { _controller: PmcIntranetBundle:Administrativo:novoBanner }    
+   
+adminLinksUteis:
+   pattern: /admin/linkUteis
+   defaults: { _controller: PmcIntranetBundle:LinkUteis:adminLinksUteis } 
+   
+excluirLinkUteis:
+   pattern: /ajax/excluirLinkUteis
+   defaults: { _controller: PmcIntranetBundle:LinkUteis:excluirLinkUteis }   
+   
+novoLinkUteis:
+   pattern: /admin/linkUteis/novo
+   defaults: { _controller: PmcIntranetBundle:LinkUteis:novoLinkUteis }
+   
+editarLinkUteis:
+   pattern: /admin/linkUteis/editar/{id}
+   defaults: { _controller: PmcIntranetBundle:LinkUteis:editarLinkUteis, id: null }   
+   
+adminLeiDecreto:
+   pattern: /admin/leiDecreto
+   defaults: { _controller: PmcIntranetBundle:LeiDecreto:adminLeiDecreto } 
+   
+excluirLeiDecreto:
+   pattern: /ajax/excluirLeiDecreto
+   defaults: { _controller: PmcIntranetBundle:LeiDecreto:excluirLeiDecreto }   
+   
+novoLeiDecreto:
+   pattern: /admin/leiDecreto/novo
+   defaults: { _controller: PmcIntranetBundle:LeiDecreto:novoLeiDecreto }
+   
+editarLeiDecreto:
+   pattern: /admin/leiDecreto/editar/{id}
+   defaults: { _controller: PmcIntranetBundle:LeiDecreto:editarLeiDecreto, id: null }   
+   
+novaPublicacao:
+   pattern: /admin/{tipo}/novo
+   defaults: { _controller: PmcIntranetBundle:Social:novaPublicacao }
+   
+editarPublicacao:
+   pattern: /admin/{tipo}/editar/{id}
+   defaults: { _controller: PmcIntranetBundle:Social:editarPublicacao, id: null }
    
 activarCuenta:
    pattern: /login/activar

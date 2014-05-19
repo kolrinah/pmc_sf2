@@ -1,8 +1,8 @@
-<div class="container-fluid" id="sombra">
+<nav class="container-fluid">
 <div class="row">    
   <div class="col-lg-12 logo"> 
     <a href="{{ path('home') }}">
-     <img src="{{ asset('bundles/pmcintranet/img/logo.png') }}" style="width: 90%;">
+     <img src="{{ asset(path_img ~'logo.png') }}" style="width: 90%;">
     </a> 
   </div>
 </div>
@@ -11,98 +11,100 @@
   <div class="col-lg-12" style="padding: 0px;">
     <ul class="nav nav-pills nav-stacked utilidade">
       <li class="utilidade-tit">Utilidade</li>
-      <li class="utilidade-ativo" >
-        <a href="{{ url('home')}}" style="color:#000;">
+      <li class="utilidade-fundo" >
+        <a href="{{ url('home')}}">
          <span class="ico-menu">
-            <img src="{{ asset('bundles/pmcintranet/img/ico-inicio.png') }}">
+            <img src="{{ asset(path_img ~'ico-inicio.png') }}">
          </span>Início</a></li>
       <li class="utilidade-fundo">
         <a href="funcionarios.html">
          <span class="ico-menu">
-             <img src="{{ asset('bundles/pmcintranet/img/ico-funcionarios.png') }}">
+             <img src="{{ asset(path_img ~'ico-funcionarios.png') }}">
          </span>Funcionários</a></li>         
       <li class="utilidade-fundo">
         <a href="secretarias.html">
          <span class="ico-menu">
-             <img src="{{ asset('bundles/pmcintranet/img/ico-secretarias.png') }}">
+             <img src="{{ asset(path_img ~'ico-secretarias.png') }}">
          </span>Secretarias</a></li>
       <li class="utilidade-fundo">
         <a href="servicos.html">
          <span class="ico-menu">
-             <img src="{{ asset('bundles/pmcintranet/img/ico-servicos.png') }}">
+             <img src="{{ asset(path_img ~'ico-servicos.png') }}">
          </span>Serviços</a></li>
       <li class="utilidade-fundo">
         <a href="solicitacoes.html">
          <span class="ico-menu">
-             <img src="{{ asset('bundles/pmcintranet/img/ico-solicitacoes.png') }}">
+             <img src="{{ asset(path_img ~'ico-solicitacoes.png') }}">
          </span>Serviços Solicitados</a></li>
       <li class="utilidade-fundo">
-        <a href="leis.html">
+        <a href="{{path('adminLeiDecreto')}}">
          <span class="ico-menu">
-             <img src="{{ asset('bundles/pmcintranet/img/ico-leis.png') }}">
+             <img src="{{ asset(path_img ~'ico-leis.png') }}">
          </span>Leis e Decretos</a></li>
       <li class="utilidade-fundo">
-        <a href="links.html">
+        <a href="{{path('adminLinksUteis')}}">
          <span class="ico-menu">
-             <img src="{{ asset('bundles/pmcintranet/img/ico-links.png') }}">
+             <img src="{{ asset(path_img ~'ico-links.png') }}">
          </span>Links Úteis</a></li>
-    </ul>
-  </div>
-</div>
-
-<div class="row" style="margin-top: 20px">
-  <div class="col-lg-12" style="padding: 0px;">
-    <ul class="nav nav-pills nav-stacked social">
-      <li class="social-tit">Social</li>
-      <li class="social-fundo">
-        <a href="mensagens.html">
-          <span class="ico-menu">
-              <img src="{{ asset('bundles/pmcintranet/img/ico-mensagens.png') }}">
-          </span>Mensagens</a></li>
-      <li class="social-fundo">
-        <a href="comunicados.html">
-          <span class="ico-menu">
-              <img src="{{ asset('bundles/pmcintranet/img/ico-comunicados.png') }}">
-          </span>Comunicados</a></li>
-      <li class="social-fundo">
-        <a href="eventos.html">
-          <span class="ico-menu">
-              <img src="{{ asset('bundles/pmcintranet/img/ico-eventos.png') }}">
-          </span>Eventos</a></li>
-      <li class="social-fundo">
-        <a href="noticias.html">
-          <span class="ico-menu">
-              <img src="{{ asset('bundles/pmcintranet/img/ico-noticias.png') }}">
-          </span>Notícias</a></li>
-      <li class="social-fundo">
-        <a href="rede.html">
-          <span class="ico-menu">
-              <img src="{{ asset('bundles/pmcintranet/img/ico-rede.png') }}">
-          </span>Minha rede</a></li>
     </ul>
   </div>
 </div>
 
 <div class="row" style="margin-top: 20px; margin-bottom: 20px">
   <div class="col-lg-12" style="padding: 0px;">
+    <ul class="nav nav-pills nav-stacked social">
+      <li class="social-tit">Social</li>
+      <li class="social-fundo">
+        <a href="{{path('home')}}filtrar/mensagens">
+          <span class="ico-menu">
+              <img src="{{ asset(path_img ~'ico-mensagens.png') }}">
+          </span>Mensagens</a></li>
+      <li class="social-fundo">
+        <a href="{{path('home')}}filtrar/comunicados">
+          <span class="ico-menu">
+              <img src="{{ asset(path_img ~'ico-comunicados.png') }}">
+          </span>Comunicados</a></li>
+      <li class="social-fundo">
+        <a href="{{path('home')}}filtrar/eventos">
+          <span class="ico-menu">
+              <img src="{{ asset(path_img ~'ico-eventos.png') }}">
+          </span>Eventos</a></li>
+      <li class="social-fundo">
+        <a href="{{path('home')}}filtrar/noticias">
+          <span class="ico-menu">
+              <img src="{{ asset(path_img ~'ico-noticias.png') }}">
+          </span>Notícias</a></li>
+      <li class="social-fundo">
+        <a href="{{path('home')}}minhaRede">
+          <span class="ico-menu">
+              <img src="{{ asset(path_img ~'ico-rede.png') }}">
+          </span>Minha rede</a></li>
+    </ul>
+  </div>
+</div>
+
+{% if ( is_granted('ROLE_PRENSA') or is_granted('ROLE_ADMIN') ) %}          
+<div class="row" style="margin-bottom: 20px">
+  <div class="col-lg-12" style="padding: 0px;">
     <ul class="nav nav-pills nav-stacked adm">
       <li class="adm-tit">Administrativo</li>
       <li class="adm-fundo">
         <a href="propriedades.html">
           <span class="ico-menu">
-              <img src="{{ asset('bundles/pmcintranet/img/ico-propriedades.png') }}">
+              <img src="{{ asset(path_img ~'ico-propriedades.png') }}">
           </span>Propriedades do Sistema</a></li>      
       <li class="adm-fundo">
-        <a href="banners.html">
+        <a href="{{path('adminBanners')}}">
           <span class="ico-menu">
-              <img src="{{ asset('bundles/pmcintranet/img/ico-banners.png') }}">
+              <img src="{{ asset(path_img ~'ico-banners.png') }}">
           </span>Banners</a></li>
       <li class="adm-fundo">
         <a href="seguranca.html">
           <span class="ico-menu">
-              <img src="{{ asset('bundles/pmcintranet/img/ico-seguranca.png') }}">
+              <img src="{{ asset(path_img ~'ico-seguranca.png') }}">
           </span>Gerenciamento de Logs</a></li>
     </ul>
   </div>
 </div>
-    </div>
+{% endif %}        
+</nav>

@@ -26,7 +26,7 @@ class Comentario
      *
      * @ORM\Column(name="data", type="datetime", nullable=false)
      */
-    private $data;
+    private $data = 'CURRENT_TIMESTAMP';
 
     /**
      * @var string

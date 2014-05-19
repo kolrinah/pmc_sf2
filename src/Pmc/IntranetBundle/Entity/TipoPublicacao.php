@@ -62,4 +62,9 @@ class TipoPublicacao
     {
         return $this->tipo;
     }
+    
+    public function __toString() 
+    {
+        return $this->tipo;
+    }
 }

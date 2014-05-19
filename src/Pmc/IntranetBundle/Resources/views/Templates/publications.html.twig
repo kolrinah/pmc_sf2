@@ -1,0 +1,26 @@
+{# Examinador de Publicaciones #}    
+{% for p in data.publications %}    
+
+    {% set activo, titulo = '', '' %}
+    {% if (p.ativo == false) %}
+        {% set activo, titulo = 'inactivo', 'Publicação Inativo' %}
+    {% endif %}
+   <div id="publicacao_{{ p.id }}" class="row {{ activo }}" title="{{ titulo }}" >
+     <div class="col-lg-12" style="margin-top: 20px">   
+             
+   {% if p.tipo.id == 1 %}     {# É uma Mensagem #}            
+     {% include 'PmcIntranetBundle:Home:mensagem.html.twig' %}         
+     
+   {% elseif p.tipo.id == 2 %} {# É uma Notícia #}     
+     {% include 'PmcIntranetBundle:Home:noticia.html.twig' %} 
+     
+   {% elseif p.tipo.id == 3 %} {# É um Comunicado #}                
+     {% include 'PmcIntranetBundle:Home:comunicado.html.twig' %}  
+
+   {% elseif p.tipo.id == 4 %} {# É um Evento #}                            
+     {% include 'PmcIntranetBundle:Home:evento.html.twig' %} 
+         
+   {% endif %} 
+     </div>
+   </div>     
+{% endfor %}      

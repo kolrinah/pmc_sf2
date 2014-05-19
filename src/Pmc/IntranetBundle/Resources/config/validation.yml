@@ -1,0 +1,113 @@
+Pmc\IntranetBundle\Entity\Publicacao:
+  properties:
+    imagem:        
+        - Image:
+            maxSize: "2M"
+            maxSizeMessage: " O tamanho do arquivo não pode ser maio a 2MB "
+            mimeTypes: ["image/png", "image/jpeg", "image/jpg", "image/tiff", "image/gif"]
+            mimeTypesMessage: " Formato de arquivo invalido "           
+    titulo:
+        - NotBlank: {message: ""}
+        - NotNull: {message: " O campo não pode ser nulo "}
+        - Length:
+            min: 2
+            max: 2000            
+            maxMessage: " O campo não pode exceder 2000 caracteres "
+            minMessage: " Deve superar 2 caracteres "
+            
+    resumo:
+        - Length:
+            min: 5
+            max: 1000            
+            maxMessage: " O campo não pode exceder 1000 caracteres "
+            minMessage: " Deve superar 5 caracteres "
+            
+    conteudo:
+        - Length:
+            min: 5
+            max: 2000            
+            maxMessage: " O campo não pode exceder 2000 caracteres "
+            minMessage: " Deve superar 5 caracteres "            
+            
+    video:        
+        - Length:
+            min: 5
+            max: 250            
+            maxMessage: " O campo não pode exceder 250 caracteres "
+            minMessage: " Deve superar 5 caracteres "            
+            
+Pmc\IntranetBundle\Entity\Banner:
+  properties:
+    imagem:        
+        - Image:
+            maxSize: "2M"
+            maxSizeMessage: " O tamanho do arquivo não pode ser maio a 2MB "
+            mimeTypes: ["image/png", "image/jpeg", "image/jpg", "image/tiff", "image/gif"]
+            mimeTypesMessage: " Formato de arquivo invalido "
+       #     uploadIniSizeErrorMessage: "  O tamanho do arquivo invalido para o servidor "
+       #     uploadFormSizeErrorMessage: "  O tamanho do arquivo não pode ser maio a 3MB "
+       #     uploadErrorMessage: " erro de upload "
+       # - Image:            
+       #     maxWidth: 800
+       #     maxHeight: 640            
+    nome:
+        - NotBlank: {message: ""}
+        - NotNull: {message: " O campo não pode ser nulo "}
+        - Length:
+            min: 2
+            max: 100            
+            maxMessage: " O campo não pode exceder 100 caracteres "
+            minMessage: " Deve superar 2 caracteres "            
+    url:
+        - Url: {message: " URL inválida "}
+        - Length:
+            max: 100            
+            maxMessage: " O campo não pode exceder 100 caracteres "            
+            
+Pmc\IntranetBundle\Entity\LinkUteis:
+  properties:
+    nome:
+        - NotBlank: {message: ""}
+        - NotNull: {message: " O campo não pode ser nulo "}
+        - Length:
+            min: 5
+            max: 50            
+            maxMessage: " O campo não pode exceder 50 caracteres "
+            minMessage: " Deve superar 5 caracteres "            
+    link:
+        - Url: {message: " URL inválida "}
+        - NotBlank: {message: ""}
+        - NotNull: {message: " O campo não pode ser nulo "}        
+        - Length:
+            max: 50            
+            maxMessage: " O campo não pode exceder 50 caracteres "
+            
+Pmc\IntranetBundle\Entity\LeiDecreto:
+  properties:
+    nome:
+        - NotBlank: {message: ""}
+        - NotNull: {message: " O campo não pode ser nulo "}
+        - Length:
+            min: 5
+            max: 50            
+            maxMessage: " O campo não pode exceder 50 caracteres "
+            minMessage: " Deve superar 5 caracteres "            
+    conteudo:
+        - Length:
+            min: 5
+            max: 2000            
+            maxMessage: " O campo não pode exceder 2000 caracteres "
+            minMessage: " Deve superar 5 caracteres "                  
+    arquivo:    
+        - File:
+            maxSize: "2M"
+            maxSizeMessage: " O tamanho do arquivo não pode ser maio a 2MB "
+            mimeTypes: ["application/pdf", "application/x-pdf"]
+            mimeTypesMessage: " Formato de arquivo invalido "  
+    ano:
+        - NotNull: {message: " O campo não pode ser nulo "}
+        - Range:
+            min: 1970
+            max: 2050            
+            maxMessage: " O ano não pode exceder 2050 "
+            minMessage: " Ano Deve superar 1970 "              

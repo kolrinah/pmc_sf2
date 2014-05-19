@@ -21,7 +21,8 @@ Pmc\IntranetBundle\Entity\Comentario:
         data:
             type: datetime
             nullable: false
-            comment: ''
+            comment: 'Data de publicação'
+            default: CURRENT_TIMESTAMP                
         comentario:
             type: text
             nullable: false

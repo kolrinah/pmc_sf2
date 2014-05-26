@@ -98,7 +98,9 @@ Pmc\IntranetBundle\Entity\LeiDecreto:
             max: 2000            
             maxMessage: " O campo não pode exceder 2000 caracteres "
             minMessage: " Deve superar 5 caracteres "                  
-    arquivo:    
+    arquivo:
+        - NotBlank: {message: ""}
+        - NotNull: {message: " Deve selecionar arquivo "}      
         - File:
             maxSize: "2M"
             maxSizeMessage: " O tamanho do arquivo não pode ser maio a 2MB "
@@ -110,4 +112,152 @@ Pmc\IntranetBundle\Entity\LeiDecreto:
             min: 1970
             max: 2050            
             maxMessage: " O ano não pode exceder 2050 "
-            minMessage: " Ano Deve superar 1970 "              
+            minMessage: " Ano Deve superar 1970 "  
+            
+Pmc\IntranetBundle\Entity\Usuario:
+  properties:
+    nome:
+        - NotBlank: {message: ""}
+        - NotNull: {message: " O campo não pode ser nulo "}
+        - Length:
+            min: 4
+            max: 100            
+            maxMessage: " O campo não pode exceder 100 caracteres "
+            minMessage: " Deve superar 4 caracteres "
+    secretaria:
+        - NotNull: {message: " Deve selecionar uma secretaria "}
+        
+    role:
+        - Count:             
+            min: 1 
+            minMessage: " Deve selecionar o nível "
+    email:
+        - NotBlank: {message:""}
+        - NotNull: {message: " O campo não pode ser nulo "}      
+        - Email: {message: " Email inválido "}
+        - Length: 
+            min: 5
+            max: 100
+            minMessage: " Deve superar 5 caracteres "
+            maxMessage: " O campo não pode exceder 100 caracteres "            
+    cargo:
+        - Length:
+            min: 2
+            max: 40            
+            maxMessage: " O campo não pode exceder 40 caracteres "
+            minMessage: " Deve superar 2 caracteres "  
+    telefone:
+        - Length:
+            min: 3
+            max: 20            
+            maxMessage: " O campo não pode exceder 20 caracteres "
+            minMessage: " Deve superar 3 caracteres "             
+    foto:    
+        - Image:
+            maxSize: "2M"
+            maxSizeMessage: " O tamanho do arquivo não pode ser maio a 2MB "
+            mimeTypes: ["image/png", "image/jpeg", "image/jpg", "image/tiff", "image/gif"]
+            mimeTypesMessage: " Formato de arquivo invalido " 
+    matricula:
+        - Length:
+            min: 3
+            max: 20            
+            maxMessage: " O campo não pode exceder 20 caracteres "
+            minMessage: " Deve superar 3 caracteres "
+    rg:
+        - Length:
+            min: 3
+            max: 20            
+            maxMessage: " O campo não pode exceder 20 caracteres "
+            minMessage: " Deve superar 3 caracteres "            
+    cpf:
+        - Length:
+            min: 3
+            max: 20            
+            maxMessage: " O campo não pode exceder 20 caracteres "
+            minMessage: " Deve superar 3 caracteres " 
+            
+Pmc\IntranetBundle\Entity\Servico:
+  properties:
+    nome:
+        - NotBlank: {message: ""}
+        - NotNull: {message: " O campo não pode ser nulo "}
+        - Length:
+            min: 4
+            max: 100            
+            maxMessage: " O campo não pode exceder 100 caracteres "
+            minMessage: " Deve superar 4 caracteres "
+    conteudo:
+        - Length:
+            min: 5
+            max: 2000            
+            maxMessage: " O campo não pode exceder 2000 caracteres "
+            minMessage: " Deve superar 5 caracteres "  
+            
+    secretaria:
+        - NotNull: {message: " Deve selecionar uma secretaria "}
+        
+    responsavel:
+        - Count:             
+            min: 1 
+            minMessage: " Deve selecionar os usuários responsáveis "
+            
+Pmc\IntranetBundle\Entity\SolicitacaoServico:
+  properties:
+    titulo:
+        - NotBlank: {message: ""}
+        - NotNull: {message: " O campo não pode ser nulo "}
+        - Length:
+            min: 4
+            max: 100            
+            maxMessage: " O campo não pode exceder 100 caracteres "
+            minMessage: " Deve superar 4 caracteres "
+    conteudo:
+        - Length:
+            min: 5
+            max: 2000            
+            maxMessage: " O campo não pode exceder 2000 caracteres "
+            minMessage: " Deve superar 5 caracteres "  
+            
+Pmc\IntranetBundle\Entity\Secretaria:
+  properties:
+    nome:
+        - NotBlank: {message: ""}
+        - NotNull: {message: " O campo não pode ser nulo "}
+        - Length:
+            min: 4
+            max: 100            
+            maxMessage: " O campo não pode exceder 100 caracteres "
+            minMessage: " Deve superar 4 caracteres "
+    endereco:
+        - Length:
+            min: 5
+            max: 100            
+            maxMessage: " O campo não pode exceder 100 caracteres "
+            minMessage: " Deve superar 5 caracteres " 
+    email:     
+        - Email: {message: " Email inválido "}
+        - Length: 
+            min: 5
+            max: 100
+            minMessage: " Deve superar 5 caracteres "
+            maxMessage: " O campo não pode exceder 100 caracteres " 
+    telefone:
+        - Length:
+            min: 3
+            max: 20            
+            maxMessage: " O campo não pode exceder 20 caracteres "
+            minMessage: " Deve superar 3 caracteres " 
+    urlSite:
+        - Url: {message: " URL inválida "}      
+        - Length:
+            max: 100            
+            maxMessage: " O campo não pode exceder 100 caracteres "
+    mapa:        
+        - Length:
+            min: 5
+            max: 1500            
+            maxMessage: " O campo não pode exceder 1500 caracteres "
+            minMessage: " Deve superar 5 caracteres "
+    secretario:
+        - NotNull: {message: " Deve selecionar um secretário "}

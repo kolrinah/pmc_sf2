@@ -1,0 +1,22 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_driver: pdo_mysql
+    database_host: 127.0.0.1
+    database_port: '3306'
+    database_name: pmc_sf2
+    database_user: pmc_sf2
+    database_password: pmc_sf2
+    mailer_transport: smtp
+    #mailer_host: 127.0.0.1
+    mailer_host: smtp.gmail.com
+    mailer_user: info@gmail.com 
+    mailer_password: 
+    locale: pt
+    secret: abab24f5873b353ab9d0fbad2a0ea7f6
+    
+    path_imagens: %kernel.root_dir%/../public_html/upload/imagens/
+    path_banners: %kernel.root_dir%/../public_html/upload/banners/
+    path_pdf: %kernel.root_dir%/../public_html/upload/pdf/
+    path_retratos: %kernel.root_dir%/../public_html/upload/retratos/
+    
+    mostrar_mais: 10

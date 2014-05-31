@@ -26,9 +26,9 @@ security:
                        domain: ~
   access_control: 
     - { path: ^/login*, roles: IS_AUTHENTICATED_ANONYMOUSLY }  
-    - { path: ^/*, roles: ROLE_USER }
-#    - { path: ^/admin*, roles: [ROLE_PRENSA, ROLE_ADMIN] }
-#    - { path: ^/admin/banners*, roles: [ROLE_PRENSA, ROLE_ADMIN] }
+    - { path: ^/*, roles: [ROLE_USER, ROLE_ADJUNTO, ROLE_SECRETARIO, ROLE_PREFEITO, ROLE_PRENSA, ROLE_ADMIN] }
+    - { path: ^/admin*, roles: [ROLE_ADJUNTO, ROLE_SECRETARIO, ROLE_PREFEITO, ROLE_PRENSA, ROLE_ADMIN] }
+    - { path: ^/admin/banners*, roles: [ROLE_PRENSA, ROLE_ADMIN] }
 #    - { path: ^/perfil, roles: ROLE_USER }
 #    - { path: ^/admin/usuarios, roles: [ROLE_ADMIN, ROLE_ENLACE] }
 #    - { path: ^/admin, roles: ROLE_ADMIN }    
@@ -38,7 +38,11 @@ security:
          entity: {class: PmcIntranetBundle:Usuario}
  
   role_hierarchy:
-        ROLE_ADMIN:       ROLE_USER
+        ROLE_ADJUNTO: [ROLE_USER]
+        ROLE_SECRETARIO: [ROLE_USER, ROLE_ADJUNTO]
+        ROLE_PREFEITO: [ROLE_USER, ROLE_ADJUNTO, ROLE_SECRETARIO]
+        ROLE_PRENSA: [ROLE_USER, ROLE_ADJUNTO, ROLE_SECRETARIO, ROLE_PREFEITO]
+        ROLE_ADMIN:  [ROLE_USER, ROLE_ADJUNTO, ROLE_SECRETARIO, ROLE_PREFEITO, ROLE_PRENSA]
         ROLE_SUPER_ADMIN: [ ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH ]
 
   encoders:     

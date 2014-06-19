@@ -1,0 +1,14 @@
+{% if (data.usuarios|length > 0) %}
+
+   {% for u in data.usuarios %}
+   <input type="checkbox" id="form_responsavel_{{ u.id }}" name="form[responsavel][]" value="{{u.id}}"
+          {% if u.id in data.checkados %} checked = "checked" {% endif %} >
+   <label for="form_responsavel_{{u.id}}">{{ u.nome|title }}</label>
+   {% endfor %}
+
+{% else %}
+   <div style="padding: 0px 20px 5px 10px; float: left">
+        <img src="{{ asset(path_img ~ 'noUser.png')}}"  />
+   </div>   
+   <p style="padding-top: 20px">Secretaria sem usuários cadastrados</p>      
+{% endif %}

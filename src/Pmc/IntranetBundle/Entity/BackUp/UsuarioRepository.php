@@ -112,7 +112,57 @@ class UsuarioRepository extends EntityRepository implements UserProviderInterfac
                    ->getQuery();               
                  $q->execute();   
           return true;
-    }    
+    }  
+    
+    /*
+     * Obtenemos usuarios filtrados ordenados por nombre
+     */
+    public function getUsuariosFiltrados($filtros)
+    {
+         $user = $filtros['user'];
+         
+         $patron = (isset($filtros['patron']) and trim($filtros['patron']) != '')? 
+                                   trim($filtros['patron']):'';
+         
+         $mostrar = ($filtros['filtroStatus'] == 'oculto')? 0: 3;
+         
+         $status = (isset($filtros['status']) and $filtros['status'] != '')? 
+                                   $filtros['status']: $mostrar;
+        
+         $secretarias = (isset($filtros['secretarias']))? $filtros['secretarias']:
+                                     $this->getEntityManager()
+                                          ->createQuery("SELECT s.id
+                                                         FROM PmcIntranetBundle:Secretaria s")
+                                          ->getArrayResult();  
+          
+         return $this->getEntityManager()
+                     ->createQuery('SELECT u, s, fans
+                                    FROM PmcIntranetBundle:Usuario u
+                                    JOIN u.secretaria s
+                                    LEFT JOIN u.role r
+                                    LEFT JOIN u.seguidor fans
+                                    WHERE (
+                                           u.nome LIKE :patron or
+                                           u.cargo LIKE :patron or 
+                                           u.telefone LIKE :patron or
+                                           u.email LIKE :patron or
+                                           u.user LIKE :patron or
+                                           u.matricula LIKE :patron or
+                                           u.rg LIKE :patron or
+                                           u.cpf LIKE :patron
+                                           )
+                                    AND ( u.ativo != :status )
+                                    AND ( s.id IN (:secretarias) ) 
+                                    AND (u != :user )
+                                    AND (r.id != 6)
+                                    ORDER BY u.nome ASC')
+                     ->setParameters(array('user' => $user,
+                                         'status' => $status,
+                                         'patron' => "%$patron%",
+                                    'secretarias' => $secretarias ))              
+                     ->getResult();          
+    }
+    
 }
 
 ?>

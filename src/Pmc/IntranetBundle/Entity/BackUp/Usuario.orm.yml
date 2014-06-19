@@ -1,5 +1,5 @@
 Pmc\IntranetBundle\Entity\Usuario:
-    type: entity    
+    type: entity
     table: usuario
     repositoryClass: Pmc\IntranetBundle\Entity\UsuarioRepository
     indexes:
@@ -117,17 +117,29 @@ Pmc\IntranetBundle\Entity\Usuario:
             nullable: false
             comment: 'Indica se o registro está ativo no sistema.'
             default: '1'
+        banido:
+            type: boolean
+            nullable: false
+            comment: 'Indica se usuário está banido no sistema.'
+            default: '0'            
     manyToOne:
         secretaria:
             targetEntity: Secretaria
             cascade: {  }
             mappedBy: null
-            inversedBy: null
+            inversedBy: usuarios
             joinColumns:
                 secretaria_id:
                     referencedColumnName: id
             orphanRemoval: false
     manyToMany:
+        servico:
+            targetEntity: Servico
+            cascade: {  }
+            mappedBy: responsavel
+            inversedBy: null
+            joinTable: null
+            orderBy: null
         seguidor:
             targetEntity: Usuario
             cascade: {  }
@@ -143,7 +155,7 @@ Pmc\IntranetBundle\Entity\Usuario:
                     -
                         name: seguidor_id
                         referencedColumnName: id
-            orderBy: null      
+            orderBy: null 
         role:
             targetEntity: Role
             cascade: {  }
@@ -159,5 +171,5 @@ Pmc\IntranetBundle\Entity\Usuario:
                     -
                         name: role_id
                         referencedColumnName: id
-            orderBy: null       
+            orderBy: null
     lifecycleCallbacks: {  }

@@ -1,0 +1,50 @@
+Pmc\IntranetBundle\Entity\ComentarioSolicitacaoServico:
+    type: entity
+    table: comentario_solicitacao_servico
+    indexes:
+        fk_comentarista_solicitacao_idx:
+            columns:
+                - usuario_id
+        fk_comentario_solicitacao_servico_idx:
+            columns:
+                - solicitacao_servico_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: true
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        data:
+            type: datetime
+            nullable: false
+            comment: 'Data da solicitaçao'
+        comentario:
+            type: text
+            nullable: false
+            length: null
+            fixed: false
+            comment: ''
+    manyToOne:
+        usuario:
+            targetEntity: Usuario
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                usuario_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        solicitacaoServico:
+            targetEntity: SolicitacaoServico
+            cascade: {  }
+            mappedBy: null
+            inversedBy: comentarios
+            joinColumns:
+                solicitacao_servico_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

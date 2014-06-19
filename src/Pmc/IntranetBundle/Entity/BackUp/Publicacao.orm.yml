@@ -72,17 +72,8 @@ Pmc\IntranetBundle\Entity\Publicacao:
     oneToMany:
         comentarios:
             targetEntity: Comentario
-            mappedBy: publicacao
+            mappedBy: publicacao            
     manyToOne:
-        tipo:
-            targetEntity: TipoPublicacao
-            cascade: {  }
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                tipo_id:
-                    referencedColumnName: id
-            orphanRemoval: false
         usuario:
             targetEntity: Usuario
             cascade: {  }
@@ -90,6 +81,15 @@ Pmc\IntranetBundle\Entity\Publicacao:
             inversedBy: null
             joinColumns:
                 usuario_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        tipo:
+            targetEntity: TipoPublicacao
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                tipo_id:
                     referencedColumnName: id
             orphanRemoval: false
     lifecycleCallbacks: {  }

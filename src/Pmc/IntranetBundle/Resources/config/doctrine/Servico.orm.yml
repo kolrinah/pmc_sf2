@@ -1,13 +1,11 @@
 Pmc\IntranetBundle\Entity\Servico:
     type: entity
     table: servico
+    repositoryClass: Pmc\IntranetBundle\Entity\ServicoRepository
     indexes:
         fk_secretaria_servico_idx:
             columns:
                 - secretaria_id
-        fk_responsavel_idx:
-            columns:
-                - usuario_id
     id:
         id:
             type: integer
@@ -39,23 +37,35 @@ Pmc\IntranetBundle\Entity\Servico:
             nullable: false
             comment: 'Indica se o registro está ativo no sistema'
             default: '1'
+    oneToMany:
+        solicitacaoServico:
+            targetEntity: SolicitacaoServico
+            mappedBy: servico
     manyToOne:
-        usuario:
-            targetEntity: Usuario
-            cascade: {  }
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                usuario_id:
-                    referencedColumnName: id
-            orphanRemoval: false
         secretaria:
             targetEntity: Secretaria
             cascade: {  }
             mappedBy: null
-            inversedBy: null
+            inversedBy: servicos
             joinColumns:
                 secretaria_id:
                     referencedColumnName: id
             orphanRemoval: false
+    manyToMany:
+        responsavel:
+            targetEntity: Usuario
+            cascade: {  }
+            mappedBy: null
+            inversedBy: servico
+            joinTable:
+                name: responsavel_servico
+                joinColumns:
+                    -
+                        name: servico_id
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: usuario_id
+                        referencedColumnName: id
+            orderBy: null
     lifecycleCallbacks: {  }

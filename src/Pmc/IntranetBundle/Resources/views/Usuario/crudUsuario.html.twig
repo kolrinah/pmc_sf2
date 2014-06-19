@@ -1,0 +1,193 @@
+{% extends 'PmcIntranetBundle:Templates:layout.html.twig' %}
+{% block title %} 
+{{ parent() }} | {{ data.titulo }}
+{% endblock %}
+
+{% block centralHeader %}
+<form id="formUser" action="" method="post" {{ form_enctype(formulario) }} >
+<div class="row-fluid">
+  <div class="col-sm-12 panel panel-default" style="margin-top:20px;">    
+    <div class="panel-body"> 
+        <h4 class="tit-azul">  {{ data.accion|upper }} {{ data.titulo|upper }} </h4>
+      <hr/>   
+        <div class="form-group">
+         {% for mensaje in app.session.flashbag.get('error') %}
+            <div class="alert alert-danger alert-dismissable">
+               <button type="button" class="close" data-dismiss="alert" 
+                       aria-hidden="true">&times;</button>
+            <img src="{{asset(path_img ~'error24.png')}}" /> &nbsp;{{ mensaje }}</div>
+         {% endfor %}
+        </div>      
+        <div class="form-group has-feedback">              
+            {{ form_label(formulario.email) }}
+            {{ form_widget(formulario.email) }}
+            {% if form_errors(formulario.email) %}       
+               <span class="form-control-feedback">
+                <img src="{{asset(path_img ~'advertencia.png')}}"
+                     title="{{ form_errors(formulario.email)|striptags }}" />
+               </span>
+            {% endif %}                
+        </div>      
+        <div class="form-group has-feedback">              
+            {{ form_label(formulario.nome) }}
+            {{ form_widget(formulario.nome) }}
+            {% if form_errors(formulario.nome) %}       
+               <span class="form-control-feedback">
+                <img src="{{asset(path_img ~'advertencia.png')}}"
+                     title="{{ form_errors(formulario.nome)|striptags }}" />
+               </span>
+            {% endif %}                
+        </div>
+        <div class="form-group has-feedback">              
+            {{ form_label(formulario.secretaria) }}
+            {{ form_widget(formulario.secretaria) }}
+            {% if form_errors(formulario.secretaria) %}       
+               <span class="form-control-feedback" >
+                <img src="{{asset(path_img ~'advertencia.png')}}"
+                     title="{{ form_errors(formulario.secretaria)|striptags }}" />
+               </span>
+            {% endif %}                
+        </div>
+        <div class="form-group has-feedback">              
+            {{ form_label(formulario.cargo) }}
+            {{ form_widget(formulario.cargo) }}
+            {% if form_errors(formulario.cargo) %}       
+               <span class="form-control-feedback">
+                <img src="{{asset(path_img ~'advertencia.png')}}"
+                     title="{{ form_errors(formulario.cargo)|striptags }}" />
+               </span>
+            {% endif %}                
+        </div>  
+        <div class="form-group has-feedback">              
+            {{ form_label(formulario.telefone) }}
+            {{ form_widget(formulario.telefone) }}
+            {% if form_errors(formulario.telefone) %}       
+               <span class="form-control-feedback">
+                <img src="{{asset(path_img ~'advertencia.png')}}"
+                     title="{{ form_errors(formulario.telefone)|striptags }}" />
+               </span>
+            {% endif %}                
+        </div>      
+        <div class="form-group has-feedback" title="{{ form_errors(formulario.foto)|striptags }}">                  
+            {{ form_label(formulario.foto) }}             
+{% if ( (formulario.vars.value.foto|length > 0) and
+         not (formulario.vars.value.foto|trim|lower|slice(-3) == 'tmp') and
+         not (form_errors(formulario.foto)) ) %}
+            <img class="thumbnail" src="{{ asset(path_retratos ~ formulario.vars.value.foto) }}"
+                 style="max-width: 100%"/>                
+{% else %}
+            <img class="thumbnail" src="{{ asset(path_img ~ 'noUser.png') }}"
+                 title="{{ form_errors(formulario.foto)|striptags }}" style="max-width: 100%"/> 
+{% endif %}            
+            {{ form_widget(formulario.foto) }}  
+            {% if form_errors(formulario.foto) %}       
+               <span class="form-control-feedback">
+                <img src="{{asset(path_img ~'advertencia.png')}}"
+                     title="{{ form_errors(formulario.foto)|striptags }}" />
+               </span>
+            {% endif %} 
+        </div>
+        <div class="form-group">
+            A imagem deve ser JPEG, JPG, PNG ou GIF<br>                                            
+            As dimensões máximas da imagem devem ser 
+            <strong>300px x 300px</strong>
+        </div>
+        <div class="form-group has-feedback">              
+            {{ form_label(formulario.matricula) }}
+            {{ form_widget(formulario.matricula) }}
+            {% if form_errors(formulario.matricula) %}       
+               <span class="form-control-feedback">
+                <img src="{{asset(path_img ~'advertencia.png')}}"
+                     title="{{ form_errors(formulario.matricula)|striptags }}" />
+               </span>
+            {% endif %}                
+        </div>
+        <div class="form-group has-feedback">              
+            {{ form_label(formulario.rg) }}
+            {{ form_widget(formulario.rg) }}
+            {% if form_errors(formulario.rg) %}       
+               <span class="form-control-feedback">
+                <img src="{{asset(path_img ~'advertencia.png')}}"
+                     title="{{ form_errors(formulario.rg)|striptags }}" />
+               </span>
+            {% endif %}                
+        </div>      
+        <div class="form-group has-feedback">              
+            {{ form_label(formulario.cpf) }}
+            {{ form_widget(formulario.cpf) }}
+            {% if form_errors(formulario.cpf) %}       
+               <span class="form-control-feedback">
+                <img src="{{asset(path_img ~'advertencia.png')}}"
+                     title="{{ form_errors(formulario.cpf)|striptags }}" />
+               </span>
+            {% endif %}                
+        </div>  
+{% set mostrar = (data.accion == 'novo')? 'oculto': ''  %}      
+        <div class="form-group {{ mostrar }}">              
+            {{ form_widget(formulario.ativo) }}
+            {{ form_label(formulario.ativo) }}    
+            {{ form_errors(formulario.ativo)|striptags }}           
+        </div>
+        <div class="form-group {{ mostrar }}">              
+            {{ form_widget(formulario.banido) }}
+            {{ form_label(formulario.banido) }}    
+            {{ form_errors(formulario.banido)|striptags }}           
+        </div>      
+        <div class="form-group has-feedback" title="{{ form_errors(formulario.role)|striptags }}">              
+            {{ form_label(formulario.role) }}    
+            {{ form_widget(formulario.role) }}   
+            {% if form_errors(formulario.role) %}       
+               <span class="form-control-feedback">
+                <img src="{{asset(path_img ~'advertencia.png')}}"
+                     title="{{ form_errors(formulario.role)|striptags }}" />
+               </span>
+            {% endif %}                            
+        </div>       
+      {{ form_rest(formulario) }}  
+        <hr/>
+        <div  style="text-align: right">
+            <a href="{{path('funcionarios')}}">
+               <button type="button" class="btn btn-default">Voltar</button></a>&nbsp; &nbsp; 
+            <button type="button" class="btn btn-primary"
+                    onclick="$('#formUser').submit();
+                             $(this).attr('disabled','disabled');">Salvar</button>
+        </div>      
+    </div>
+  </div>
+</div>        
+</form>  
+
+{% endblock %}
+
+{# Ventanas emergentes #}
+{% block modalWindow %}
+    {% include 'PmcIntranetBundle:Templates:ventanaModal.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}   
+    <script type="text/javascript" src="{{ asset('bundles/pmcintranet/js/home.js') }}"></script>
+    {# Script para sombrear la pestaña activa del menú #}
+    <script type="text/javascript">
+     $(document).ready(function() {
+         $('nav li').removeClass('active');
+            var elementos = $('nav li a');                        
+            elementos.each(function() { 
+                if (trim($(this).html()).toLowerCase().indexOf('{{ data.titulo|lower }}') >= 0 )
+                      $(this).parent().addClass('active');
+                     });
+         
+         // Para seleccionar un solo role
+         $('div#form_role > input[type=checkbox][id*="form_role"]')
+             .change(function() { var me = $(this).attr('id');
+                               if ($(this).is(':checked')) 
+                $('div#form_role > input[type=checkbox][id!='+me+']').removeAttr('checked');
+            }); 
+     });                
+  </script>
+  {# JAVASCRIPT PARA DESBLOQUEAR CAMPO EMAIL #}
+  <script type="text/javascript">
+     $(document).ready(function() {
+         $('#form_email').removeAttr('readonly').focus();
+     });                
+  </script>  
+{% endblock %}  

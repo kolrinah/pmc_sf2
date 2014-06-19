@@ -7,11 +7,12 @@ class PublicacaoRepository extends EntityRepository
 {
     /*
      * Obtenemos las publicaciones que puede ver el usuario
-     * en su página de inicio
+     * en su página de inicio y/o aplicando filtro rojo
      */
-    public function getPublicacoesHomeUser(Usuario $user, $filtros)
-    {
-        $firstResult =(isset($filtros['puntero']))? $filtros['puntero']: 0;
+    public function getPublicacoesHomeUser(Usuario $user, $filtros = array())
+    {        
+        $patron = (isset($filtros['patron']) and trim($filtros['patron']) != '')? 
+                                 trim($filtros['patron']):'';
         
         return $this->getEntityManager()
                   ->createQuery('SELECT p, up, s, t, c, uc
@@ -21,22 +22,26 @@ class PublicacaoRepository extends EntityRepository
                                  LEFT JOIN c.usuario uc
                                  JOIN up.secretaria s
                                  JOIN p.tipo t
-                                 WHERE (up = :user AND t.id = 1)
+                                 WHERE ( (p.titulo LIKE :patron) or
+                                         (p.resumo LIKE :patron) or
+                                         (p.conteudo LIKE :patron) or
+                                         (up.nome LIKE :patron) )
+                                 AND
+                                 ( (up = :user AND t.id = 1)
                                  OR (:user MEMBER OF up.seguidor AND t.id = 1)                                 
                                  OR (s != :secretaria AND
                                      p.publico = :public AND
                                      p.ativo = :ativo AND t.id != 1)
                                  OR (s = :secretaria AND
-                                     p.ativo = :ativo AND t.id != 1) 
-                                 ORDER BY p.data DESC, c.data DESC')
+                                     p.ativo = :ativo AND t.id != 1) )
+                                 ORDER BY p.data DESC, c.data ASC')
                   ->setParameters(array('user' => $user,
                                   'secretaria' => $user->getSecretaria(),
+                                      'patron' => "%$patron%",
                                       'public' => true,
-                                       'ativo' => true ))
-                  ->setMaxResults(5)    
-                  ->setFirstResult($firstResult)
+                                       'ativo' => true ))     
                   ->getResult();  
-    }    
+    }        
     
     /*
      * Obtenemos las publicaciones de tipo mensaje 
@@ -52,9 +57,7 @@ class PublicacaoRepository extends EntityRepository
                                         ->createQuery("SELECT s.id
                                                        FROM PmcIntranetBundle:Secretaria s")
                                         ->getArrayResult();
-      
-      $firstResult =(isset($filtros['puntero']))? $filtros['puntero']: 0;
-            
+                  
       return $this->getEntityManager()
                   ->createQuery("SELECT p, up, s, t, c, uc
                                  FROM PmcIntranetBundle:Publicacao p
@@ -66,18 +69,16 @@ class PublicacaoRepository extends EntityRepository
                                  WHERE ( (up = :user AND t.id = 1) or
                                          (:user MEMBER OF up.seguidor AND t.id = 1) )
                                  AND ( p.titulo LIKE :patron or
-                                       p.sumario LIKE :patron or 
+                                       p.resumo LIKE :patron or 
                                        p.conteudo LIKE :patron or
                                        up.nome LIKE :patron or
                                        uc.nome LIKE :patron
                                      )
                                  AND ( s.id IN (:secretarias) )
-                                 ORDER BY p.data DESC, c.data DESC")
+                                 ORDER BY p.data DESC, c.data ASC")
                   ->setParameters(array('user' => $user,
                                       'patron' => "%$patron%",
                                  'secretarias' => $secretarias ) )
-                  ->setMaxResults(5)    
-                  ->setFirstResult($firstResult)
                   ->getResult();         
     }
     
@@ -88,14 +89,17 @@ class PublicacaoRepository extends EntityRepository
     {
        $patron = (isset($filtros['patron']) and trim($filtros['patron']) != '')? 
                                  trim($filtros['patron']):'';
+             
+       $mostrar = ($filtros['filtroStatus'] == 'oculto')? 0: 3;
+       
+       $status = (isset($filtros['status']) and $filtros['status'] != '')? 
+                                 $filtros['status']: $mostrar;
       
        $secretarias = (isset($filtros['secretarias']))? $filtros['secretarias']:
                                    $this->getEntityManager()
                                         ->createQuery("SELECT s.id
                                                        FROM PmcIntranetBundle:Secretaria s")
                                         ->getArrayResult();  
-       
-       $firstResult =(isset($filtros['puntero']))? $filtros['puntero']: 0;
         
        return $this->getEntityManager()
                    ->createQuery('SELECT p, up, s, t, c, uc
@@ -107,26 +111,25 @@ class PublicacaoRepository extends EntityRepository
                                   JOIN p.tipo t
                                   WHERE (
                                          (up = :user and t.id = :tipo) or
-                                         (p.ativo = :ativo and t.id = :tipo and
+                                         (p.ativo != :status and t.id = :tipo and
                                           s.id != :secretariaUser) or
                                          (s.id = :secretariaUser and t.id = :tipo )
                                         )
                                   AND ( p.titulo LIKE :patron or
-                                        p.sumario LIKE :patron or 
+                                        p.resumo LIKE :patron or 
                                         p.conteudo LIKE :patron or
                                         up.nome LIKE :patron or
                                         uc.nome LIKE :patron
                                       )
-                                  AND ( s.id IN (:secretarias) )                                  
-                                  ORDER BY p.data DESC, c.data DESC')
+                                  AND ( s.id IN (:secretarias) ) 
+                                  AND ( p.ativo != :status )
+                                  ORDER BY p.data DESC, c.data ASC')
                    ->setParameters(array('user' => $user,                                      
-                                         'tipo' => $tipo,
-                                        'ativo' => true,
+                                         'tipo' => $tipo->getId(),
+                                       'status' => $status,
                                'secretariaUser' => $user->getSecretaria(),
                                        'patron' => "%$patron%",
-                                  'secretarias' => $secretarias ))
-                   ->setFirstResult($firstResult)
-                   ->setMaxResults(5)                   
+                                  'secretarias' => $secretarias ))                   
                    ->getResult();  
     }       
 }

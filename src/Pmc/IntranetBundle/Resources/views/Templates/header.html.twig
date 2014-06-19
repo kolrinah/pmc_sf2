@@ -1,14 +1,20 @@
 <header class="top">
 <div class="container"> 
   <div class="row"> 
-    <div class="col-lg-4" style="padding: 10px 15px">
-      <span style="padding-right:5px">
-        <a href="#" >
-          <img src="{{ asset(path_img ~'ico-user.png') }}"/>  
-        </a>  
+    <div class="col-sm-4" style="padding: 10px 15px">
+      <span style="padding-right:5px">      
+        <a href="{{path('perfilFuncionario', { 'user': app.user.user } ) }}" >
+          {% if app.user.foto|length > 0 %}      
+             <img src="{{ asset(path_retratos ~ app.user.foto) }}" 
+                  style="width: 36px; height: 36px; border-radius: 4px;"/>  
+          {% else %}
+             <img src="{{ asset(path_img ~'ico-user.png') }}"
+                  style="width: 36px; height: 36px; border-radius: 4px;"/>  
+          {% endif %}        
+        </a>        
       </span>
       <span class="top-user">      
-        <a href="#" >
+        <a href="{{path('perfilFuncionario', { 'user': app.user.user } ) }}" >
           {{ app.user.nome }}
         </a> &nbsp;|&nbsp;
         <a href="{{ path('logout')}}" >
@@ -16,49 +22,31 @@
         </a>              
       </span>      
     </div>      
-    <div class="col-lg-5" style="padding: 10px 5px; text-align: center">
-      <div class="input-group">
-        <span class="input-group-addon btn btn-danger dropdown-toggle" 
-              data-toggle="dropdown" style="color:white">
-          <img src="{{ asset(path_img ~'ico-seg-busca.png') }}"/>  
-        </span>
-        <ul class="dropdown-menu" role="menu" style="text-align:left">
-          <li role="presentation" class="dropdown-header">
-              <strong>FILTRAR POR:</strong></li>  
-          <li><a href="#">
-               <span class="ico-menu">
-                <img src="{{ asset(path_img ~'ico-rede.png') }}"/>  
-               </span> Minha Rede
-              </a>
-          </li>
-          <li><a href="#">
-               <span class="ico-menu">
-                <img src="{{ asset(path_img ~'ico-secretarias.png') }}"/>  
-               </span> Secretarias
-              </a>
-          </li>
-          <li><a href="#">
-               <span class="ico-menu">
-                <img src="{{ asset(path_img ~'ico-servicos.png') }}"/>  
-               </span> Serviços
-              </a>
-          </li>          
-        </ul>              
-        <input type="text" class="form-control" placeholder="Busca"/>
+    <div class="col-sm-5" style="padding: 10px 5px; text-align: center">
+     <form id="formFiltroRojo" action="{{ path('filtroRojo') }}" method="post">   
+      <input type="hidden" id="form_punteroRojo" name="form[puntero]" value="0"/>     
+      <div class="input-group">        
         <span class="input-group-addon btn btn-danger" style="color:white">
+          <img src="{{ asset(path_img ~'ico-seg-busca.png') }}"/>  
+        </span>          
+        <input type="text" name="form[patron]" class="form-control" placeholder="Busca"
+               value="{% if data.patron is defined %} {{ data.patron }} {% endif %}" />
+        <span class="input-group-addon btn btn-danger" style="color:white"
+              onclick="$('#form_punteroRojo').val(0); $('#formFiltroRojo').submit();">
           <img src="{{ asset(path_img ~'ico-busca.png') }}"/>  
         </span>        
       </div>      
+     </form>        
     </div>            
-    <div class="col-lg-3" style="padding: 10px 5px; text-align: center">
+    <div class="col-sm-3" style="padding: 10px 5px; text-align: center">
       <span style="padding-right:5px">
-        <a href="#" style="color:white">
+        <a href="{{ path('meusAvisos') }}" style="color:white">
           <img src="{{ asset(path_img ~'ico-avisos.png') }}"/>  
         </a>  
       </span>
       <span class="top-user">      
-        <a href="#" >
-        Meus avisos (5)          
+        <a href="{{ path('meusAvisos') }}" >
+        Meus avisos ({{ data.cantidadAvisos }})          
         </a>              
       </span>      
     </div>          

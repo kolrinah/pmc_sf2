@@ -5,11 +5,11 @@
 
 {% if ( (p.usuario == app.user) or
         ( (p.tipo.id != 1) and (p.usuario.secretaria == app.user.secretaria) and
-          ( is_granted('ROLE_ADJUNTO') or is_granted('ROLE_SECRETARIO') ) ) or
+          ( is_granted('ROLE_ADJUNTO') ) ) or
         ( (p.tipo.id != 1) and is_granted('ROLE_PRENSA') ) ) %}
 
 <div class="row panel panel-default" style="z-index: 5; margin-top: -1px">
-  <div class="col-lg-12 panel-heading" style="text-align:right">
+  <div class="col-sm-12 panel-heading" style="text-align:right">
     <button type="button" class="btn btn-danger btn-sm"
             onclick="excluirPublicacao({{ p.id }}, 1)">Excluir</button>&nbsp;  
     <a href="{{path('editarPublicacao', { 'tipo': p.tipo.tipo|lower, 'id': p.id } ) }}">

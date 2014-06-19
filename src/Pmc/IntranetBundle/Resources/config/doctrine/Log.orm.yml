@@ -26,9 +26,9 @@ Pmc\IntranetBundle\Entity\Log:
             fixed: false
             comment: ''
         userAgent:
-            type: string
+            type: text
             nullable: false
-            length: 100
+            length: null
             fixed: false
             comment: ''
             column: user_agent

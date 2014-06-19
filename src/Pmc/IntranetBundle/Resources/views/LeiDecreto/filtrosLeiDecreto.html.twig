@@ -1,6 +1,6 @@
 <!-- BOX FILTROS -->
 <div class="row-fluid">
-  <div class="col-lg-12 filtro-principal" style="margin-bottom: 20px">   
+  <div class="col-sm-12 filtro-principal" style="margin-bottom: 20px">   
     <form id="formFiltros" action="" method="post" {{ form_enctype(formulario) }} >          
         <h5 class="tit-azul"> {{ data.titulo|upper }} </h5>             
         <div class="input-group">
@@ -23,7 +23,7 @@
 {% if ( is_granted('ROLE_PRENSA') or is_granted('ROLE_ADMIN') ) %}          
     <hr style="border-bottom: 2px solid #fff" />     
     <div class="row">
-        <div class="col-lg-12" style="text-align: right">
+        <div class="col-sm-12" style="text-align: right">
           <a href="{{path('novoLeiDecreto') }}">
             <button type="button" class="btn btn-primary btn-sm">Novo</button>
           </a>          

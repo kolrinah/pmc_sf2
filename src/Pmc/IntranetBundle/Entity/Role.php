@@ -16,7 +16,7 @@ class Role implements RoleInterface
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="smallint")
+     * @ORM\Column(name="id", type="smallint", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -39,7 +39,7 @@ class Role implements RoleInterface
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Pmc\IntranetBundle\Entity\Usuario", mappedBy="role")
+     * @ORM\ManyToMany(targetEntity="Usuario", mappedBy="role")
      */
     private $usuario;
 
@@ -149,5 +149,5 @@ class Role implements RoleInterface
     public function __toString()
     {
         return $this->getTag();
-    }    
+    }      
 }

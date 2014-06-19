@@ -1,6 +1,7 @@
 <div id="postar_{{ p.id }}">  
-  <textarea class="form-control" title="Escreva sua Comentário"
-            maxlength="250" placeholder="Postar Comentário"
+  <textarea id="comentario{{ p.id }}" class="form-control" title="Escreva sua Comentário"
+            maxlength="250" placeholder="Postar Comentário" onclick ="$(this).focus();"
+            onkeyup = "resizeTextarea($(this).attr('id'));"
             style="resize: vertical"></textarea>
   <div style="text-align: right; margin-top: 10px">
     <img style="display: none" src="{{asset(path_img ~'preload.gif')}}"/>

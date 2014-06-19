@@ -39,22 +39,29 @@ class SocialController extends Controller
         $request = $this->getRequest();
                 
         $data['tipo'] = $tipo; 
-        $data['uri'] = $request->getUri(); 
+        $data['uri'] = $request->getUri();         
         
+        $data['filtroStatus'] = ( !($this->get('security.context')->isGranted('ROLE_ADJUNTO')) or
+                                  ($tipo->getId() == 1) )? 'oculto':'';
+                
         $filtros = array();
         if ($request->isMethod('POST'))
         {        
-           $filtros = $request->request->get('form');  
-           //die(json_encode($filtros));
+           $filtros = $request->request->get('form');            
            $formulario->bind($request); 
-        }  
-         
+        }           
+        $filtros['filtroStatus'] = $data['filtroStatus'];
+        
         // Dependiendo del tipo de publicación, llamamos a la consulta
         $query = $this->getDoctrine()->getRepository('PmcIntranetBundle:Publicacao');
         
-        $data['publications'] = ($tipo->getId() == 1)? // SI SON MENSAJES
+        $query = ($tipo->getId() == 1)? // SI SON MENSAJES
             $query->getMensagensByUser($this->getUser(), $filtros) :
-            $query->getPublicacoesEspeciaisByUser($this->getUser(), $tipo, $filtros);;      
+            $query->getPublicacoesEspeciaisByUser($this->getUser(), $tipo, $filtros);    
+        
+        $firstResult =(isset($filtros['puntero']))? $filtros['puntero']: 0;
+        $data['publications'] = $this->get('serviciosComunes')
+                                     ->paginador($query, $firstResult);
         
         // EXAMINAMOS SI LA PETICION VIENE DE AJAX
         if (!($this->getRequest()->isXmlHttpRequest()))         
@@ -76,6 +83,7 @@ class SocialController extends Controller
         
         $data['titulo'] = 'Minha rede';
         $data['uri'] = $request->getUri(); 
+        $data['filtroStatus'] = 'oculto'; // APLICAMOS ESTE FILTRO SOLO PARA LAS PUBLICACIONES
                 
         $formulario = $this->createForm(new FiltrosPublicacoesType());
         $filtros = array();
@@ -95,9 +103,7 @@ class SocialController extends Controller
                                         ->createQuery("SELECT s.id
                                                        FROM PmcIntranetBundle:Secretaria s")
                                         ->getArrayResult();
-        
-        $firstResult =(isset($filtros['puntero']))? $filtros['puntero']: 0;
-        
+                
         //Buscamos los usuarios a quienes seguimos
         $em = $this->getDoctrine()->getManager();
         $query = $em->createQuery(
@@ -115,10 +121,11 @@ class SocialController extends Controller
                                            'user' => $this->getUser(),
                                          'patron' => "%$patron%",
                                     'secretarias' => $secretarias))
-                    ->setFirstResult($firstResult)
-                    ->setMaxResults(5);
+                    ->getResult();
         
-        $data['usuarios'] = $query->getResult();
+        $firstResult =(isset($filtros['puntero']))? $filtros['puntero']: 0;
+        $data['usuarios'] = $this->get('serviciosComunes')
+                                 ->paginador($query, $firstResult);
         
         // EXAMINAMOS SI LA PETICION VIENE DE AJAX
         if (!($this->getRequest()->isXmlHttpRequest()))         
@@ -161,15 +168,14 @@ class SocialController extends Controller
            try { $em->flush();
            } catch (\Exception $e) { // Atrapa Error del servidor
                     if(stristr($e->getMessage(), 'Foreign key violation'))
-                      $error = 'Verifique que no posea Dependencias.';                   
+                      $error = 'Verifique que no posea Dependencias.';
+                    else if(stristr($e->getMessage(), 'integrity constraint violation: 1062 '))
+                      $error = 'O usuário já está sendo seguido.';                     
                     else if(stristr($e->getMessage(), 'Unique violation'))                  
                       $error='Objeto duplicado no Servidor'; 
                     else $error = $e->getMessage();               
             die(json_encode(array('error'=>$error)));   
            } 
-           // Logró ser Actualizado
-//BITACORA $this->_bitacoraEliminarProyecto($datos);
-           
            die(json_encode(array('id' => $idUser )));   
        }       
     }
@@ -193,23 +199,21 @@ class SocialController extends Controller
         $tipo = $query; // Reemplazamos $tipo por el objeto       
            
        // VERIFICAMOS PERMISOS
-       if ( (!($this->get('security.context')->isGranted('ROLE_ADMIN')) and
-             !($this->get('security.context')->isGranted('ROLE_PRENSA')) and
-             !($this->get('security.context')->isGranted('ROLE_SECRETARIO')) and   
-             !($this->get('security.context')->isGranted('ROLE_ADJUNTO'))) )
-             return $this->render('PmcIntranetBundle:Templates:prohibido.html.twig');
+       if (!($this->get('security.context')->isGranted('ROLE_ADJUNTO')) )
+          return $this->render('PmcIntranetBundle:Templates:prohibido.html.twig');
        
        $data = $this->get('serviciosComunes')->rutinaInicio();
        // PREPARAMOS EL FORMULARIO
+       $request = $this->getRequest(); 
        $data['tipo'] = $tipo;
-       $data['usuario'] = array($this->getUser());
-       $publicacao = new Publicacao();       
+       $data['usuario'] = array($this->getUser());   
+       $data['uri'] = $request->getUri();
+       
+       $publicacao = new Publicacao();        
        $formulario = $this->createForm(new PublicacaoType($data), $publicacao);       
        
        $data['accion'] = 'Criar';
        
-       $request = $this->getRequest();   
-     
        if ($request->isMethod('POST'))
        {   
            $formulario->bind($request); 
@@ -219,8 +223,18 @@ class SocialController extends Controller
               $data['publicacao'] = $publicacao;
               $inserir = $this->_inserirPublicacao($data);
               if ( $inserir === true ) // ALL IS GOOD REDIRECT
+              {
+                 // Registramos en bitácora
+                 $data['action'] = 'INSERT';
+                 $data['module'] = 'Social';
+                 $data['description'] = 'Nova publicação id: '.$publicacao->getId().
+                                       ', "'.substr($publicacao->getTitulo(), 0, 20).'...", tipo: "'.
+                                        $tipo->getTipo().'".';
+                 $this->get('serviciosComunes')->cadastrarLog($data); 
+                
                  return $this->redirect($this->generateUrl('filtrar', 
                    array('tipo'=>mb_convert_case($tipo->getTipo(), \MB_CASE_LOWER, 'utf-8'))));  
+              }
            } 
        }        
        return $this->render('PmcIntranetBundle:Social:crudPublicacao.html.twig',array(
@@ -247,27 +261,33 @@ class SocialController extends Controller
         $tipo = $query; // Reemplazamos $tipo por el objeto       
            
        // VERIFICAMOS PERMISOS
-       if ( (!($this->get('security.context')->isGranted('ROLE_ADMIN')) and
-             !($this->get('security.context')->isGranted('ROLE_PRENSA')) and
-             !($this->get('security.context')->isGranted('ROLE_SECRETARIO')) and   
-             !($this->get('security.context')->isGranted('ROLE_ADJUNTO'))) )
-             return $this->render('PmcIntranetBundle:Templates:prohibido.html.twig');
+       if ( !($this->get('security.context')->isGranted('ROLE_ADJUNTO')) or ($tipo->getId()==1) ) 
+          return $this->render('PmcIntranetBundle:Templates:prohibido.html.twig');
        
        $data = $this->get('serviciosComunes')->rutinaInicio();
        // PREPARAMOS EL FORMULARIO
        $data['tipo'] = $tipo;
-       $data['usuario'] = array($this->getUser());
+       $data['usuario'] = array($this->getUser());       
        
        $publicacao = $this->getDoctrine()
-                      ->getRepository('PmcIntranetBundle:Publicacao')
-                      ->find($id);
+                          ->getRepository('PmcIntranetBundle:Publicacao')
+                          ->find($id);
        if (!$publicacao)  return $this->render('PmcIntranetBundle:Templates:prohibido.html.twig');
+       
+       // VERIFICAMOS PERMISOS PARA MODIFICAR LA PUBLICACIÓN
+       if (!( ( ($this->get('security.context')->isGranted('ROLE_ADJUNTO')) and 
+                ($publicacao->getTipo()->getId() != 1 ) and
+                ($publicacao->getUsuario()->getSecretaria() == $this->getUser()->getSecretaria()) ) or
+              ( ($this->get('security.context')->isGranted('ROLE_PRENSA')) and 
+               ($publicacao->getTipo()->getId() != 1 ) ) )
+          ) 
+          return $this->render('PmcIntranetBundle:Templates:prohibido.html.twig');       
        
        $formulario = $this->createForm(new PublicacaoType($data), $publicacao);       
        
+       $request = $this->getRequest(); 
        $data['accion'] = 'Editar';
-       
-       $request = $this->getRequest();   
+       $data['uri'] = $request->getUri();
      
        if ($request->isMethod('POST'))
        {   
@@ -280,8 +300,18 @@ class SocialController extends Controller
               $data['publicacao'] = $publicacao;
               $editar = $this->_editarPublicacao($data);
               if ( $editar === true ) // ALL IS GOOD REDIRECT
+              {    
+                 // Registramos en bitácora
+                 $data['action'] = 'UPDATE';
+                 $data['module'] = 'Social';
+                 $data['description'] = 'Edição da publicação id: '.$publicacao->getId().
+                                        ', tipo: "'.$tipo->getTipo().
+                                        '", "'.substr($publicacao->getTitulo(), 0, 20).'...".';
+                 $this->get('serviciosComunes')->cadastrarLog($data); 
+                
                  return $this->redirect($this->generateUrl('filtrar', 
-                      array('tipo'=>mb_convert_case($tipo->getTipo(), \MB_CASE_LOWER, 'utf-8'))));               
+                      array('tipo'=>mb_convert_case($tipo->getTipo(), \MB_CASE_LOWER, 'utf-8'))));
+              }
            }   
        }     
        return $this->render('PmcIntranetBundle:Social:crudPublicacao.html.twig',array(
@@ -398,60 +428,5 @@ class SocialController extends Controller
 /// BITACORA
         $this->get('session')->getFlashBag()->add('info', 'A publicação foi editada com sucesso');            
         return true;
-    }    
-    
-    
-    /*
-     // Si hay imagen   
-              if (null == $publicacao->getImagem()) 
-              {   // La imagen original no se modifica, recuperar su ruta
-                  $publicacao->setImagem($imagemOriginal);
-              }
-              else               
-              {  // La imagen se ha modificado
-                 $path_image = $this->container->getParameter('path_imagens');
-                 $publicacao->uploadImagem($path_image);
-                 // Ajustamos el tamaño de la imagen subida a máximo 800x600px
-                 $rutaCompleta = $path_image.$publicacao->getImagem();
-                 $this->get('serviciosComunes')->ajustarImagen($rutaCompleta);  
-                 // Borrar la imagen anterior
-                 @unlink($path_image.$imagemOriginal);
-              }
-         
-              // Proceso Especial si hay video incrustado
-              if (trim($publicacao->getVideo()) != null)
-              {
-                 $video = $this->get('serviciosComunes')->modificarVideo($publicacao->getVideo());                      
-                 if ($video == null)
-              {
-              $this->get('session')->getFlashBag()->add('error', 'Vídeo Inválido');
-              
-              }
-              else $publicacao->setVideo($video);           
-              }
-              // ACTUALIZAMOS EN BD
-              $error = false;
-              $em = $this->getDoctrine()->getManager();              
-              try {
-                    $em->flush();
-              } catch (\Exception $e) { // Atrapa Error del servidor
-                      if(stristr($e->getMessage(), 'Not null violation') or
-                         stristr($e->getMessage(), 'Integrity constraint violation')) 
-                         $error ='Todos os campos tem que ser preenchidos corretamente.';
-                      else if(stristr($e->getMessage(), 'Unique violation'))                  
-                         $error='Objeto duplicado no Servidor';                 
-                      else $error = $e->getMessage();           
-                      
-                $this->get('session')->getFlashBag()->add('error', $error);
-              }  
-              
-              if (!$error)
-              {
-//// INSERTAR EN BITACORA              
-                // CREACION SATISFACTORIA DE PUBLICACIÓN
-                $this->get('session')->getFlashBag()->add('info', 'A publicação foi editada com sucesso');
-                return $this->redirect($this->generateUrl('filtrar', array('tipo'=>$tipo->getTipo())));  
-              }  
-     */
-    
+    }      
 }

@@ -10,10 +10,10 @@
 <div style="padding-bottom: 100px">
   <div class="container" >
    <div class="row">
-    <div class="col-lg-4"> 
+    <div class="col-sm-4"> 
      {% include 'PmcIntranetBundle:Templates:menu.html.twig' %}
     </div>    
-    <div class="col-lg-5"> 
+    <div class="col-sm-5"> 
 <!--COLUNA CENTRO-->
      <div class="container-fix">
         {% block centralHeader %}
@@ -21,6 +21,23 @@
         {% endblock %}
              
        <div id="publications" class="container-fluid">
+           <div class="row">
+             <div class="col-sm-12">  
+              {% for mensaje in app.session.flashbag.get('info') %}
+                <div class="alert alert-success alert-dismissable" style="margin-top: 20px">
+                    <button type="button" class="close" data-dismiss="alert" 
+                            aria-hidden="true">&times;</button>
+                    <img src="{{asset(path_img ~'1_old.png')}}" /> &nbsp;{{ mensaje }}</div>
+              {% endfor %} 
+              {% for mensaje in app.session.flashbag.get('error') %}
+                 <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" 
+                            aria-hidden="true">&times;</button>
+                 <img src="{{asset(path_img ~'error24.png')}}" /> &nbsp;{{ mensaje }}</div>
+              {% endfor %}                     
+             </div>
+           </div>
+           
         {% block publications %}
            {# AQUI VAN LAS PUBLICACIONES RESULTADO DE LAS BUSQUEDAS #}
         {% endblock %}
@@ -32,7 +49,7 @@
      </div>  
 <!-- FINAL COLUNA CENTRO -->
     </div>           
-    <div id="banners" class="col-lg-3"> 
+    <div id="banners" class="col-sm-3"> 
       {% include 'PmcIntranetBundle:Templates:banners.html.twig' %}
     </div>           
    </div>

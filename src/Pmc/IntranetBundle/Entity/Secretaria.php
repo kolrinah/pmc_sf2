@@ -8,14 +8,14 @@ use Doctrine\ORM\Mapping as ORM;
  * Secretaria
  *
  * @ORM\Table(name="secretaria")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Pmc\IntranetBundle\Entity\SecretariaRepository")
  */
 class Secretaria
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -26,7 +26,7 @@ class Secretaria
      *
      * @ORM\Column(name="nome", type="string", length=100, nullable=false)
      */
-    private $nome;
+    private $nome = '';
 
     /**
      * @var string
@@ -47,7 +47,7 @@ class Secretaria
      *
      * @ORM\Column(name="url_site", type="string", length=100, nullable=true)
      */
-    private $urlSite;
+    private $urlSite = 'http://www.carapicuiba.sp.gov.br/index.php';
 
     /**
      * @var string
@@ -71,27 +71,42 @@ class Secretaria
     private $dataCadastro;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="nome_secretario", type="string", length=100, nullable=true)
-     */
-    private $nomeSecretario;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="foto", type="string", length=100, nullable=true)
-     */
-    private $foto;
-
-    /**
      * @var boolean
      *
      * @ORM\Column(name="ativo", type="boolean", nullable=false)
      */
-    private $ativo;
+    private $ativo = true;
 
+    /**
+     * @var \Usuario
+     *
+     * @ORM\ManyToOne(targetEntity="Usuario")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="usuario_id", referencedColumnName="id")
+     * })
+     */
+    private $secretario;    
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $servicos;
+    
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $usuarios;    
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->servicos = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->usuarios = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->dataCadastro = new \DateTime('now');
+        $this->ativo = true;
+    }
 
     /**
      * Get id
@@ -265,52 +280,6 @@ class Secretaria
     }
 
     /**
-     * Set nomeSecretario
-     *
-     * @param string $nomeSecretario
-     * @return Secretaria
-     */
-    public function setNomeSecretario($nomeSecretario)
-    {
-        $this->nomeSecretario = $nomeSecretario;
-
-        return $this;
-    }
-
-    /**
-     * Get nomeSecretario
-     *
-     * @return string 
-     */
-    public function getNomeSecretario()
-    {
-        return $this->nomeSecretario;
-    }
-
-    /**
-     * Set foto
-     *
-     * @param string $foto
-     * @return Secretaria
-     */
-    public function setFoto($foto)
-    {
-        $this->foto = $foto;
-
-        return $this;
-    }
-
-    /**
-     * Get foto
-     *
-     * @return string 
-     */
-    public function getFoto()
-    {
-        return $this->foto;
-    }
-
-    /**
      * Set ativo
      *
      * @param boolean $ativo
@@ -332,6 +301,95 @@ class Secretaria
     {
         return $this->ativo;
     }
+
+    /**
+     * Set secretario
+     *
+     * @param \Pmc\IntranetBundle\Entity\Usuario $secretario
+     * @return Comentario
+     */
+    public function setSecretario(\Pmc\IntranetBundle\Entity\Usuario $secretario = null)
+    {
+        $this->secretario = $secretario;
+
+        return $this;
+    }
+
+    /**
+     * Get secretario
+     *
+     * @return \Pmc\IntranetBundle\Entity\Usuario 
+     */
+    public function getSecretario()
+    {
+        return $this->secretario;
+    }
+    
+    /**
+     * Add servicos
+     *
+     * @param \Pmc\IntranetBundle\Entity\Servico $servicos
+     * @return Secretaria
+     */
+    public function addServico(\Pmc\IntranetBundle\Entity\Servico $servicos)
+    {
+        $this->servicos[] = $servicos;
+
+        return $this;
+    }
+
+    /**
+     * Remove servicos
+     *
+     * @param \Pmc\IntranetBundle\Entity\Servico $servicos
+     */
+    public function removeServico(\Pmc\IntranetBundle\Entity\Servico $servicos)
+    {
+        $this->servicos->removeElement($servicos);
+    }
+
+    /**
+     * Get servico
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getServicos()
+    {
+        return $this->servicos;
+    }
+    
+    /**
+     * Add usuarios
+     *
+     * @param \Pmc\IntranetBundle\Entity\Usuario $usuarios
+     * @return Secretaria
+     */
+    public function addUsuario(\Pmc\IntranetBundle\Entity\Usuario $usuarios)
+    {
+        $this->usuarios[] = $usuarios;
+
+        return $this;
+    }
+
+    /**
+     * Remove usuarios
+     *
+     * @param \Pmc\IntranetBundle\Entity\Usuario $usuarios
+     */
+    public function removeUsuario(\Pmc\IntranetBundle\Entity\Usuario $usuarios)
+    {
+        $this->usuarios->removeElement($usuarios);
+    }
+
+    /**
+     * Get usuarios
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUsuarios()
+    {
+        return $this->usuarios;
+    }    
     
     /**
      * @inheritDoc
@@ -339,5 +397,5 @@ class Secretaria
     public function __toString()
     {
        return $this->getNome();
-    }        
+    }      
 }

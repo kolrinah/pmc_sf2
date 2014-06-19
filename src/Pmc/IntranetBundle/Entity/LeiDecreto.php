@@ -15,7 +15,7 @@ class LeiDecreto
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -47,7 +47,7 @@ class LeiDecreto
      *
      * @ORM\Column(name="lei", type="boolean", nullable=false)
      */
-    private $lei;
+    private $lei = '1';
 
     /**
      * @var string
@@ -183,6 +183,7 @@ class LeiDecreto
         return $this->arquivo;
     }
     
+    
     /* * * * * * * * * * * * * * * * * * * * * * * 
      * METODOS CREADOS MANUALMENTE
      */
@@ -229,5 +230,5 @@ class LeiDecreto
           @fclose($handle);
        }
        return true;
-    }    
+    }        
 }

@@ -1,0 +1,76 @@
+{% extends 'PmcIntranetBundle:Templates:layout.html.twig' %}
+{% block title %} 
+{{ parent() }} | Home
+{% endblock %}
+
+{% block centralHeader %}
+<input type="hidden" id="uri" value="{{ data.uri }}"/>
+
+{# Posteador de Mensaje #}    
+{% include 'PmcIntranetBundle:Home:postarMensagem.html.twig' %} 
+{% endblock %}
+
+{% block publications %}
+
+{% include 'PmcIntranetBundle:Templates:publications.html.twig' %}
+{% endblock %}
+
+{# Ventanas emergentes #}
+{% block modalWindow %}
+    {% include 'PmcIntranetBundle:Templates:ventanaModal.html.twig' %}
+{% endblock %}
+
+{% block mais %}
+  <div class="row">
+    <div class="col-sm-12" style="margin-top: 20px">        
+        <img id="gifCargarMais" style="display: none "
+             src="{{ asset(path_img ~'loading.gif') }}"/>        
+        <div id="more" onclick="mostrarMaisRojo();">MAIS</div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block javascripts %}   
+    <script type="text/javascript" src="{{ asset('bundles/pmcintranet/js/home.js') }}"></script>
+    {# Script para sombrear la pestaña activa del menú #}
+    <script type="text/javascript">
+     $(document).ready(function() {
+         $('nav li').removeClass('active');
+         var elementos = $('nav li a');                        
+         elementos.each(function() { 
+                if (trim($(this).html()).toLowerCase().indexOf('início') >= 0 )
+                      $(this).parent().addClass('active');
+                     });
+     });                
+    /*
+     * AJAX para mostrar 10 publicaciones más Filtro Rojo
+     */
+    function mostrarMaisRojo()
+    {
+        $('#form_punteroRojo').val(parseInt($('#form_punteroRojo').val()) + {{ mostrar_mais }});
+        $.ajax({
+             type: 'POST',
+             url:  $('#uri').val(),
+             data: $("#formFiltroRojo").serialize(),
+             beforeSend:function(){ $('#gifCargarMais').show(); },        
+             dataType:'html'})
+          
+         .done(function(data) {                
+                $('#publications').append(data);
+                if (data.length < 200) // SI LLEGÓ AL FINAL DE REGISTROS DESHABILITA BOTON MAIS
+                {   $('#more').removeAttr('onclick');
+                    $('#more').html('Fim'); }
+           })         
+           
+         .always(function() { $('#gifCargarMais').hide(); })
+          
+         .fail(function(jqXHR, textStatus, errorThrown) {            
+                $('#ventanaModal .modal-title').html(traductor(textStatus));
+                $('#ventanaModal p').html(traductor(errorThrown));
+                $('#ventanaModal img').attr('src', $('#baseImg').val()+'error.png' );
+                $('#ventanaModal').modal('show');         
+            });
+         return true;
+    }
+  </script>
+{% endblock %}  

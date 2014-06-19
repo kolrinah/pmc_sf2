@@ -1,0 +1,84 @@
+Pmc\IntranetBundle\Entity\SolicitacaoServico:
+    type: entity
+    table: solicitacao_servico
+    indexes:
+        fk_servico_idx:
+            columns:
+                - servico_id
+        fk_requerente_idx:
+            columns:
+                - usuario_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: true
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        data:
+            type: datetime
+            nullable: true
+            comment: 'Data de criação da solicitação'
+        titulo:
+            type: string
+            nullable: false
+            length: 100
+            fixed: false
+            comment: 'Título ou Assunto'
+        conteudo:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+            comment: 'Descrição da solicitação.'
+        abertoUsuario:
+            type: boolean
+            nullable: false
+            comment: 'Status da solicitação para usuário.'
+            column: aberto_usuario
+            default: true
+        abertoSecretaria:
+            type: boolean
+            nullable: false
+            comment: 'Status da solicitação para secretaria.'
+            column: aberto_secretaria
+            default: true  
+        urgente:
+            type: boolean
+            nullable: false
+            comment: 'Status da solicitação para usuário.'
+            default: false 
+        codigoInterno:
+            type: string
+            nullable: false
+            length: 20
+            fixed: false
+            comment: 'Título ou Assunto'
+            column: codigo_interno
+    oneToMany:
+        comentarios:
+            targetEntity: ComentarioSolicitacaoServico
+            mappedBy: solicitacaoServico             
+    manyToOne:
+        servico:
+            targetEntity: Servico
+            cascade: {  }
+            mappedBy: null
+            inversedBy: solicitacaoServico
+            joinColumns:
+                servico_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        usuario:
+            targetEntity: Usuario
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                usuario_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

@@ -12,7 +12,7 @@ class LinkUteisController extends Controller
     /*
      * Lista los Links Útiles existentes en el sistema
      */
-    public function adminLinksUteisAction(Request $request)
+    public function listarLinksUteisAction(Request $request)
     {   
         $data = $this->get('serviciosComunes')->rutinaInicio();
         
@@ -26,14 +26,6 @@ class LinkUteisController extends Controller
                                                'class'=>'form-control', 
                                            'maxlength'=>'20', 
                                                'title'=>'Padrão de pesquisa')))
-                
-        /*->add('activo', 'choice', array('label' => 'Filtrar por:',
-                                     'required' => true,
-                                      'choices' => array('0' => 'Mostrar solo Ativos',
-                                                         '1' => 'Mostrar solo Inativos',
-                                                         '3' => 'Todos'),
-                                     'multiple' => false,
-                                     'expanded' => true ))*/
                 
         ->add('puntero', 'hidden', array('attr'=>array('value'=>'0')) )
                 
@@ -49,27 +41,23 @@ class LinkUteisController extends Controller
         
         $patron = (isset($filtros['patron']) and trim($filtros['patron']) != '')? 
                                  trim($filtros['patron']):'';
-        
-        /*$activo = (isset($filtros['activo']) and ($filtros['activo']) != '')? 
-                                 $filtros['activo']:3;*/
-        
-        $firstResult =(isset($filtros['puntero']))? $filtros['puntero']: 0;
                 
         $em = $this->getDoctrine()->getManager();        
-        $data['linksUteis'] = $em->createQuery('SELECT l
-                                                FROM PmcIntranetBundle:LinkUteis l 
-                                                WHERE (l.nome LIKE :patron or
-                                                       l.link LIKE :patron)                                                
-                                                ORDER BY l.nome ASC, l.id DESC')
-                                  ->setParameters(array('patron' => "%$patron%",
-                                                        /*'activo' => $activo)*/))
-                                  ->setFirstResult($firstResult)
-                                  ->setMaxResults(5)                   
-                                  ->getResult();        
+        $query = $em->createQuery('SELECT l
+                                   FROM PmcIntranetBundle:LinkUteis l 
+                                   WHERE (l.nome LIKE :patron or
+                                          l.link LIKE :patron)                                                
+                                   ORDER BY l.nome ASC, l.id DESC')
+                     ->setParameters(array('patron' => "%$patron%"))                 
+                     ->getResult();        
+        
+        $firstResult =(isset($filtros['puntero']))? $filtros['puntero']: 0;
+        $data['linksUteis'] =  $this->get('serviciosComunes')
+                                    ->paginador($query, $firstResult);
         
         // EXAMINAMOS SI LA PETICION VIENE DE AJAX
         if (!($this->getRequest()->isXmlHttpRequest()))  
-            return $this->render('PmcIntranetBundle:LinksUteis:adminLinksUteis.html.twig',
+            return $this->render('PmcIntranetBundle:LinksUteis:listaLinksUteis.html.twig',
                     array('formulario' => $formulario->createView(), 
                                 'data' => $data ));
         else
@@ -88,16 +76,18 @@ class LinkUteisController extends Controller
        
        if ($request->isMethod('POST')) 
        {  
-           $idLink = $request->request->get('idLink');           
+           $id = $request->request->get('idLink');           
 
            // Buscamos el Link
            $em = $this->getDoctrine()->getManager();
        
            $LinkUteis = $em->getRepository('PmcIntranetBundle:LinkUteis')
-                        ->find($idLink);           
+                        ->find($id);
            
            if (!$LinkUteis) die(json_encode(array('error'=>'Objeto não encontrado')));
-                      
+                  
+           $clon = $LinkUteis->getNome(); //Clonamos titulo antes de eliminarlo
+           
            $error='';
            $em->remove($LinkUteis);            
            try { $em->flush();
@@ -109,8 +99,12 @@ class LinkUteisController extends Controller
                     else $error = $e->getMessage();               
             die(json_encode(array('error'=>$error)));   
            } 
-           // Logró ser eliminado
-//BITACORA $this->_bitacoraEliminarProyecto($datos);
+           // Logró ser eliminado, Registramos en bitácora
+           $data['action'] = 'DELETE';
+           $data['module'] = 'LinkUteis';
+           $data['description'] = 'Exclusão de link id: '.$id.
+                                 ', "'.substr($clon, 0, 20).'...".';
+           $this->get('serviciosComunes')->cadastrarLog($data);
            
            die(json_encode(array('html' => '' )));      
        }       
@@ -129,6 +123,7 @@ class LinkUteisController extends Controller
        $data = $this->get('serviciosComunes')->rutinaInicio();
        $data['titulo'] = 'Link';
        $data['accion'] = 'novo';
+       $data['uri'] = $request->getUri();
               
        $linkUteis = new LinkUteis();
        
@@ -159,10 +154,16 @@ class LinkUteisController extends Controller
               
               if (!$error)
               {
-//// INSERTAR EN BITACORA              
+                // Registramos en bitácora
+                $data['action'] = 'INSERT';
+                $data['module'] = 'LinkUteis';
+                $data['description'] = 'Novo Link id: '.$linkUteis->getId().
+                                       ', "'.substr($linkUteis->getNome(), 0, 20).'...".';
+                $this->get('serviciosComunes')->cadastrarLog($data); 
+                
                 // ACTUALIZACIÓN SATISFACTORIA REDIRECCIONAMOS A LINKS
                 $this->get('session')->getFlashBag()->add('info', 'o Link foi criado com sucesso');
-                return $this->redirect($this->generateUrl('adminLinksUteis'));  
+                return $this->redirect($this->generateUrl('linksUteis'));  
               }  
            }   
        }     
@@ -194,6 +195,8 @@ class LinkUteisController extends Controller
        $formulario = $this->createForm(new LinkUteisType(), $link);
        
        $request = $this->getRequest();
+       $data['uri'] = $request->getUri();
+       
        if ($request->isMethod('POST'))
        {             
            $formulario->bind($request); 
@@ -218,10 +221,16 @@ class LinkUteisController extends Controller
               
               if (!$error)
               {
-//// INSERTAR EN BITACORA              
+                // Registramos en bitácora
+                $data['action'] = 'UPDATE';
+                $data['module'] = 'LinkUteis';
+                $data['description'] = 'Edição de Link id: '.$id.
+                                       ', "'.substr($link->getNome(), 0, 20).'...".';
+                $this->get('serviciosComunes')->cadastrarLog($data); 
+                
                 // ACTUALIZACIÓN SATISFACTORIA REDIRECCIONAMOS A BANNERS
                 $this->get('session')->getFlashBag()->add('info', 'o Link foi atualizado com sucesso');
-                return $this->redirect($this->generateUrl('adminLinksUteis'));  
+                return $this->redirect($this->generateUrl('linksUteis'));  
               }  
            }   
        }     

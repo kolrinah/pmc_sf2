@@ -1,9 +1,9 @@
 <div class="row-fluid">   
-    <div class="col-lg-12" style="text-align: center">
+    <div class="col-sm-12" style="text-align: center">
 {% if data.banners|length == 0 %}        
       <div class="banner">
          <img src="{{ asset(path_img ~'bannerDisponivel.png')}}" 
-              style="max-width:183px; max-height:91%">
+              style="width:100%;">
       </div>       
 {% else %}            
    {% for banner in data.banners %}       
@@ -14,7 +14,7 @@
              {% set src = asset(path_banners~banner.imagem) %}             
           {% endif %}  
           <img src="{{ src }}" 
-               style="max-width:183px; max-height:91%">
+               style="width:100%;">
         </a>
       </div>               
    {% endfor %}     

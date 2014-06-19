@@ -1,0 +1,13 @@
+{% if ( (is_granted('ROLE_ADJUNTO') and
+         (s.secretaria == app.user.secretaria)) or
+         is_granted('ROLE_PRENSA') ) %}
+<div class="row panel panel-default">
+  <div class="col-sm-12 panel-heading" style="text-align:right;">
+    <button type="button" class="btn btn-danger btn-sm"
+            onclick="excluirServico({{ s.id }}, 1)">Excluir</button>&nbsp;  
+    <a href="{{path('editarServico', { 'id': s.id } ) }}">
+       <button type="button" class="btn btn-primary btn-sm">Editar</button>
+    </a>        
+  </div>
+</div>    
+{% endif %}

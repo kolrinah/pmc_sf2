@@ -24,8 +24,8 @@ class LeiDecretoType extends AbstractType
                                                'maxlength'=>'50',
                                                  'onclick'=>'$(this).focus();',
                                                    'class'=>'form-control',                                                   
-                                             'placeholder'=>'Escreva nome do Banner',
-                                                   'title'=>'Nome do Banner')))
+                                             'placeholder'=>'Escreva nome',
+                                                   'title'=>'Nome')))
               
         ->add('conteudo', null, array('label'=>'Conteúdo',
                                  'required'=>false,
@@ -39,7 +39,7 @@ class LeiDecretoType extends AbstractType
                                                    'title'=>'Escreva o Conteúdo')))
               
         ->add('arquivo', 'file', array('label'=>'PDF',
-                                   'required'=>true,
+                                   'required'=>false,
                                 'data_class' => null))   
               
         ->add('lei', 'choice', array('label' => 'Tipo:',

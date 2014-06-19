@@ -1,6 +1,6 @@
 <!-- BOX FILTROS -->
 <div class="row-fluid">
-  <div class="col-sm-12 filtro-principal">   
+  <div class="col-sm-12 filtro-principal" > 
     <form id="formFiltros"
           action="" method="post" {{ form_enctype(formulario) }} >          
         <h5 class="tit-azul"> FILTRO DE {{ data.tipo.tipo|upper }} </h5>             
@@ -18,8 +18,11 @@
         </div> 
         <div class="row">
             <div id="collapseFiltros" class="col-sm-12 panel-collapse collapse" >
-                <div class="row panel-body" >
-                {{ form_row(formulario.secretarias) }}
+                <div class="row panel-body" >                   
+                  <div class="{{ data.filtroStatus }}">
+                      {{ form_row(formulario.status) }}
+                  </div>                   
+                      {{ form_row(formulario.secretarias) }}
                 </div>
                 <div style="text-align: right">
                     <a class="accordion-toggle collapsed" data-toggle="collapse" 
@@ -29,10 +32,7 @@
         </div>    
      {{ form_rest(formulario) }}    
     </form> 
-{% if ( (botonNuevo is not null) and ( is_granted('ROLE_SECRETARIO') or
-                             is_granted('ROLE_ADJUNTO') or 
-                             is_granted('ROLE_PRENSA') or 
-                             is_granted('ROLE_ADMIN') ) ) %}          
+{% if ( (botonNuevo is not null) and is_granted('ROLE_ADJUNTO') ) %}          
     <hr style="border-bottom: 2px solid #fff" />     
     <div class="row">
         <div class="col-sm-12" style="text-align: right">
@@ -42,6 +42,6 @@
         </div>      
     </div>      
 {% endif %}    
-  </div>
+  </div>        
 </div>  
 <!-- BOX FILTROS END -->

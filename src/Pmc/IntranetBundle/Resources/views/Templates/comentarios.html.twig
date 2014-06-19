@@ -6,7 +6,7 @@
 <div id="comentario_{{ cmt.id }}"
      class="panel panel-default" style="position: relative; z-index: 1"
      title="Postado em {{ cmt.data|date('d-')~cmt.data|date('M')|trans~
-                          cmt.data|date('-Y h:na') }}">
+                          cmt.data|date('-Y h:ia') }}">
 {# Boton Eliminar Comentario si el mismo pertenece al usuario #} 
 {% if app.user == cmt.usuario %}    
   <div style="position: absolute; top: 1px; right: 5px; z-index: 100">
@@ -30,8 +30,11 @@
         </div>
         <div class="media-body" style="text-align:justify; padding-right: 10px">
          <span class="media-heading name-comentarios">{{ cmt.usuario.nome }}</span>
-         <span style="font-size: 0.9em"> {{ cmt.comentario }}
-         </span>
+{% if cmt.usuario.banido %}
+         <center>[ Comentário banido pelo servidor ]</center>
+{% else %}          
+         <span style="font-size: 0.9em"> {{ cmt.comentario }}</span>
+{% endif %}         
         </div>        
     </div>              
   </div>  

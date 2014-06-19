@@ -21,7 +21,7 @@ class Usuario implements AdvancedUserInterface, \Serializable
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -74,28 +74,28 @@ class Usuario implements AdvancedUserInterface, \Serializable
      *
      * @ORM\Column(name="senha", type="string", length=200, nullable=false)
      */
-    private $senha;
+    private $senha = '5950c3628ec1e0973e66625d90240ec661b7fb3b';
 
     /**
      * @var string
      *
      * @ORM\Column(name="salt", type="string", length=200, nullable=false)
      */
-    private $salt;
+    private $salt = '636faccb4a9d532e63a3c7b00b4fb164';
 
     /**
      * @var integer
      *
      * @ORM\Column(name="tentativas", type="smallint", nullable=false)
      */
-    private $tentativas;
+    private $tentativas = '0';
 
     /**
      * @var integer
      *
      * @ORM\Column(name="tempo_espera", type="integer", nullable=false)
      */
-    private $tempoEspera;
+    private $tempoEspera = '0';
 
     /**
      * @var \DateTime
@@ -130,7 +130,14 @@ class Usuario implements AdvancedUserInterface, \Serializable
      *
      * @ORM\Column(name="ativo", type="boolean", nullable=false)
      */
-    private $ativo;
+    private $ativo = true;
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="banido", type="boolean", nullable=false)
+     */
+    private $banido = false;    
 
     /**
      * @var \Pmc\IntranetBundle\Entity\Secretaria
@@ -141,6 +148,13 @@ class Usuario implements AdvancedUserInterface, \Serializable
      * })
      */
     private $secretaria;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Pmc\IntranetBundle\Entity\Servico", mappedBy="responsavel")
+     */
+    private $servico;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -156,7 +170,7 @@ class Usuario implements AdvancedUserInterface, \Serializable
      * )
      */
     private $seguidor;
-    
+
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
@@ -171,18 +185,19 @@ class Usuario implements AdvancedUserInterface, \Serializable
      * )
      */
     private $role;
-    
+
     /**
      * Constructor
      */
     public function __construct()
     {
+        $this->servico = new \Doctrine\Common\Collections\ArrayCollection();
         $this->seguidor = new \Doctrine\Common\Collections\ArrayCollection();
         $this->role = new \Doctrine\Common\Collections\ArrayCollection;        
-        $this->role[] = 'ROLE_USER'; // VALOR POR OMISION        
         $this->ativo = false; // Crea al usuario inactivo para validarlo vía correo
+        $this->banido = false; 
         $this->tempoEspera = 0;
-        $this->tentativas = 0;                
+        $this->tentativas = 0;   
     }
 
 
@@ -297,7 +312,7 @@ class Usuario implements AdvancedUserInterface, \Serializable
     public function setEmail($email)
     {
         $this->email = \mb_convert_case(\trim($email),\MB_CASE_LOWER, "UTF-8");                
-        
+
         return $this;
     }
 
@@ -542,6 +557,29 @@ class Usuario implements AdvancedUserInterface, \Serializable
     }
 
     /**
+     * Set banido
+     *
+     * @param boolean $banido
+     * @return Usuario
+     */
+    public function setBanido($banido)
+    {
+        $this->banido = $banido;
+
+        return $this;
+    }
+
+    /**
+     * Get banido
+     *
+     * @return boolean 
+     */
+    public function getBanido()
+    {
+        return $this->banido;
+    }
+    
+    /**
      * Set secretaria
      *
      * @param \Pmc\IntranetBundle\Entity\Secretaria $secretaria
@@ -562,6 +600,39 @@ class Usuario implements AdvancedUserInterface, \Serializable
     public function getSecretaria()
     {
         return $this->secretaria;
+    }
+
+    /**
+     * Add servico
+     *
+     * @param \Pmc\IntranetBundle\Entity\Servico $servico
+     * @return Usuario
+     */
+    public function addServico(\Pmc\IntranetBundle\Entity\Servico $servico)
+    {
+        $this->servico[] = $servico;
+
+        return $this;
+    }
+
+    /**
+     * Remove servico
+     *
+     * @param \Pmc\IntranetBundle\Entity\Servico $servico
+     */
+    public function removeServico(\Pmc\IntranetBundle\Entity\Servico $servico)
+    {
+        $this->servico->removeElement($servico);
+    }
+
+    /**
+     * Get servico
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getServico()
+    {
+        return $this->servico;
     }
 
     /**
@@ -730,5 +801,54 @@ class Usuario implements AdvancedUserInterface, \Serializable
     public function __toString()
     {
        return $this->getNome();
+    }
+    
+    /* * * * * * * * * * * * * * * * * * * * * * * 
+     * METODOS CREADOS MANUALMENTE
+     */
+
+    // Método para subir la foto
+    public function uploadFoto($directorioDestino)
+    {
+        if (null === $this->foto) return;
+                
+        $nombreArchivoFoto = uniqid().'.'.
+                             $this->foto->getClientOriginalExtension();
+        $this->_crearDirectorio($directorioDestino);
+        $this->foto->move($directorioDestino, $nombreArchivoFoto);
+        $this->setFoto($nombreArchivoFoto);
+    }
+    
+    // METODO PARA REMOVER LA FOTO FISICAMENTE
+    public function removerFoto($directorioImagen)
+    {  
+       $imagen =  $directorioImagen.$this->foto;
+       if (file_exists($imagen)) @unlink($imagen);         
+       return true;
+    }
+    
+    // METODO PARA CREAR DIRECTORIO
+    private function _crearDirectorio($ruta)
+    {
+       if (!file_exists($ruta)) @mkdir($ruta, 0777, true);
+       $this->_crearArchivoIndex($ruta);
+    }
+
+    //METODO PARA CREAR ARCHIVOS INDEX EN CARPETA
+    private function _crearArchivoIndex($carpeta)
+    {
+       $archivo = $carpeta.'index.html';
+       $contenido = "<html><head><title>403 Proibida</title></head>".
+                    "<body>Ação Proibida.</body></html>";
+
+       // CREAMOS EL ARCHIVO SI NO EXISTE
+       if (!file_exists($archivo))
+       {
+          if (!$handle = @fopen($archivo, 'c')) die("No pudo abrir/crear el archivo");
+          if (@fwrite($handle, $contenido) === FALSE) die("No pudo escribir en archivo index");            
+          @fclose($handle);
+       }
+       return true;
     }    
+    
 }

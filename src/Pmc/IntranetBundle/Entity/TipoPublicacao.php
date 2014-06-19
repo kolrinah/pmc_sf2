@@ -15,7 +15,7 @@ class TipoPublicacao
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="smallint")
+     * @ORM\Column(name="id", type="smallint", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -66,5 +66,5 @@ class TipoPublicacao
     public function __toString() 
     {
         return $this->tipo;
-    }
+    }    
 }

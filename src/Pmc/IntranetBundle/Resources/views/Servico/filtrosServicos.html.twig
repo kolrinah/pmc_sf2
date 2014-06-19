@@ -1,0 +1,46 @@
+<!-- BOX FILTROS -->
+<div class="row-fluid">
+  <div class="col-sm-12 filtro-principal">   
+    <form id="formFiltros"
+          action="" method="post" {{ form_enctype(formulario) }} >          
+        <h5 class="tit-azul"> {{ data.titulo|upper }} </h5>             
+        <div class="input-group">
+            <span class="input-group-addon btn btn-primary" style="color:white;">
+                <a class="accordion-toggle collapsed" data-toggle="collapse" 
+                       href="#collapseFiltros">
+                   <img src="{{ asset(path_img ~'ico-seg-busca.png') }}"/>                
+                </a>                
+            </span>
+            {{ form_widget(formulario.patron) }}
+            <span class="input-group-addon btn btn-primary" style="color:white"
+                  onclick="$('#form_puntero').val(0); $('#formFiltros').submit();">
+                <img src="{{ asset(path_img ~'ico-busca.png') }}"/>  </span>                
+        </div> 
+        <div class="row">
+            <div id="collapseFiltros" class="col-sm-12 panel-collapse collapse" >
+                <div class="row panel-body" >
+                  <div class="{{ data.filtroStatus }}">
+                      {{ form_row(formulario.status) }}</div>
+                      {{ form_row(formulario.secretarias) }}
+                </div>
+                <div style="text-align: right">
+                    <a class="accordion-toggle collapsed" data-toggle="collapse" 
+                       href="#collapseFiltros">Ocultar Filtros</a>            
+                </div> 
+            </div>
+        </div>    
+     {{ form_rest(formulario) }}    
+    </form> 
+{% if is_granted('ROLE_ADJUNTO') %}         
+    <hr style="border-bottom: 2px solid #fff" />     
+    <div class="row">
+        <div class="col-sm-12" style="text-align: right">
+            <a href="{{ path('novoServico') }}">
+             <button type="button" class="btn btn-primary btn-sm"> Novo Serviço</button>
+          </a>              
+        </div>      
+    </div>      
+{% endif %}    
+  </div>
+</div>  
+<!-- BOX FILTROS END -->

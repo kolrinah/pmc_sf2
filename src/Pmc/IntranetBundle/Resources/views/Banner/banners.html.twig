@@ -1,0 +1,45 @@
+{# Banners en el sistema #}    
+{% for b in data.bannerAdmin %}  
+
+    {% set activo, title = '', '' %}
+    {% set displayActivar, displayInactivar = 'none', 'inline' %}
+    {% if (b.ativo == false) %}
+        {% set activo, title = 'inactivo', 'Banner Inativo' %}
+        {% set displayActivar, displayInactivar = 'inline', 'none' %}
+    {% endif %}    
+  <div id="banner_{{ b.id }}" data-orden ="{{ b.id }}">    
+   <div class="row {{ activo }}">
+     <div class="col-sm-12 panel panel-default" style="margin-bottom:-1px;">   
+         <div class="row"  style="padding:5px">
+             <div class="col-sm-5">
+          {% set imagem = asset(path_img ~'no_banner.png') %} 
+          {% if b.imagem|length > 0 %}            
+                {% set imagem = asset(path_banners) ~ b.imagem %}
+          {% endif %} 
+               <img class="row img-thumbnail" style="width:100%"
+                    src="{{ imagem }}">      
+             </div>
+             <div class="col-sm-6" style="padding: 5px" >
+                <div class="row"> {{ b.nome }} </div>
+                <div class="row" style="color: #009933; font-size: 0.9em">
+                    {{ b.url|lower }} </div>                
+             </div>                 
+             <div class="col-sm-1" style="text-align: right;">
+                 <img id="cargar_{{ b.id }}" src="{{asset(path_img ~'preload.gif')}}" 
+                      style="display:none" />
+                 <img id="inactivo_{{ b.id }}" src="{{asset(path_img ~'cancel16.png')}}"
+                      style="cursor: pointer; display:{{ displayActivar }}" 
+                      title="clique para ativar" 
+                      onclick="activarBanner({{ b.id }}, 1)"/> 
+                 <img id="activo_{{ b.id }}" src="{{asset(path_img ~'activo16.png')}}"
+                      style="cursor: pointer;display:{{ displayInactivar }}" 
+                      title="clique para inativar"
+                      onclick="activarBanner({{ b.id }}, 0)"/> 
+             </div>                      
+         </div>   
+     </div>                  
+   </div>  
+ {% include 'PmcIntranetBundle:Banner:controlBanner.html.twig' %}             
+ </div>         
+{% endfor %}    
+{#</div>      #}

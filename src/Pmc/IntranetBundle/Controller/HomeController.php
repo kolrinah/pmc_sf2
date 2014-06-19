@@ -24,9 +24,13 @@ class HomeController extends Controller
         else $filtros =array();
         
         //Buscamos las publicaciones que debemos ver
-        $data['publications'] = $this->getDoctrine()
-                                     ->getRepository('PmcIntranetBundle:Publicacao')
-                                     ->getPublicacoesHomeUser($this->getUser(), $filtros); 
+        $query = $this->getDoctrine()
+                      ->getRepository('PmcIntranetBundle:Publicacao')
+                      ->getPublicacoesHomeUser($this->getUser()); 
+        
+        $firstResult =(isset($filtros['puntero']))? $filtros['puntero']: 0;
+        $data['publications'] = $this->get('serviciosComunes')
+                                     ->paginador($query, $firstResult);
         
         $publicacao = new Publicacao();        
         $formPostarMensagem = $this->createForm(new PostarMensagemType(), $publicacao); 
@@ -43,7 +47,17 @@ class HomeController extends Controller
               $data['publicacao'] = $publicacao;
               $inserir = $this->_inserirPublicacao($data);
               if ( $inserir === true ) // ALL IS GOOD REDIRECT
+              {
+                 // Registramos en bitácora
+                 $data['action'] = 'INSERT';
+                 $data['module'] = 'Home';
+                 $data['description'] = 'Nova publicação id: '.$publicacao->getId().
+                                       ', "'.substr($publicacao->getTitulo(), 0, 20).
+                                       '...", tipo: "Mensagem".';
+                 $this->get('serviciosComunes')->cadastrarLog($data); 
+                 
                  return $this->redirect($request->getUri());
+              }
            }           
         }   
         
@@ -57,6 +71,43 @@ class HomeController extends Controller
                                     array('data' => $data ));   
     }
     
+    /*
+     * Método para aplicar filtro rojo
+     */
+    public function filtroRojoAction(Request $request)
+    {
+        if (!$request->isMethod('POST')) 
+           return $this->redirect($this->generateUrl('home'), 301);
+                
+        $data = $this->get('serviciosComunes')->rutinaInicio();        
+        $data['uri'] = $request->getUri(); 
+        
+        $filtros = $request->request->get('form');
+        
+        $data['patron'] = $filtros['patron'];
+        
+        //Buscamos las publicaciones que debemos ver
+        $query = $this->getDoctrine()
+                      ->getRepository('PmcIntranetBundle:Publicacao')
+                      ->getPublicacoesHomeUser($this->getUser(), $filtros); 
+        
+        $firstResult =(isset($filtros['puntero']))? $filtros['puntero']: 0;
+        $data['publications'] = $this->get('serviciosComunes')
+                                     ->paginador($query, $firstResult);
+        
+        $publicacao = new Publicacao();        
+        $formPostarMensagem = $this->createForm(new PostarMensagemType(), $publicacao); 
+                
+        // EXAMINAMOS SI LA PETICION VIENE DE AJAX
+        if (!($this->getRequest()->isXmlHttpRequest()))           
+           return $this->render('PmcIntranetBundle:Home:homeRojo.html.twig',array(
+                         'formPostarMensagem' => $formPostarMensagem->createView(),                        
+                                       'data' => $data ));        
+        else // Mostrar Mais Rojo
+            return $this->render('PmcIntranetBundle:Templates:publications.html.twig',
+                                    array('data' => $data ));           
+    }
+
     /*
      * Método privado para Insertar Publicación
      */
@@ -153,8 +204,14 @@ class HomeController extends Controller
                  
                  die (json_encode(array('error'=>$error)));
            }
-           
-/* REGISTRAR EN BITACORA AQUI    */
+           // Registramos en bitácora
+           $data['action'] = 'INSERT';
+           $data['module'] = 'Home';
+           $data['description'] = 'Novo comentário id: '.$comentario->getId().
+                                  ', "'.substr($comentario->getComentario(), 0, 20).'...",'.
+                                  ' em publicação id: '.$publicacao->getId().', "'.
+                                  substr($publicacao->getTitulo(), 0, 20).'...".'; 
+           $this->get('serviciosComunes')->cadastrarLog($data);
            
            // REGISTRO EXITOSO
            die (json_encode(array('exito'=>$error))); 
@@ -182,7 +239,7 @@ class HomeController extends Controller
                                       JOIN c.usuario u
                                       JOIN c.publicacao p                                      
                                       WHERE p.id = :idPublicacao
-                                      ORDER BY c.data DESC')
+                                      ORDER BY c.data')
                        ->setParameter('idPublicacao', $idPublicacao);
     
            $p['comentarios'] = $query->getResult();
@@ -204,17 +261,18 @@ class HomeController extends Controller
        
        if ($request->isMethod('POST')) 
        {  
-           $idComentario = $request->request->get('idComentario');           
+           $id = $request->request->get('idComentario');           
 
            // Buscamos el comentario
            $em = $this->getDoctrine()->getManager();
        
            $comentario = $em->getRepository('PmcIntranetBundle:Comentario')
-                            ->find($idComentario);           
+                            ->find($id);           
            
            if (!$comentario) die(json_encode(array('error'=>'Objeto não encontrado')));
            
            $publicacion = $comentario->getPublicacao();
+           $clon = $comentario->getComentario();
            
            $error='';
            $em->remove($comentario);            
@@ -228,7 +286,14 @@ class HomeController extends Controller
             die(json_encode(array('error'=>$error)));   
            } 
            // Logró ser eliminado
-//BITACORA $this->_bitacoraEliminarProyecto($datos);
+           // Registramos en bitácora
+           $data['action'] = 'DELETE';
+           $data['module'] = 'Home';
+           $data['description'] = 'Exclusão do comentário id: '.$id.
+                                  ', "'.substr($clon, 0, 20).'..." em publicação id: '.
+                                  $publicacion->getId().', "'.
+                                  substr($publicacion->getTitulo(), 0, 20).'...".';
+           $this->get('serviciosComunes')->cadastrarLog($data);
           
            // Refrescamos los comentarios
            $query = $em->createQuery('SELECT c, u
@@ -261,15 +326,18 @@ class HomeController extends Controller
        
        if ($request->isMethod('POST')) 
        {  
-           $idPublicacao = $request->request->get('idPublicacao');           
+           $id = $request->request->get('idPublicacao');           
 
            // Buscamos la publicación
            $em = $this->getDoctrine()->getManager();
        
            $publicacao = $em->getRepository('PmcIntranetBundle:Publicacao')
-                            ->find($idPublicacao);           
+                            ->find($id);           
            
            if (!$publicacao) die(json_encode(array('error'=>'Objeto não encontrado')));
+           
+           $clon = $publicacao->getTitulo(); //Clonamos titulo antes de eliminarlo
+           $tipo = $publicacao->getTipo()->getTipo();
            
            // Si la publicación posee imagen
            if (strlen(trim($publicacao->getImagem())) > 0)
@@ -289,9 +357,15 @@ class HomeController extends Controller
             die(json_encode(array('error'=>$error)));   
            } 
            // Logró ser eliminado
-//BITACORA $this->_bitacoraEliminarProyecto($datos);
+           // Registramos en bitácora
+           $data['action'] = 'DELETE';
+           $data['module'] = 'Home';
+           $data['description'] = 'Exclusão da publicação id: '.$id.
+                                  ', tipo: "'.$tipo.
+                                  '", "'.substr($clon, 0, 20).'...".';
+           $this->get('serviciosComunes')->cadastrarLog($data);
            
-           die(json_encode(array('id' => $idPublicacao,
+           die(json_encode(array('id' => $id,
                                'html' => '')));   
        }
        

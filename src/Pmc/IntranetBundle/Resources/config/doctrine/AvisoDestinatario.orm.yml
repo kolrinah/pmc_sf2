@@ -1,0 +1,49 @@
+Pmc\IntranetBundle\Entity\AvisoDestinatario:
+    type: entity
+    table: aviso_destinatario
+    indexes:
+        fk_aviso_destino_idx:
+            columns:
+                - aviso_id
+        fk_destinatario_idx:
+            columns:
+                - usuario_id
+    uniqueConstraints:
+        id_UNIQUE:
+            columns:
+                - id                
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: true
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        leido:
+            type: boolean
+            nullable: false
+            comment: ''
+            default: false
+    manyToOne:
+        aviso:
+            targetEntity: Aviso
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                aviso_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        usuario:
+            targetEntity: Usuario
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                usuario_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

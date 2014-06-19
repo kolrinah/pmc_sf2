@@ -98,9 +98,7 @@ Pmc\IntranetBundle\Entity\LeiDecreto:
             max: 2000            
             maxMessage: " O campo não pode exceder 2000 caracteres "
             minMessage: " Deve superar 5 caracteres "                  
-    arquivo:
-        - NotBlank: {message: ""}
-        - NotNull: {message: " Deve selecionar arquivo "}      
+    arquivo:      
         - File:
             maxSize: "2M"
             maxSizeMessage: " O tamanho do arquivo não pode ser maio a 2MB "
@@ -261,3 +259,29 @@ Pmc\IntranetBundle\Entity\Secretaria:
             minMessage: " Deve superar 5 caracteres "
     secretario:
         - NotNull: {message: " Deve selecionar um secretário "}
+        
+Pmc\IntranetBundle\Entity\Aviso:
+  properties:
+    titulo:
+        - NotBlank: {message: ""}
+        - NotNull: {message: " O campo não pode ser nulo "}
+        - Length:
+            min: 4
+            max: 100            
+            maxMessage: " O campo não pode exceder 100 caracteres "
+            minMessage: " Deve superar 4 caracteres "
+    conteudo:
+        - Length:
+            min: 5
+            max: 2000            
+            maxMessage: " O campo não pode exceder 2000 caracteres "
+            minMessage: " Deve superar 5 caracteres "  
+        
+    destinatarios:
+        - Count:             
+            min: 1 
+            minMessage: " Selecione pelo menos um destinatário "        
+            
+Pmc\IntranetBundle\Entity\AvisoDestinatario:
+    usuario:
+        - NotNull: {message: " Deve selecionar um destinatário "}

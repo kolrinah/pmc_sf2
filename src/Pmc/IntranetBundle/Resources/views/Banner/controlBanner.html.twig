@@ -1,0 +1,11 @@
+{% if is_granted('ROLE_PRENSA') or  is_granted('ROLE_ADMIN') %}
+<div class="row panel panel-default">
+  <div class="col-sm-12 panel-heading" style="text-align:right;">
+    <button type="button" class="btn btn-danger btn-sm"
+            onclick="excluirBanner({{ b.id }}, 1)">Excluir</button>&nbsp;  
+    <a href="{{path('editarBanner', { 'id': b.id } ) }}">
+       <button type="button" class="btn btn-primary btn-sm">Editar</button>
+    </a>        
+  </div>
+</div>    
+{% endif %}

@@ -2,6 +2,8 @@
 
 namespace Pmc\IntranetBundle\Library;
 
+use Pmc\IntranetBundle\Entity\Log;
+
 class ServiciosComunes 
 {
     private $container;
@@ -23,13 +25,17 @@ class ServiciosComunes
         setlocale(LC_ALL,'pt_BR');
         locale_set_default('pt_BR');
         
+        $user = $this->container->get('security.context')->getToken()->getUser();
+        
         // Registramos el último acceso del usuario
         $this->container->get('doctrine')              
              ->getRepository('PmcIntranetBundle:Usuario')           
-             ->registraUltimoAcessoUsuario($this->container->get('security.context')
-                                                           ->getToken()->getUser());
-        
+             ->registraUltimoAcessoUsuario($user);        
         $data = array();
+        
+        $data['cantidadAvisos'] = $this->container->get('doctrine')              
+                                       ->getRepository('PmcIntranetBundle:Aviso')           
+                                       ->cantidadAvisosPendientes($user); 
         
         //Buscamos los Banners Activos
         $em = $this->container->get('doctrine')->getManager();
@@ -43,6 +49,35 @@ class ServiciosComunes
         
         return $data;
     }
+
+    /*
+     * METODO PARA ENVIAR CORREO DE ACTIVACIÓN
+     */
+    public function enviarCorreioAtivacao($usuario)
+    {
+       $url = $this->container->get('router')->generate('ativarConta',
+                            array('conta'=>$usuario->getEmail(),
+                                  'geral'=>$usuario->getSalt()),true);      
+
+       $correio = $this->container->getParameter('mailer_user');
+       
+       $nome = explode(' ', trim($usuario->getNome())); 
+       
+       $data['titulo']='Ativação de conta';
+       $data['from']=array($correio => 'Prefeitura Municipal de Carapicuíba');
+       
+       $data['nome'] = mb_convert_case($nome[0], \MB_CASE_TITLE, 'utf-8');
+       $data['url'] = $url;
+       
+       $message = \Swift_Message::newInstance()
+                        ->setSubject($data['titulo'])
+                        ->setFrom($data['from'])
+                        ->setTo($usuario->getEmail())
+                        ->setBody( $this->container->get('templating')->render(
+            'PmcIntranetBundle:Correio:correioAtivacao.html.twig', $data),'text/html');
+
+       return $this->container->get('mailer')->send($message);      
+    }        
     
     public function ajustarImagen($rutaImagen, $maxX=800, $maxY=600)
     {        
@@ -64,9 +99,33 @@ class ServiciosComunes
             {
                 $this->container->get('session')->getFlashBag()
                                 ->add('error', $imagen->display_errors());
-                return false;
+                return false;           
             }
         } return true;
+    }
+    
+    /*
+     * Método para recortar la imagen
+     */
+    public function recortarImagen($rutaImagen, $maxX=150, $maxY=150)
+    {    
+          $imagenInfo=@getimagesize($rutaImagen);
+          if ($imagenInfo['0']<=$maxX) {$maxX = $imagenInfo['0'];$maxY = $imagenInfo['0'];}
+          
+          $config['image_library'] = 'gd2';
+          $config['source_image'] = $rutaImagen;   
+          $config['width'] = $maxX;  
+          $config['height'] = $maxY;  
+          $config['maintain_ratio'] = FALSE;
+          $imagen = $this->container->get('imageLib');
+          $imagen->initialize($config);
+          if (!$imagen->crop())
+          {
+             $this->container->get('session')->getFlashBag()
+                             ->add('error', $imagen->display_errors());
+             return false;
+          } 
+         return true;
     }
     
     /*
@@ -208,5 +267,66 @@ class ServiciosComunes
           }                      
        }                     
        return $nvoVideo;        
-    }    
+    }
+    
+    /*
+     * PAGINADOR DE RESULTADOS DE CONSULTAS
+     */
+    public function paginador($array, $firstResult=0)
+    {
+        $maxResults = $this->container->getParameter('mostrar_mais');
+        $matrix =array();
+        $ultimo = count($array); // Ultima posición del array
+        $hasta = $firstResult + $maxResults;
+        $hasta = ($hasta > $ultimo)? $ultimo : $hasta;
+        
+        if ($firstResult <= $ultimo)
+           for ($i = $firstResult; $i < $hasta; $i++) array_push($matrix, $array[$i]); 
+        return $matrix;
+    }
+    
+    /*
+     * Método para saber si un objeto está presente en una colección de objetos
+     */
+    public function inCollection($objeto, $coleccion)
+    {
+        foreach ($coleccion as $c) 
+        {
+           if ($objeto == $c) return true;            
+        }        
+        return false;
+    }
+    
+    /*
+     * RUTINA DE REGISTRO DE BITACORA DE SISTEMA
+     */
+    public function cadastrarLog($data)
+    {
+       $user = (isset($data['usuario']))? $data['usuario']:
+                        $this->container->get('security.context')->getToken()->getUser();
+       
+       $ip = $this->container->get('request')->getClientIp();
+       $userAgent = $this->container->get('request')->headers->get('user-agent');
+       
+       $log = new Log();
+       $log->setDate(new \DateTime('now'));
+       $log->setIp($ip);
+       $log->setUserAgent($userAgent);
+       $log->setUsuario($user);       
+       $log->setAction($data['action']);
+       $log->setModule($data['module']);
+       $log->setDescription($data['description'].' Realizado por: '.$user->getNome().'.');
+       
+       $em = $this->container->get('doctrine')->getManager();
+       $em->persist($log);       
+       try {       
+             $em->flush();
+           } catch (\Exception $e) { // Atrapa Error del servidor
+               $error='Aconteceu um erro durante cadastro do log. '.$e->getMessage();
+               $this->container->get('session')->getFlashBag()
+                               ->add('error', $error);
+               return false;
+       }
+       return true;       
+    }
 }

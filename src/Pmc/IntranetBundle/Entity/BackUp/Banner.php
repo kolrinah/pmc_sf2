@@ -15,7 +15,7 @@ class Banner
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -47,14 +47,14 @@ class Banner
      *
      * @ORM\Column(name="ativo", type="boolean", nullable=false)
      */
-    private $ativo;
+    private $ativo = '1';
 
     /**
      * @var integer
      *
      * @ORM\Column(name="ordem", type="smallint", nullable=false)
      */
-    private $ordem;
+    private $ordem = '1';
 
     /**
      * Constructor
@@ -130,6 +130,7 @@ class Banner
     public function setImagem($imagem)
     {
         $this->imagem = $imagem;
+
         return $this;
     }
 
@@ -235,5 +236,5 @@ class Banner
           @fclose($handle);
        }
        return true;
-    }    
+    }        
 }

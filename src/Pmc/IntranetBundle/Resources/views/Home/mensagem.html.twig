@@ -1,7 +1,7 @@
 <!-- BOX MENSAGEM --> 
 <div class="row">
   <h6 class="tit-preto linha-preto" style="font-weight:bolder;">Mensagens</h6>        
-  <div class="col-lg-12 panel panel-default" style="margin-bottom: 0px;position: relative; z-index: 1">
+  <div class="col-sm-12 panel panel-default" style="margin-bottom: 0px;position: relative; z-index: 1">
 {# Boton Eliminar Comentario si el mismo pertenece al usuario #} 
 {% if app.user == p.usuario %}    
      <div style="position: absolute; top: 1px; right: 5px; z-index: 100">
@@ -29,19 +29,23 @@
        </div>              
      </div>              
      <div class="row">
-       <div class="col-lg-12" style="text-align:justify">         
-         {{ p.titulo|length > 100 ? p.titulo|slice(0, 100) ~ '...' : p.titulo  }}                              
+       <div class="col-sm-12" style="text-align:justify">
+{% if p.usuario.banido %}
+         <center>[ Publicação banida pelo servidor ]</center>
+{% else %}               
+         {{ p.titulo|length > 100 ? p.titulo|slice(0, 100) ~ '...' : p.titulo  }}
+{% endif %}               
        </div>
      </div>
      <hr/>      
      <div class="row" style="padding:0px 5px 10px">
-       <div class="col-lg-6">          
+       <div class="col-sm-6">          
             <a data-toggle="collapse" href="#collapse{{p.id}}">
                <img src="{{ asset(path_img ~'ico-comentarios.png')}}" 
                   width="22" height="24"/>
                <span style="margin-left:5px;">Comentários</span></a>          
        </div>
-       <div class="col-lg-6" style="text-align: right">          
+       <div class="col-sm-6" style="text-align: right">          
             <a data-toggle="collapse" href="#collapse{{p.id}}">
                <img src="{{ asset(path_img ~'ico-leia.png')}}" 
                      width="23" height="19">

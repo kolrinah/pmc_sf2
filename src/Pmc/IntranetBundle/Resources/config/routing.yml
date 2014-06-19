@@ -16,6 +16,26 @@ salida:
    pattern: /login/salida
    defaults: { _controller: PmcIntranetBundle:Access:salida }
    
+borrarCache:   
+   pattern: /login/borrarCache
+   defaults: { _controller: PmcIntranetBundle:Access:borrarCache }
+   
+borrarCacheTwig:   
+   pattern: /login/borrarCacheTwig
+   defaults: { _controller: PmcIntranetBundle:Access:borrarCacheTwig }   
+ 
+ativarConta:
+   pattern: /login/ativar
+   defaults: { _controller: PmcIntranetBundle:Access:ativarConta }
+   
+esqueciSenha:
+   pattern: /login/esqueciSenha
+   defaults: { _controller: PmcIntranetBundle:Access:esqueciSenha }
+   
+cambiarSenha:
+   pattern: /cambiarSenha
+   defaults: { _controller: PmcIntranetBundle:Funcionario:cambiarSenha }   
+   
 postarComentario:
    pattern: /ajax/postarComentario
    defaults: { _controller: PmcIntranetBundle:Home:postarComentario }
@@ -23,15 +43,43 @@ postarComentario:
 excluirComentario:
    pattern: /ajax/excluirComentario
    defaults: { _controller: PmcIntranetBundle:Home:excluirComentario } 
+
+refrescarComentarios:
+   pattern: /ajax/refrescarComentarios
+   defaults: { _controller: PmcIntranetBundle:Home:refrescarComentarios }  
+   
+postarComentarioSolicitacao:
+   pattern: /ajax/postarComentarioSolicitacao
+   defaults: { _controller: PmcIntranetBundle:ServicoSolicitado:postarComentario }
+   
+excluirComentarioSolicitacao:
+   pattern: /ajax/excluirComentarioSolicitacao
+   defaults: { _controller: PmcIntranetBundle:ServicoSolicitado:excluirComentario } 
+
+refrescarComentariosSolicitacao:
+   pattern: /ajax/refrescarComentariosSolicitacao
+   defaults: { _controller: PmcIntranetBundle:ServicoSolicitado:refrescarComentarios }
+   
+postarComentarioAviso:
+   pattern: /ajax/postarComentarioAviso
+   defaults: { _controller: PmcIntranetBundle:Avisos:postarComentario }
+   
+excluirComentarioAviso:
+   pattern: /ajax/excluirComentarioAviso
+   defaults: { _controller: PmcIntranetBundle:Avisos:excluirComentario } 
+
+refrescarComentariosAviso:
+   pattern: /ajax/refrescarComentariosAviso
+   defaults: { _controller: PmcIntranetBundle:Avisos:refrescarComentarios }   
    
 excluirPublicacao:
    pattern: /ajax/excluirPublicacao
    defaults: { _controller: PmcIntranetBundle:Home:excluirPublicacao }      
-   
-refrescarComentarios:
-   pattern: /ajax/refrescarComentarios
-   defaults: { _controller: PmcIntranetBundle:Home:refrescarComentarios }   
 
+filtroRojo:
+   pattern: /home
+   defaults: { _controller: PmcIntranetBundle:Home:filtroRojo }
+   
 filtrar:
    pattern: /filtrar/{tipo}
    defaults: { _controller: PmcIntranetBundle:Social:filtrar }   
@@ -46,31 +94,35 @@ seguir:
    
 adminBanners:
    pattern: /admin/banners
-   defaults: { _controller: PmcIntranetBundle:Administrativo:adminBanners }   
+   defaults: { _controller: PmcIntranetBundle:Banner:adminBanners }   
+   
+log:
+   pattern: /admin/log
+   defaults: { _controller: PmcIntranetBundle:Log:listar }    
    
 activarBanner:
    pattern: /ajax/activarBanner
-   defaults: { _controller: PmcIntranetBundle:Administrativo:activarBanner } 
+   defaults: { _controller: PmcIntranetBundle:Banner:activarBanner } 
    
 actualizaOrden:
    pattern: /ajax/actualizaOrden
-   defaults: { _controller: PmcIntranetBundle:Administrativo:actualizaOrden }   
+   defaults: { _controller: PmcIntranetBundle:Banner:actualizaOrden }   
    
 excluirBanner:
    pattern: /ajax/excluirBanner
-   defaults: { _controller: PmcIntranetBundle:Administrativo:excluirBanner }    
+   defaults: { _controller: PmcIntranetBundle:Banner:excluirBanner }    
 
 editarBanner:
    pattern: /admin/banners/editar/{id}
-   defaults: { _controller: PmcIntranetBundle:Administrativo:editarBanner, id: null } 
+   defaults: { _controller: PmcIntranetBundle:Banner:editarBanner, id: null } 
    
 novoBanner:
    pattern: /admin/banners/novo
-   defaults: { _controller: PmcIntranetBundle:Administrativo:novoBanner }    
+   defaults: { _controller: PmcIntranetBundle:Banner:novoBanner }    
    
-adminLinksUteis:
-   pattern: /admin/linkUteis
-   defaults: { _controller: PmcIntranetBundle:LinkUteis:adminLinksUteis } 
+linksUteis:
+   pattern: /linkUteis
+   defaults: { _controller: PmcIntranetBundle:LinkUteis:listarLinksUteis } 
    
 excluirLinkUteis:
    pattern: /ajax/excluirLinkUteis
@@ -84,9 +136,9 @@ editarLinkUteis:
    pattern: /admin/linkUteis/editar/{id}
    defaults: { _controller: PmcIntranetBundle:LinkUteis:editarLinkUteis, id: null }   
    
-adminLeiDecreto:
-   pattern: /admin/leiDecreto
-   defaults: { _controller: PmcIntranetBundle:LeiDecreto:adminLeiDecreto } 
+leiDecreto:
+   pattern: /leiDecreto
+   defaults: { _controller: PmcIntranetBundle:LeiDecreto:listarLeiDecreto } 
    
 excluirLeiDecreto:
    pattern: /ajax/excluirLeiDecreto
@@ -99,6 +151,70 @@ novoLeiDecreto:
 editarLeiDecreto:
    pattern: /admin/leiDecreto/editar/{id}
    defaults: { _controller: PmcIntranetBundle:LeiDecreto:editarLeiDecreto, id: null }   
+
+funcionarios:
+   pattern: /funcionarios
+   defaults: { _controller: PmcIntranetBundle:Funcionario:listarFuncionarios }
+   
+novoFuncionario:
+   pattern: /admin/funcionarios/novo
+   defaults: { _controller: PmcIntranetBundle:Funcionario:novoFuncionario }
+
+editarFuncionario:
+   pattern: /admin/funcionarios/editar/{id}
+   defaults: { _controller: PmcIntranetBundle:Funcionario:editarFuncionario, id: null }  
+
+perfilFuncionario:
+   pattern: /funcionarios/perfil/{user}
+   defaults: { _controller: PmcIntranetBundle:Funcionario:perfilFuncionario, user: null }
+   
+secretarias:
+   pattern: /secretarias
+   defaults: { _controller: PmcIntranetBundle:Secretaria:listarSecretarias }
+   
+novaSecretaria:
+   pattern: /admin/secretarias/nova
+   defaults: { _controller: PmcIntranetBundle:Secretaria:novaSecretaria }
+
+editarSecretaria:
+   pattern: /admin/secretarias/editar/{id}
+   defaults: { _controller: PmcIntranetBundle:Secretaria:editarSecretaria, id: null } 
+   
+excluirSecretaria:
+   pattern: /ajax/excluirSecretaria
+   defaults: { _controller: PmcIntranetBundle:Secretaria:excluirSecretaria }     
+   
+servicos:
+   pattern: /servicos
+   defaults: { _controller: PmcIntranetBundle:Servico:listarServicos }
+   
+mostrarFuncionarios:
+   pattern: /ajax/mostrarFuncionarios
+   defaults: { _controller: PmcIntranetBundle:Servico:mostrarFuncionarios }    
+   
+novoServico:
+   pattern: /admin/servico/novo
+   defaults: { _controller: PmcIntranetBundle:Servico:novoServico }
+
+editarServico:
+   pattern: /admin/servicos/editar/{id}
+   defaults: { _controller: PmcIntranetBundle:Servico:editarServico, id: null }  
+
+excluirServico:
+   pattern: /ajax/excluirServico
+   defaults: { _controller: PmcIntranetBundle:Servico:excluirServico }     
+   
+solicitarServico:
+   pattern: /solicitarServico/{id}
+   defaults: { _controller: PmcIntranetBundle:ServicoSolicitado:solicitarServico, id: null }
+   
+servicosSolicitados:
+   pattern: /servicosSolicitados
+   defaults: { _controller: PmcIntranetBundle:ServicoSolicitado:listarServicosSolicitados }
+   
+finalizarSolicitacao:
+   pattern: ajax/finalizarSolicitacao
+   defaults: { _controller: PmcIntranetBundle:ServicoSolicitado:finalizarSolicitacao }    
    
 novaPublicacao:
    pattern: /admin/{tipo}/novo
@@ -106,41 +222,24 @@ novaPublicacao:
    
 editarPublicacao:
    pattern: /admin/{tipo}/editar/{id}
-   defaults: { _controller: PmcIntranetBundle:Social:editarPublicacao, id: null }
+   defaults: { _controller: PmcIntranetBundle:Social:editarPublicacao, id: null }   
    
-activarCuenta:
-   pattern: /login/activar
-   defaults: { _controller: SisproBundle:Access:activarCuenta }
+meusAvisos:
+   pattern: /meusAvisos
+   defaults: { _controller: PmcIntranetBundle:Avisos:listarMeusAvisos } 
    
-usuarios:
-   pattern: admin/usuarios
-   defaults: { _controller: SisproBundle:Usuarios:listarUsuarios }
+novoAviso:
+   pattern: /aviso/novo
+   defaults: { _controller: PmcIntranetBundle:Avisos:novoAviso }
    
-nuevoUsuario:
-   pattern: admin/usuarios/nuevo
-   defaults: { _controller: SisproBundle:Usuarios:nuevoUsuario }
+autocompletarUsuario:
+   pattern: /ajax/autocompletarUsuario
+   defaults: { _controller: PmcIntranetBundle:Avisos:autocompletarUsuario }  
    
-buscarUsuario:
-   pattern: admin/usuarios/buscar
-   defaults: { _controller: SisproBundle:Usuarios:buscarUsuario } 
+excluirAviso:
+   pattern: /ajax/excluirAviso
+   defaults: { _controller: PmcIntranetBundle:Avisos:excluirAviso }    
    
-editarUsuario:
-   pattern: admin/usuarios/editar
-   defaults: { _controller: SisproBundle:Usuarios:editarUsuario } 
-
-reiniciarClave:
-   pattern: admin/usuarios/reiniciar
-   defaults: { _controller: SisproBundle:Usuarios:reiniciarClave }
-
-bitacora:
-   pattern: admin/bitacora
-   defaults: { _controller: SisproBundle:Bitacora:listar }   
-   
-perfilUsuario:
-   pattern: perfil/
-   defaults: { _controller: SisproBundle:Usuarios:perfilUsuario }
-   
-cambiarClave:
-   pattern: perfil/cambiarclave
-   defaults: { _controller: SisproBundle:Usuarios:cambiarClave }
-      
+lerAviso:
+   pattern: /ajax/lerAviso
+   defaults: { _controller: PmcIntranetBundle:Avisos:lerAviso }     

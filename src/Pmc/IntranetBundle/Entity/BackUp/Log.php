@@ -15,7 +15,7 @@ class Log
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -64,9 +64,9 @@ class Log
     private $description;
 
     /**
-     * @var \Pmc\IntranetBundle\Entity\Usuario
+     * @var \Usuario
      *
-     * @ORM\ManyToOne(targetEntity="Pmc\IntranetBundle\Entity\Usuario")
+     * @ORM\ManyToOne(targetEntity="Usuario")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="usuario_id", referencedColumnName="id")
      * })

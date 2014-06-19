@@ -34,6 +34,15 @@ class FiltrosPublicacoesType extends AbstractType
                                  'multiple'=>true,
                                  'expanded'=>true,))
                                                         
+        ->add('status', 'choice', array('label' => 'Filtrar por Status:',
+                                            'required' => false,
+                                             'multiple'=> false,
+                                             'expanded'=> true,
+                                             'empty_value' => false,
+                                             'choices' => array('0' => 'Mostrar solo Ativos',
+                                                                '1' => 'Mostrar solo Inativos',
+                                                                '3' => 'Mostrar Todos',)))
+                                                        
         ->add('puntero', 'hidden', array('attr'=>array('value'=>'0')) )
             
          ;

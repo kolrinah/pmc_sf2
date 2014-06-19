@@ -6,7 +6,7 @@
 {% block centralHeader %}
 <form id="formLink" action="" method="post" {{ form_enctype(formulario) }} >
 <div class="row-fluid">
-  <div class="col-lg-12 panel panel-default" style="margin-top:20px;">    
+  <div class="col-sm-12 panel panel-default" style="margin-top:20px;">    
     <div class="panel-body"> 
         <h4 class="tit-azul">  {{ data.accion|upper }} LINK </h4>
       <hr/>      
@@ -40,11 +40,11 @@
          {% endfor %}
         </div>
         <div  style="text-align: right">
-            <a href="{{path('adminLinksUteis')}}">
+            <a href="{{path('linksUteis')}}">
                <button type="button" class="btn btn-default">Voltar</button></a>&nbsp; &nbsp; 
-            <button type="submit" class="btn btn-primary"
-                    onclick="$(this).attr('disabled','disabled');
-                             $('#formLink').submit();">Salvar</button>
+            <button type="button" class="btn btn-primary"
+                    onclick="$('#formLink').submit();
+                             $(this).attr('disabled','disabled');">Salvar</button>
         </div>      
     </div>
   </div>

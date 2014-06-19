@@ -1,0 +1,54 @@
+Pmc\IntranetBundle\Entity\AvisoComentario:
+    type: entity
+    table: aviso_comentario
+    indexes:
+        fk_aviso_idx:
+            columns:
+                - aviso_id
+        fk_comentarista_aviso_idx:
+            columns:
+                - usuario_id
+    uniqueConstraints:
+        id_UNIQUE:
+            columns:
+                - id
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        data:
+            type: datetime
+            nullable: false
+            comment: ''
+        comentario:
+            type: text
+            nullable: false
+            length: null
+            fixed: false
+            comment: ''
+    manyToOne:
+        aviso:
+            targetEntity: Aviso
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                aviso_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        usuario:
+            targetEntity: Usuario
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                usuario_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

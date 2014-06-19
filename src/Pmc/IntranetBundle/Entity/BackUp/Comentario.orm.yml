@@ -21,8 +21,8 @@ Pmc\IntranetBundle\Entity\Comentario:
         data:
             type: datetime
             nullable: false
-            comment: 'Data de publicação'
-            default: CURRENT_TIMESTAMP                
+            comment: ''
+            default: CURRENT_TIMESTAMP
         comentario:
             type: text
             nullable: false
@@ -30,15 +30,6 @@ Pmc\IntranetBundle\Entity\Comentario:
             fixed: false
             comment: ''
     manyToOne:
-        publicacao:
-            targetEntity: Publicacao
-            cascade: {  }
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                publicacao_id:
-                    referencedColumnName: id
-            orphanRemoval: false
         usuario:
             targetEntity: Usuario
             cascade: {  }
@@ -46,6 +37,15 @@ Pmc\IntranetBundle\Entity\Comentario:
             inversedBy: null
             joinColumns:
                 usuario_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        publicacao:
+            targetEntity: Publicacao
+            cascade: {  }
+            mappedBy: null
+            inversedBy: comentarios
+            joinColumns:
+                publicacao_id:
                     referencedColumnName: id
             orphanRemoval: false
     lifecycleCallbacks: {  }

@@ -1,0 +1,74 @@
+Pmc\IntranetBundle\Entity\Aviso:
+    type: entity
+    table: aviso
+    repositoryClass: Pmc\IntranetBundle\Entity\AvisoRepository
+    indexes:
+        fk_remetente_idx:
+            columns:
+                - usuario_id
+    uniqueConstraints:
+        id_UNIQUE:
+            columns:
+                - id
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: true
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        titulo:
+            type: string
+            nullable: false
+            length: 100
+            fixed: false
+            comment: 'Título/Assunto do aviso'
+        conteudo:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+            comment: 'Conteúdo do aviso'
+        data:
+            type: datetime
+            nullable: false
+            comment: 'Data do aviso'
+        video:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+            comment: ''
+        imagem:
+            type: string
+            nullable: true
+            length: 50
+            fixed: false
+            comment: ''
+        importante:
+            type: boolean
+            nullable: false
+            comment: ''
+            default: true
+    oneToMany:
+        comentarios:
+            targetEntity: AvisoComentario
+            mappedBy: aviso   
+        destinatarios:
+            targetEntity: AvisoDestinatario
+            mappedBy: aviso
+            cascade:  [persist]
+    manyToOne:
+        usuario:
+            targetEntity: Usuario
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                usuario_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

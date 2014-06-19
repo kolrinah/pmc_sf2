@@ -67,11 +67,11 @@
     });});  
     
     /*
-     * AJAX para mostrar 5 publicaciones más
+     * AJAX para mostrar 10 publicaciones más
      */
     function mostrarMais()
     {
-        $('#form_puntero').val(parseInt($('#form_puntero').val()) + 5);
+        $('#form_puntero').val(parseInt($('#form_puntero').val()) + {{ mostrar_mais }});
         $.ajax({
              type: 'POST',
              url:  $('#uri').val(),
@@ -81,7 +81,7 @@
           
          .done(function(data) {                
                 $('#publications').append(data);
-                if (data.length < 100) // SI LLEGÓ AL FINAL DE REGISTROS DESHABILITA BOTON MAIS
+                if (data.length < 200) // SI LLEGÓ AL FINAL DE REGISTROS DESHABILITA BOTON MAIS
                 {   $('#more').removeAttr('onclick');
                     $('#more').html('Fim'); }
            })         

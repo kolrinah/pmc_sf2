@@ -29091,7 +29091,7 @@ $(document).ready(function()
 function resizeTextarea (id) {
   var a = document.getElementById(id);
   a.style.height = 'auto';
-  a.style.height = a.scrollHeight+'px';
+  a.style.height = (a.scrollHeight+5)+'px';
 }
 
 // DEVUELVE LA FECHA DEL DIA DE HOY

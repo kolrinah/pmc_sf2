@@ -55,7 +55,7 @@ function postarComentario(id)
             { // ERROR DESCONOCIDO                                    
               $('#ventanaModal .modal-title').html('Advertência');
               $('#ventanaModal p').html(traductor(data.error));
-              $('#ventanaModal img').attr('src', $('#baseImg').val()+'img/alerta.png' );
+              $('#ventanaModal img').attr('src', $('#baseImg').val()+'alerta.png' );
               $('#ventanaModal').modal('show');        
             }        
        })         
@@ -66,7 +66,7 @@ function postarComentario(id)
      .fail(function(jqXHR, textStatus, errorThrown) {                      
             $('#ventanaModal .modal-title').html(traductor(textStatus));
             $('#ventanaModal p').html(traductor(errorThrown));
-            $('#ventanaModal img').attr('src', $('#baseImg').val()+'img/error.png' );
+            $('#ventanaModal img').attr('src', $('#baseImg').val()+'error.png' );
             $('#ventanaModal').modal('show');         
         });
      return true;
@@ -92,7 +92,7 @@ function refrescarComentarios(id)
             $('#botoneraExcluir').hide();
             $('#ventanaModal .modal-title').html(traductor(textStatus));
             $('#ventanaModal p').html(traductor(errorThrown));
-            $('#ventanaModal img').attr('src', $('#baseImg').val()+'img/error.png' );
+            $('#ventanaModal img').attr('src', $('#baseImg').val()+'error.png' );
             $('#ventanaModal').modal('show');         
         });
      return true;    
@@ -226,7 +226,7 @@ function postarPublicacao(tipo)
             { // ERROR DESCONOCIDO                                    
               $('#ventanaModal .modal-title').html('Advertência');
               $('#ventanaModal p').html(traductor(data.error));
-              $('#ventanaModal img').attr('src', $('#baseImg').val()+'img/alerta.png' );
+              $('#ventanaModal img').attr('src', $('#baseImg').val()+'alerta.png' );
               $('#ventanaModal').modal('show');        
             }        
        })         
@@ -237,7 +237,7 @@ function postarPublicacao(tipo)
      .fail(function(jqXHR, textStatus, errorThrown) {                      
             $('#ventanaModal .modal-title').html(traductor(textStatus));
             $('#ventanaModal p').html(traductor(errorThrown));
-            $('#ventanaModal img').attr('src', $('#baseImg').val()+'img/error.png' );
+            $('#ventanaModal img').attr('src', $('#baseImg').val()+'error.png' );
             $('#ventanaModal').modal('show');         
         });
      return true;
@@ -272,7 +272,7 @@ function seguir(id, seguir)
             { // ERROR DESCONOCIDO
               $('#ventanaModal .modal-title').html('Advertência');
               $('#ventanaModal p').html(traductor(data.error));
-              $('#ventanaModal img').attr('src', $('#baseImg').val()+'img/alerta.png' );
+              $('#ventanaModal img').attr('src', $('#baseImg').val()+'alerta.png' );
               $('#ventanaModal').modal('show');        
             }        
        })         
@@ -284,7 +284,7 @@ function seguir(id, seguir)
      .fail(function(jqXHR, textStatus, errorThrown) {            
             $('#ventanaModal .modal-title').html(traductor(textStatus));
             $('#ventanaModal p').html(traductor(errorThrown));
-            $('#ventanaModal img').attr('src', $('#baseImg').val()+'img/error.png' );
+            $('#ventanaModal img').attr('src', $('#baseImg').val()+'error.png' );
             $('#ventanaModal').modal('show');         
         });
      return true;

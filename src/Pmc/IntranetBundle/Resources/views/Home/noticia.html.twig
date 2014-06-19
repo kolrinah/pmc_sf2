@@ -2,33 +2,33 @@
 <div class="row">
   <h6 class="tit-vermelho linha-vermelha {{ activo }}" style="font-weight:bolder"
       title="{{ titulo }}">Notícias</h6>        
-  <div class="col-lg-12 panel panel-default"  style="margin-bottom: 0px">
+  <div class="col-sm-12 panel panel-default"  style="margin-bottom: 0px">
      <div class="row" style="padding: 20px 5px 0px">         
-       <div class="col-lg-12" style="text-align:justify">                    
+       <div class="col-sm-12" style="text-align:justify">                    
          <p class="tit-noticias">{{ p.titulo }}</p>           
 {% if p.video|trim|length > 0 %}
-         <div class="col-lg-6" style="padding: 0px 0px 5px 20px; float: right"> 
+         <div class="col-sm-6" style="padding: 0px 0px 5px 20px; float: right"> 
        {{ p.video|raw }}            
          </div>        
 {% elseif p.imagem|trim|length > 0 %}
-         <div class="col-lg-6" style="padding: 0px 0px 5px 20px; float: right">          
+         <div class="col-sm-6" style="padding: 0px 0px 5px 20px; float: right">          
            <img class="thumbnail" style="max-width: 100%; margin: 0px" 
                 src="{{ asset(path_imagens ~ p.imagem) }}" />
          </div>  
 {% endif %}           
          
-         <p class="resumo-noticias">  {{ p.resumo }} </p>    
+         <p class="resumo-noticias">  {{ p.resumo|nl2br }} </p>    
        </div>       
      </div>
      <hr/>           
      <div class="row" style="padding:0px 5px 10px">
-       <div class="col-lg-6">          
+       <div class="col-sm-6">          
             <a data-toggle="collapse" href="#collapse{{p.id}}">
                <img src="{{asset(path_img ~'ico-comentarios.png')}}" 
                   width="22" height="24"/>
                <span style="margin-left:5px;">Comentários</span></a>          
        </div>
-       <div class="col-lg-6" style="text-align: right">          
+       <div class="col-sm-6" style="text-align: right">          
             <a data-toggle="collapse" href="#collapse{{p.id}}">
                <img src="{{asset(path_img ~'ico-leia.png')}}" 
                      width="23" height="19">

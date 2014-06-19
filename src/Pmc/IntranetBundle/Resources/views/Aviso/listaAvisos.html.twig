@@ -1,0 +1,33 @@
+{% extends 'PmcIntranetBundle:Templates:layout.html.twig' %}
+{% block title %} 
+{{ parent() }} | {{ data.titulo }}
+{% endblock %}
+
+{% block centralHeader %}
+{# Filtros de búsqueda #}
+<input type="hidden" id="uri" value="{{ data.uri }}"/>
+   {% include 'PmcIntranetBundle:Aviso:filtroAviso.html.twig' %}
+{% endblock %}
+
+{% block publications %}
+{% include 'PmcIntranetBundle:Aviso:avisos.html.twig' %}
+{% endblock %}
+
+{% block mais %}
+  <div class="row">
+    <div class="col-lg-12" style="margin-top: 20px">        
+        <img id="gifCargarMais" style="display: none "
+             src="{{ asset(path_img ~'loading.gif') }}"/>        
+        <div id="more" onclick="mostrarMais();">MAIS</div>
+    </div>
+  </div>
+{% endblock %}
+
+{# Ventanas emergentes #}
+{% block modalWindow %}
+    {% include 'PmcIntranetBundle:Templates:ventanaModal.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}  
+    <script type="text/javascript" src="{{ asset('bundles/pmcintranet/js/avisos.js') }}"></script>  
+{% endblock %}  

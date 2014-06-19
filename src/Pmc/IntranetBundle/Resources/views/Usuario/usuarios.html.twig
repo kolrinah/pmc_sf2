@@ -1,0 +1,54 @@
+{% for u in data.usuarios %} 
+
+{% set activo = ( u.ativo )? '':'inactivo' %}
+{% set banido = ( u.banido )? 'banido':'' %}
+<div class="row {{ activo }}"  title="{{ banido|upper }} {{ activo| upper}}">
+  <div class="col-sm-12 panel panel-default" style="margin-top: 20px;">   
+      <div class="row">
+          <div class="col-sm-3" style="padding: 0px">
+       {% set foto = asset(path_img ~'ico-user.png') %} 
+       {% if u.foto|length > 0 %}            
+             {% set foto = asset(path_retratos ~ u.foto) %}
+       {% endif %} 
+            <img class="img-thumbnail" style="width:100%"
+                 src="{{ foto }}">      
+          </div>
+          <div class="col-sm-9 panel-body" style="padding-bottom: 5px; padding-right: 10px">    
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="{{ banido }}"> {{ u.nome|title }} </div>
+                  <div class="tit-verde" style="font-weight:normal; font-size: 0.9em">
+                      {{ u.secretaria|title }} </div>
+                  <div> Cargo: {{ u.cargo }}</div>                     
+                </div>             
+              </div>    
+              <div class="row">
+                <div class="col-sm-12" id="usuario_{{ u.id }}" 
+                     style="text-align: right">
+                   <img style="display: none" src="{{asset(path_img ~'preload.gif')}}"/>     
+{% set mostrar = (app.user in u.seguidor)? 'none' : 'inline' %}
+                   <button id="seguir_{{ u.id }}"
+                      type="button" class="btn btn-success btn-xs" 
+                      title="Adicionar à Minha Rede"
+                      style="display: {{ mostrar }}"
+                      onclick="seguir({{ u.id }}, 1);"> Seguir</button>
+{% set mostrar = (app.user in u.seguidor)? 'inline' : 'none' %}                   
+                   <button id="excluir_{{ u.id }}" 
+                      type="button" class="btn btn-danger btn-xs" 
+                      title="Deixar de Seguir"
+                      style="display: {{ mostrar }}"
+                      onclick="seguir({{ u.id }}, 0);"> Deixar de Seguir</button>
+                   
+{% if is_granted('ROLE_PRENSA')  %}                    
+                    <a href="{{path('editarFuncionario', { 'id': u.id } ) }}">
+                       <button id="editar_{{ u.id }}" type="button" 
+                               class="btn btn-primary btn-xs">Editar</button>
+                    </a> 
+{% endif %}
+                </div>             
+              </div>    
+          </div>       
+      </div>
+  </div>
+</div>     
+{% endfor %}      

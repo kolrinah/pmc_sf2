@@ -1,16 +1,30 @@
-{% extends 'PmcIntranetBundle:Templates:base.html.twig' %}
-{% block title %}
-Aconteceu um erro: {{ status_code }}
-{% endblock %}
-
-{% block body %}
-<div class="container"> 
- <h1>Aconteceu um erro</h1>
- <h2>Seu perfil não permite acesso ao recurso solicitado.</h2>
- <div>
-    Entre em contato com o pessoal da assistência técnica para resolver a falha, 
-    sentimos muito o transtorno ocasionado.  
- </div>    
-
-</div>
-{% endblock %}
+<!DOCTYPE HTML>
+<html lang="pt">
+ <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Language" content="pt" />
+   <title>Aconteceu um erro {{ status_code }}</title>      
+   <link rel="icon" type="image/x-icon" href="{{ asset('bundles/pmcintranet/img/favicon.pgn') }}">
+   <link rel="shortcut icon" type="image/x-icon" href="{{ asset('bundles/pmcintranet/img/favicon.png')}}">  
+   <link rel="stylesheet" href="{{ asset('css/pmc.css') }}" type="text/css" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+ </head>
+ <body>      
+  <div class="container"> 
+    <div class="row">
+        <div class="col-lg-12" style="margin-top: 50px">
+            <img src="{{ asset(path_img ~'logo-carapicuiba.png') }}"/>   
+            <h1>Aconteceu um erro.</h1>
+            <br/>
+            
+            <h3>Seu perfil não permite acesso ao recurso solicitado.</h3>
+            <br/>
+            <h4>
+            Entre em contato com o pessoal da assistência técnica para resolver a falha, 
+            sentimos muito o transtorno ocasionado.
+            </h4>          
+        </div>
+    </div>  
+  </div>
+ </body>
+</html>

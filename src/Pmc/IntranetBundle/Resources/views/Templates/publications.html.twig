@@ -6,7 +6,7 @@
         {% set activo, titulo = 'inactivo', 'Publicação Inativo' %}
     {% endif %}
    <div id="publicacao_{{ p.id }}" class="row {{ activo }}" title="{{ titulo }}" >
-     <div class="col-lg-12" style="margin-top: 20px">   
+     <div class="col-sm-12" style="margin-top: 20px">   
              
    {% if p.tipo.id == 1 %}     {# É uma Mensagem #}            
      {% include 'PmcIntranetBundle:Home:mensagem.html.twig' %}         

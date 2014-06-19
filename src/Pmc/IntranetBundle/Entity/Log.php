@@ -15,7 +15,7 @@ class Log
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -38,7 +38,7 @@ class Log
     /**
      * @var string
      *
-     * @ORM\Column(name="user_agent", type="string", length=100, nullable=false)
+     * @ORM\Column(name="user_agent", type="text", nullable=false)
      */
     private $userAgent;
 
@@ -64,9 +64,9 @@ class Log
     private $description;
 
     /**
-     * @var \Pmc\IntranetBundle\Entity\Usuario
+     * @var \Usuario
      *
-     * @ORM\ManyToOne(targetEntity="Pmc\IntranetBundle\Entity\Usuario")
+     * @ORM\ManyToOne(targetEntity="Usuario")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="usuario_id", referencedColumnName="id")
      * })

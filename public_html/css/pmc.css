@@ -7938,16 +7938,16 @@ text-decoration:none;
 	margin-top:-10px;
 }
 .ocultar{
-	color:#000;
+	/*color:#000;*/
 	text-align:right;
 	margin-top:15px;
 }
 .ocultar a{
-	color:#000;
+	/*color:#000;*/
 	text-decoration:none;
 }
 .ocultar a:hover{
-	color:#000;
+	/*color:#000;*/
 	text-decoration:underline;
 }
 .box-eventos{
@@ -8273,13 +8273,17 @@ input[type=radio][id*="form_"]:checked + label{
 }
 
 input[type=checkbox][id*="form_secretarias"] + label:before,
+input[type=checkbox][id*="form_role"] + label:before,
+input[type=checkbox][id*="form_responsavel"] + label:before,
 input[type=radio][id*="form_"] + label:before{
     content: "\00a0"; 
     width: 16px;
     height: 16px;
     display: inline-block;
-    margin-right: 5px;
+    margin-right: 8px;
     z-index: 5;    
+    background-image: none;
+    background: none;
 }
 
 input[type=checkbox][id*="form_secretaria"]:checked + label:before,
@@ -8290,6 +8294,7 @@ input[type=radio][id*="form_"]:checked + label:before{
     display: inline-block;
     margin-right: 5px;
     z-index: 5;
+    opacity: 1;
     background-image: url('../bundles/pmcintranet/img/1.png') no-repeat; 
     background: url(../bundles/pmcintranet/img/1.png) no-repeat;
 }
@@ -8324,6 +8329,24 @@ span.inactivo:after{
     display: inline-block;    
     vertical-align: middle;
     margin-left: 10px;
+    margin-bottom: 3px;
+    z-index: 5;
+    opacity: 1!important;
+    background-image:url('../bundles/pmcintranet/img/cancel16.png'); 
+}
+
+.banido{
+    color: red;
+    font-weight: bolder;
+}
+
+.banido:after{
+    content: "\00a0"; 
+    width: 16px;
+    height: 16px;
+    display: inline-block;    
+    vertical-align: middle;
+    margin-left: 7px;  
     margin-bottom: 3px;
     z-index: 5;
     opacity: 1!important;

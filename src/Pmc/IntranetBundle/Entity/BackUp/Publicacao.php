@@ -85,16 +85,6 @@ class Publicacao
     private $dataEvento;
 
     /**
-     * @var \TipoPublicacao
-     *
-     * @ORM\ManyToOne(targetEntity="TipoPublicacao")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="tipo_id", referencedColumnName="id")
-     * })
-     */
-    private $tipo;
-
-    /**
      * @var \Usuario
      *
      * @ORM\ManyToOne(targetEntity="Usuario")
@@ -103,6 +93,16 @@ class Publicacao
      * })
      */
     private $usuario;
+
+    /**
+     * @var \TipoPublicacao
+     *
+     * @ORM\ManyToOne(targetEntity="TipoPublicacao")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="tipo_id", referencedColumnName="id")
+     * })
+     */
+    private $tipo;
 
 
     /**
@@ -118,6 +118,8 @@ class Publicacao
         $this->comentarios = new \Doctrine\Common\Collections\ArrayCollection();
         $this->data = new \DateTime('now');
         $this->dataEvento = new \DateTime('now');
+        $this->ativo = true;
+        $this->publico = false;        
     }
 
     /**
@@ -184,7 +186,7 @@ class Publicacao
      */
     public function setResumo($resumo)
     {
-        $this->resumo = $resumo;                
+        $this->resumo = $resumo;
         return $this;
     }
 
@@ -370,29 +372,6 @@ class Publicacao
     }
 
     /**
-     * Set tipo
-     *
-     * @param \Pmc\IntranetBundle\Entity\TipoPublicacao $tipo
-     * @return Publicacao
-     */
-    public function setTipo(\Pmc\IntranetBundle\Entity\TipoPublicacao $tipo = null)
-    {
-        $this->tipo = $tipo;
-
-        return $this;
-    }
-
-    /**
-     * Get tipo
-     *
-     * @return \Pmc\IntranetBundle\Entity\TipoPublicacao 
-     */
-    public function getTipo()
-    {
-        return $this->tipo;
-    }
-
-    /**
      * Set usuario
      *
      * @param \Pmc\IntranetBundle\Entity\Usuario $usuario
@@ -413,6 +392,29 @@ class Publicacao
     public function getUsuario()
     {
         return $this->usuario;
+    }
+
+    /**
+     * Set tipo
+     *
+     * @param \Pmc\IntranetBundle\Entity\TipoPublicacao $tipo
+     * @return Publicacao
+     */
+    public function setTipo(\Pmc\IntranetBundle\Entity\TipoPublicacao $tipo = null)
+    {
+        $this->tipo = $tipo;
+
+        return $this;
+    }
+
+    /**
+     * Get tipo
+     *
+     * @return \Pmc\IntranetBundle\Entity\TipoPublicacao 
+     */
+    public function getTipo()
+    {
+        return $this->tipo;
     }
     
     /* * * * * * * * * * * * * * * * * * * * * * * 
@@ -461,5 +463,5 @@ class Publicacao
           @fclose($handle);
        }
        return true;
-    }    
+    }        
 }

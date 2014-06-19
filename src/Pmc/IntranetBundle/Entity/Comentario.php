@@ -15,7 +15,7 @@ class Comentario
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -36,24 +36,24 @@ class Comentario
     private $comentario;
 
     /**
-     * @var \Pmc\IntranetBundle\Entity\Publicacao
+     * @var \Usuario
      *
-     * @ORM\ManyToOne(targetEntity="Pmc\IntranetBundle\Entity\Publicacao")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="publicacao_id", referencedColumnName="id")
-     * })
-     */
-    private $publicacao;
-
-    /**
-     * @var \Pmc\IntranetBundle\Entity\Usuario
-     *
-     * @ORM\ManyToOne(targetEntity="Pmc\IntranetBundle\Entity\Usuario")
+     * @ORM\ManyToOne(targetEntity="Usuario")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="usuario_id", referencedColumnName="id")
      * })
      */
     private $usuario;
+
+    /**
+     * @var \Publicacao
+     *
+     * @ORM\ManyToOne(targetEntity="Publicacao")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="publicacao_id", referencedColumnName="id")
+     * })
+     */
+    private $publicacao;
 
 
 
@@ -114,29 +114,6 @@ class Comentario
     }
 
     /**
-     * Set publicacao
-     *
-     * @param \Pmc\IntranetBundle\Entity\Publicacao $publicacao
-     * @return Comentario
-     */
-    public function setPublicacao(\Pmc\IntranetBundle\Entity\Publicacao $publicacao = null)
-    {
-        $this->publicacao = $publicacao;
-
-        return $this;
-    }
-
-    /**
-     * Get publicacao
-     *
-     * @return \Pmc\IntranetBundle\Entity\Publicacao 
-     */
-    public function getPublicacao()
-    {
-        return $this->publicacao;
-    }
-
-    /**
      * Set usuario
      *
      * @param \Pmc\IntranetBundle\Entity\Usuario $usuario
@@ -157,5 +134,28 @@ class Comentario
     public function getUsuario()
     {
         return $this->usuario;
+    }
+
+    /**
+     * Set publicacao
+     *
+     * @param \Pmc\IntranetBundle\Entity\Publicacao $publicacao
+     * @return Comentario
+     */
+    public function setPublicacao(\Pmc\IntranetBundle\Entity\Publicacao $publicacao = null)
+    {
+        $this->publicacao = $publicacao;
+
+        return $this;
+    }
+
+    /**
+     * Get publicacao
+     *
+     * @return \Pmc\IntranetBundle\Entity\Publicacao 
+     */
+    public function getPublicacao()
+    {
+        return $this->publicacao;
     }
 }

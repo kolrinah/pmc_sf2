@@ -1,0 +1,107 @@
+{% extends 'PmcIntranetBundle:Templates:layout.html.twig' %}
+{% block title %} 
+{{ parent() }} | {{ data.titulo }}
+{% endblock %}
+
+{% block centralHeader %}
+<form id="formServico" action="" method="post" {{ form_enctype(formulario) }} >
+<div class="row-fluid">
+  <div class="col-sm-12 panel panel-default" style="margin-top:20px;">    
+    <div class="panel-body"> 
+        <h4 class="tit-azul">  {{ data.accion|upper }} {{ data.titulo|upper }} </h4>
+      <hr/> 
+        <div class="form-group">
+         {% for mensaje in app.session.flashbag.get('error') %}
+            <div class="alert alert-danger alert-dismissable">
+               <button type="button" class="close" data-dismiss="alert" 
+                       aria-hidden="true">&times;</button>
+            <img src="{{asset(path_img ~'error24.png')}}" /> &nbsp;{{ mensaje }}</div>
+         {% endfor %}
+        </div>
+      
+        <div class="form-group has-feedback">              
+            {{ form_label(formulario.nome) }}
+            {{ form_widget(formulario.nome) }}
+            {% if form_errors(formulario.nome) %}       
+               <span class="form-control-feedback">
+                <img src="{{asset(path_img ~'advertencia.png')}}"
+                     title="{{ form_errors(formulario.nome)|striptags }}" />
+               </span>
+            {% endif %}                
+        </div>
+        <div class="form-group has-feedback">              
+            {{ form_label(formulario.conteudo) }}
+            {{ form_widget(formulario.conteudo) }}
+            {% if form_errors(formulario.conteudo) %}       
+               <span class="form-control-feedback">
+                <img src="{{asset(path_img ~'advertencia.png')}}"
+                     title="{{ form_errors(formulario.conteudo)|striptags }}" />
+               </span>
+            {% endif %}                
+        </div>            
+        <div class="form-group has-feedback">              
+            {{ form_label(formulario.secretaria) }}
+            {{ form_widget(formulario.secretaria) }}
+            {% if form_errors(formulario.secretaria) %}       
+               <span class="form-control-feedback" >
+                <img src="{{asset(path_img ~'advertencia.png')}}"
+                     title="{{ form_errors(formulario.secretaria)|striptags }}" />
+               </span>
+            {% endif %}                
+        </div>                
+        {{ form_label(formulario.responsavel) }}  
+        <div class="form-group has-feedback" 
+             style="height: 150px; overflow-y: scroll; border: #D3D3D3 solid 1px; padding: 10px"
+             title="{{ form_errors(formulario.responsavel)|striptags }}"> 
+            <div id="iconEspera" style="text-align: center; padding-top: 30px; display:none">
+                <img  src="{{asset(path_img ~'preloader.gif')}}" /> 
+            </div>
+            {{ form_widget(formulario.responsavel) }}
+            {% if form_errors(formulario.responsavel) %}       
+               <span class="form-control-feedback">
+                <img src="{{asset(path_img ~'advertencia.png')}}"
+                     title="{{ form_errors(formulario.responsavel)|striptags }}" />
+               </span>
+            {% endif %}                                        
+        </div>
+{% set mostrar = (data.accion == 'novo')? 'oculto': ''  %}      
+        <div class="form-group {{ mostrar }}">              
+            {{ form_widget(formulario.ativo) }}
+            {{ form_label(formulario.ativo) }}    
+            {{ form_errors(formulario.ativo)|striptags }}           
+        </div>       
+      {{ form_rest(formulario) }}  
+        <hr/>
+        <div style="text-align: right">
+            <a href="{{path('servicos')}}">
+               <button type="button" class="btn btn-default">Voltar</button></a>&nbsp; &nbsp; 
+            <button type="button" class="btn btn-primary"
+                    onclick="$('#formServico').submit();
+                             $(this).attr('disabled','disabled');">Salvar</button>
+        </div>      
+    </div>
+  </div>
+</div>        
+</form>  
+
+{% endblock %}
+
+{# Ventanas emergentes #}
+{% block modalWindow %}
+    {% include 'PmcIntranetBundle:Templates:ventanaModal.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}   
+    <script type="text/javascript" src="{{ asset('bundles/pmcintranet/js/servico.js') }}"></script>
+    <script type="text/javascript">
+     $(document).ready(function() {
+          $('nav li').removeClass('active');
+          $('#menuServicos').addClass('active'); 
+  
+          resizeTextarea('form_conteudo');
+          // Script para mostrar solo los funcionarios que corresponden a cada secretaría
+          $('#form_secretaria').change(function() { mostrarFuncionarios(); });
+          $('#form_secretaria').trigger('change');
+     });                
+    </script>  
+{% endblock %}  

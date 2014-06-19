@@ -1,0 +1,34 @@
+{% extends 'PmcIntranetBundle:Templates:base.html.twig' %}
+{% block title %} 
+{{ parent() }}
+| Acesso
+{% endblock %}
+{% block body %}
+<form class="form-signin"  style="margin-top: 140px;"    
+      action="" method="post" {{ form_enctype(formulario) }} >
+ <p>   
+   <img src="{{ asset(path_img ~'logo.png') }}" width="250" height="71" />          
+ </p>
+ <hr/>
+ <div class="form-group has-feedback">
+    {{ form_widget(formulario.email) }}
+ </div>        
+ <div class="form-group has-feedback">              
+     {{ form_label(formulario.senha.first) }}
+     {{ form_widget(formulario.senha.first) }}        
+     {% if form_errors(formulario.senha.first) %}       
+        <span class="form-control-feedback">
+         <img src="{{asset(path_img ~'advertencia.png')}}"
+              title="{{ form_errors(formulario.senha.first)|striptags }}" />
+        </span>
+     {% endif %}
+     {{ form_widget(formulario.senha.second) }}           
+ </div>
+{{ form_rest(formulario) }}  
+        
+ <div style="text-align: right"> 
+    <button type="submit" class="btn btn-primary"> Entrar</button>         
+ </div>
+</form>
+        
+{% endblock %}

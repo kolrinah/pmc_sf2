@@ -1,6 +1,6 @@
-{% if is_granted('ROLE_PRENSA') or  is_granted('ROLE_ADMIN') %}
+{% if is_granted('ROLE_PRENSA') %}
 <div class="row panel panel-default">
-  <div class="col-lg-12 panel-heading" style="text-align:right;">
+  <div class="col-sm-12 panel-heading" style="text-align:right;">
     <button type="button" class="btn btn-danger btn-sm"
             onclick="excluirLeiDecreto({{ l.id }}, 1)">Excluir</button>&nbsp;  
     <a href="{{path('editarLeiDecreto', { 'id': l.id } ) }}">

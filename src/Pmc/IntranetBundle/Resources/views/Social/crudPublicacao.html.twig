@@ -3,13 +3,13 @@
 {{ parent() }} | {{ data.accion|capitalize }} {{ data.tipo.tipo|capitalize }}
 {% endblock %}
 
-{% block publications %}
+{% block centralHeader %}
 <form id="formPublicacao" action="" method="post" {{ form_enctype(formulario) }} >
-<div class="row">
-  <div class="col-lg-12 panel panel-default" style="margin-top:20px;">    
+<div class="row-fluid">
+  <div class="col-sm-12 panel panel-default" style="margin-top:20px;">    
     <div class="panel-body"> 
         <h4 class="tit-azul">  {{ data.accion|upper }} {{ data.tipo.tipo|upper }} </h4>
-      <hr/>      
+      <hr/>     
         <div class="form-group has-feedback">              
             {{ form_label(formulario.titulo) }}
             {{ form_widget(formulario.titulo) }}
@@ -87,16 +87,14 @@
             {% endif %}                
         </div>
    
-{% set mostrar = (is_granted('ROLE_ADMIN') or is_granted('ROLE_PRENSA'))? '':'oculto' %}      
+{% set mostrar = (is_granted('ROLE_PRENSA'))? '':'oculto' %}      
         <div class="form-group {{ mostrar }}">                          
             {{ form_widget(formulario.publico) }}
             {{ form_label(formulario.publico) }}    
             {{ form_errors(formulario.publico)|striptags }}               
         </div>            
 
-{% set mostrar = ( (is_granted('ROLE_PRENSA') or is_granted('ROLE_SECRETARIO') or 
-                    is_granted('ROLE_ADMIN') or
-                    is_granted('ROLE_ADJUNTO') ) and (data.accion|lower == 'editar') )? 
+{% set mostrar = ( is_granted('ROLE_ADJUNTO')  and (data.accion|lower == 'editar') )? 
    '':'oculto' %}        
         <div class="form-group {{ mostrar }}">                          
             {{ form_widget(formulario.ativo) }}
@@ -116,9 +114,9 @@
         <div  style="text-align: right">
             <a href="{{ path('filtrar', { 'tipo': data.tipo.tipo|lower } ) }}">
                <button type="button" class="btn btn-default">Voltar</button></a>&nbsp; &nbsp; 
-            <button type="submit" class="btn btn-primary "
-                    onclick="$(this).attr('disabled','disabled');
-                             $('#formPublicacao').submit();">Salvar</button>
+            <button type="button" class="btn btn-primary "
+                    onclick="$('#formPublicacao').submit();
+                             $(this).attr('disabled','disabled');">Salvar</button>
         </div>      
     </div>
   </div>

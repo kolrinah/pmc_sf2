@@ -1,15 +1,8 @@
-{# Banners en el sistema #}    
-   {% for mensaje in app.session.flashbag.get('info') %}
-      <div class="alert alert-success alert-dismissable">
-        <button type="button" class="close" data-dismiss="alert" 
-                aria-hidden="true">&times;</button>
-        <img src="{{asset(path_img ~'1_old.png')}}" /> &nbsp;{{ mensaje }}</div>
-   {% endfor %}  
+{# Links del sistema #}    
 {% for l in data.linksUteis %}  
-
   <div id="linkUteis_{{ l.id }}">    
-   <div class="row panel panel-default" style="margin-bottom:-1px;">
-     <div class="col-lg-12 panel-body" >   
+   <div class="row panel panel-default" style="margin-top: 20px; margin-bottom:-1px;">
+     <div class="col-sm-12 panel-body" >   
         <a class="tit-preto" href="{{ l.link }}" target="_blank">
             <i class="glyphicon glyphicon-circle-arrow-right"></i>&nbsp;{{ l.nome|upper }}</a> 
      </div>                  

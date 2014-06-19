@@ -1,0 +1,74 @@
+<!-- BOX SERVICO --> 
+{% for s in data.solicitacoesServicos %}  
+
+{% set activo = ( s.abertoUsuario or s.abertoSecretaria )? '':'inactivo' %}
+{% set status = ( s.abertoUsuario or s.abertoSecretaria )? 'ABERTO':'FECHADO' %}
+{% set fondo = ( s.usuario != app.user )? 'background-color: #f5e79e;':'' %}
+
+<div id="solicitacao_{{ s.id }}" class="row {{ activo }}" title="{{ status|upper }}">
+    <h6 class="tit-verde linha-verde"> Solicitação {{ s.codigoInterno }} </h6>        
+ <div class="col-sm-12" style="margin-bottom: 20px">
+{% if s.urgente %}     
+    <div title="Prioridade: Urgente"
+         style="position: absolute; top: 1px; right: 5px; z-index: 100">
+       <img src="{{asset(path_img ~'exclamation.png')}}" />
+    </div>         
+{% endif %}         
+    <div class="row ">
+      <div class="col-sm-12 panel panel-default panel-body"  
+           style="margin-bottom: -1px; text-align:justify; {{ fondo }}">
+         <div class="tit-preto">
+            <a data-toggle="collapse" href="#collapse{{s.id}}">{{ s.servico.nome|upper }}</a></div>
+         <p class="tit-verde" style="font-weight: normal"> 
+            {{ s.servico.secretaria.nome|upper }} </p>
+         <div class="row">            
+            <div class="col-sm-6 col-sm-offset-6" style="text-align: right">
+              <a data-toggle="collapse" href="#collapse{{s.id}}">
+                 <span style="margin-left:5px;"> STATUS: {{ status }}</span></a> 
+            </div>                  
+         </div>
+{# ACCORDION #}             
+         <div class="row">                      
+           <div id="collapse{{ s.id }}" class="col-sm-12 panel-collapse collapse" 
+                style="text-align:justify;">
+             <hr/>  
+             <span class="tit-verde" style="font-weight: normal">Requerente:</span>
+             <p> {{ s.usuario }} / {{ s.usuario.secretaria }}</p>             
+             <span class="tit-verde" style="font-weight: normal">DATA DA SOLICITAÇÃO</span>
+             <p> {{ s.data|date('d/m/Y') }}</p>                
+             <span class="tit-verde" style="font-weight: normal">Título/Assunto</span>
+             <p> {{ s.titulo }}</p>
+             <span class="tit-verde" style="font-weight: normal">DESCRIÇÃO DA SOLICITAÇÃO</span>
+             <p> {{ s.conteudo|nl2br }}</p>
+             <hr/>        
+{# CARGAR COMENTARIOS #}
+             <div id="comentarios_{{ s.id }}">
+                {% set p = s %}
+                {% include 'PmcIntranetBundle:Templates:comentarios.html.twig' %} 
+             </div>
+{# POSTAR COMENTARIO #} 
+            {% include 'PmcIntranetBundle:Templates:postarComentario.html.twig' %} 
+             <hr/>
+             <div class="row">
+               <div class="col-sm-6" id="botonFinalizar_{{ s.id }}" >
+           {% if  ( (s.abertoUsuario and (app.user == s.usuario)) or
+                          (s.abertoSecretaria and (app.user != s.usuario)) ) %}
+                  <button type="button" class="btn btn-danger btn-sm"                
+                      onclick="finalizarSolicitacao({{ s.id }});">Finalizar Solicitação</button>
+                  <img style="display: none" src="{{ asset(path_img ~'preloader.gif') }}"/>               
+           {% endif %}        
+               </div>
+               {# TAG OCULTAR #}          
+               <div class="col-sm-6" style="text-align: right">
+                   <a class="accordion-toggle collapsed" data-toggle="collapse" 
+                       href="#collapse{{ s.id }}">Ocultar Solicitação</a>                                                  
+               </div>
+             </div>             
+           </div>                         
+         </div>                 
+      </div>
+    </div>
+ </div>
+</div>
+{% endfor %}  
+<!-- BOX LEI OU DECRETO END -->

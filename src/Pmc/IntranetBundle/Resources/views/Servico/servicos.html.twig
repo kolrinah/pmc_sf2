@@ -1,0 +1,50 @@
+<!-- BOX SERVICO --> 
+{% for s in data.servicos %}  
+
+{% set activo = ( s.ativo )? '':'inactivo' %}
+
+<div id="servico_{{ s.id }}" class="row {{ activo }}" title="{{ activo|upper }}">
+    <h6 class="tit-verde linha-verde">{{ data.titulo|slice(0, -1)|upper }}
+        - {{ '%03d' |format(s.id) }}
+    </h6>        
+ <div class="col-sm-12">
+    <div class="row ">
+      <div class="col-sm-12 panel panel-default panel-body"  
+           style="margin-bottom: -1px; text-align:justify">
+         <div class="tit-preto">
+             <a data-toggle="collapse" href="#collapse{{s.id}}">{{ s.nome|upper }}</a></div>
+         <p class="tit-verde" style="font-weight: normal"> {{ s.secretaria.nome|upper }} </p>
+         <div class="row">
+            <div class="col-sm-6"> 
+              <a href="{{path('solicitarServico', { 'id': s.id } ) }}" role="button" 
+                 class="btn btn-success btn-xs" data-toggle="modal">Solicitar Serviço</a>                  
+            </div>    
+            <div class="col-sm-6" style="text-align: right">
+              <a data-toggle="collapse" href="#collapse{{s.id}}">
+                 <img src="{{asset(path_img ~'ico-leia.png')}}" 
+                         width="23" height="19">
+                 <span style="margin-left:5px;">Leia Mais</span></a> 
+            </div>                  
+         </div>
+{# ACCORDION #}             
+         <div class="row">                      
+           <div  id="collapse{{ s.id }}" class="col-sm-12 panel-collapse collapse" 
+                 style="text-align:justify;">
+             <hr/>  
+             <p> {{ s.conteudo|upper|nl2br }}</p>
+             <hr/> 
+             {# TAG OCULTAR #}      
+             <div class="ocultar">
+               <a class="accordion-toggle collapsed" data-toggle="collapse" 
+                   href="#collapse{{ s.id }}">Ocultar {{ data.titulo|slice(0,-1) }}</a>                                 
+             </div>             
+           </div>                         
+         </div>                 
+      </div>
+    </div>
+{# PANEL OPCIONAL: CONTROL DE PUBLICACIÓN #}    
+{% include 'PmcIntranetBundle:Servico:controlServico.html.twig' %}          
+ </div>
+</div>
+{% endfor %}  
+<!-- BOX LEI OU DECRETO END -->

@@ -60,7 +60,7 @@ services:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
-    cache: false
+    cache: true
     globals:         
         path_img: "bundles/pmcintranet/img/"
         path_imagens: "upload/imagens/"

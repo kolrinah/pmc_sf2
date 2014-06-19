@@ -1,0 +1,25 @@
+{% extends 'PmcIntranetBundle:Templates:base.html.twig' %}
+{% block title %}
+   {{ parent() }} | {{ titulo }}
+{% endblock %}
+
+{% block body %}
+<div class="container"> 
+    <div class="row">
+        <div class="col-sm-12" style="margin-top: 50px">
+            <img src="{{ asset(path_img ~'logo-carapicuiba.png') }}"/>   
+            <h1>{{ titulo }}</h1>
+            <br/>
+            
+            <h3>{{ mensaje }}</h3>
+            <br/>
+            <br/>
+            <center>
+                <a href="{{ path('home') }}"> 
+                    <button class="btn btn-danger" title="Continuar">          
+                    <i class="icon-play icon-white"></i> Continuar</button></a>
+            </center>
+        </div>
+    </div>  
+</div>
+{% endblock %}

@@ -21,8 +21,8 @@ class LinkUteisType extends AbstractType
                                                'maxlength'=>'50',
                                                  'onclick'=>'$(this).focus();',
                                                    'class'=>'form-control',                                                   
-                                             'placeholder'=>'Escreva nome do Banner',
-                                                   'title'=>'Nome do Banner')))
+                                             'placeholder'=>'Escreva nome do Link',
+                                                   'title'=>'Nome do Link')))
               
         ->add('link', 'url', array('label'=>'URL',
                                'required'=>false,

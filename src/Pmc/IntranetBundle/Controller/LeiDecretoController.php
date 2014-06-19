@@ -12,7 +12,7 @@ class LeiDecretoController extends Controller
     /*
      * Lista las Leyes o Decretos existentes en el sistema
      */
-    public function adminLeiDecretoAction(Request $request)
+    public function listarLeiDecretoAction(Request $request)
     {   
         $data = $this->get('serviciosComunes')->rutinaInicio();
         
@@ -43,7 +43,6 @@ class LeiDecretoController extends Controller
         if ($request->isMethod('POST'))
         {        
            $filtros = $request->request->get('form');
-           //die(json_encode($filtros));
            $formulario->bind($request); 
         }  
         
@@ -53,25 +52,25 @@ class LeiDecretoController extends Controller
         $lei = (isset($filtros['lei']) and ($filtros['lei']) != '')? 
                                  $filtros['lei']:3;
         
-        $firstResult =(isset($filtros['puntero']))? $filtros['puntero']: 0;
-                
         $em = $this->getDoctrine()->getManager();        
-        $data['leiDecreto'] = $em->createQuery('SELECT l
-                                                FROM PmcIntranetBundle:LeiDecreto l 
-                                                WHERE (l.nome LIKE :patron or
-                                                       l.ano LIKE :patron or
-                                                       l.conteudo LIKE :patron)
-                                                AND l.lei != :lei       
-                                                ORDER BY l.nome ASC, l.id DESC')
+        $query = $em->createQuery('SELECT l
+                                   FROM PmcIntranetBundle:LeiDecreto l 
+                                   WHERE (l.nome LIKE :patron or
+                                          l.ano LIKE :patron or
+                                          l.conteudo LIKE :patron)
+                                   AND l.lei != :lei       
+                                   ORDER BY l.nome ASC, l.id DESC')
                                   ->setParameters(array('patron' => "%$patron%",
-                                                        'lei' => $lei))
-                                  ->setFirstResult($firstResult)
-                                  ->setMaxResults(5)                   
+                                                        'lei' => $lei))                 
                                   ->getResult();        
         
+        $firstResult =(isset($filtros['puntero']))? $filtros['puntero']: 0;
+        $data['leiDecreto'] = $this->get('serviciosComunes')
+                                   ->paginador($query, $firstResult);
+                
         // EXAMINAMOS SI LA PETICION VIENE DE AJAX
         if (!($this->getRequest()->isXmlHttpRequest()))  
-            return $this->render('PmcIntranetBundle:LeiDecreto:adminLeiDecreto.html.twig',
+            return $this->render('PmcIntranetBundle:LeiDecreto:listaLeiDecreto.html.twig',
                     array('formulario' => $formulario->createView(), 
                                 'data' => $data ));
         else
@@ -100,6 +99,8 @@ class LeiDecretoController extends Controller
            
            if (!$leiDecreto) die(json_encode(array('error'=>'Objeto não encontrado')));
            
+           $clon = $leiDecreto->getNome(); //Clonamos titulo antes de eliminarlo
+           
            // Si posee archivo
            if (strlen(trim($leiDecreto->getArquivo())) > 0)
            {   // Eliminamos el archivo del Servidor
@@ -116,8 +117,12 @@ class LeiDecretoController extends Controller
                     else $error = $e->getMessage();               
             die(json_encode(array('error'=>$error)));   
            } 
-           // Logró ser eliminado
-//BITACORA $this->_bitacoraEliminarProyecto($datos);
+           // Logró ser eliminado, Registramos en bitácora
+           $data['action'] = 'DELETE';
+           $data['module'] = 'LeiDecreto';
+           $data['description'] = 'Exclusão de lei ou decreto id: '.$id.
+                                 ', "'.substr($clon, 0, 20).'...".';
+           $this->get('serviciosComunes')->cadastrarLog($data);
            
            die(json_encode(array('html' => '' )));      
        }       
@@ -136,6 +141,7 @@ class LeiDecretoController extends Controller
        $data = $this->get('serviciosComunes')->rutinaInicio();
        $data['titulo'] = 'Leis e Decretos';
        $data['accion'] = 'nova';
+       $data['uri'] = $request->getUri();
               
        $leiDecreto = new LeiDecreto();
        
@@ -171,10 +177,16 @@ class LeiDecretoController extends Controller
               
               if (!$error)
               {
-//// INSERTAR EN BITACORA              
+                // Registramos en bitácora
+                $data['action'] = 'INSERT';
+                $data['module'] = 'LeiDecreto';
+                $data['description'] = 'Nova Lei ou Decreto id: '.$leiDecreto->getId().
+                                       ', "'.substr($leiDecreto->getNome(), 0, 20).'...".';
+                $this->get('serviciosComunes')->cadastrarLog($data); 
+                
                 // ACTUALIZACIÓN SATISFACTORIA REDIRECCIONAMOS A LINKS
-                $this->get('session')->getFlashBag()->add('info', 'o Arquico foi subido com sucesso');
-                return $this->redirect($this->generateUrl('adminLeiDecreto'));  
+                $this->get('session')->getFlashBag()->add('info', 'o Arquivo foi subido com sucesso');
+                return $this->redirect($this->generateUrl('leiDecreto'));  
               }  
            }   
        }     
@@ -206,6 +218,8 @@ class LeiDecretoController extends Controller
        $formulario = $this->createForm(new LeiDecretoType(), $leiDecreto);
        
        $request = $this->getRequest();
+       $data['uri'] = $request->getUri();
+       
        if ($request->isMethod('POST'))
        {       
            $archivoOriginal = $formulario->getData()->getArquivo();
@@ -243,10 +257,16 @@ class LeiDecretoController extends Controller
               
               if (!$error)
               {
-//// INSERTAR EN BITACORA              
-                // ACTUALIZACIÓN SATISFACTORIA REDIRECCIONAMOS A BANNERS
+                // Registramos en bitácora
+                $data['action'] = 'UPDATE';
+                $data['module'] = 'LeiDecreto';
+                $data['description'] = 'Edição de Lei ou Decreto id: '.$leiDecreto->getId().
+                                       ', "'.substr($leiDecreto->getNome(), 0, 20).'...".';
+                $this->get('serviciosComunes')->cadastrarLog($data); 
+                
+                // ACTUALIZACIÓN SATISFACTORIA REDIRECCIONAMOS A LeiDecreto
                 $this->get('session')->getFlashBag()->add('info', 'o Arquivo foi atualizado com sucesso');
-                return $this->redirect($this->generateUrl('adminLeiDecreto'));  
+                return $this->redirect($this->generateUrl('leiDecreto'));  
               }  
            }   
        }     
